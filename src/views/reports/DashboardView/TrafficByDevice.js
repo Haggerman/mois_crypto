@@ -92,7 +92,7 @@ const TrafficByDevice = ({ className, ...rest }) => {
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <CardHeader title="Traffic by Device" />
+      <CardHeader title="My portfolio" />
       <Divider />
       <CardContent>
         <Box
