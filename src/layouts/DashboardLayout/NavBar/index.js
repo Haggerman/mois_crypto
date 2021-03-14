@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -70,6 +71,11 @@ const items = [
     href: '/404',
     icon: AlertCircleIcon,
     title: 'Error'
+  },
+  {
+    href: '/app/dataFetch',
+    icon: AlertCircleIcon,
+    title: 'Data fetch'
   }
 ];
 
@@ -97,7 +103,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   const content = (
@@ -144,41 +150,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
             />
           ))}
         </List>
-      </Box>
-      <Box flexGrow={1} />
-      <Box
-        p={2}
-        m={2}
-        bgcolor="background.dark"
-      >
-        <Typography
-          align="center"
-          gutterBottom
-          variant="h4"
-        >
-          Need more?
-        </Typography>
-        <Typography
-          align="center"
-          variant="body2"
-        >
-          Upgrade to PRO version and access 20 more screens
-        </Typography>
-        <Box
-          display="flex"
-          justifyContent="center"
-          mt={2}
-        >
-          <Button
-            color="primary"
-            component="a"
-            href="https://react-material-kit.devias.io"
-            variant="contained"
-          >
-            See PRO version
-          </Button>
-        </Box>
-      </Box>
+      </Box>      
     </Box>
   );
 
