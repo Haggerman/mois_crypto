@@ -26,9 +26,8 @@ import {
 import NavItem from './NavItem';
 
 const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
   jobTitle: 'Senior Developer',
-  name: 'Katarina Smith'
+  name: 'Ivan Novák'
 };
 
 const items = [
@@ -118,25 +117,13 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         flexDirection="column"
         p={2}
       >
-        <Avatar
-          className={classes.avatar}
-          component={RouterLink}
-          src={user.avatar}
-          to="/app/account"
-        />
         <Typography
           className={classes.name}
           color="textPrimary"
           variant="h5"
         >
           {user.name}
-        </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
-          {user.jobTitle}
-        </Typography>
+        </Typography>        
       </Box>
       <Divider />
       <Box p={2}>

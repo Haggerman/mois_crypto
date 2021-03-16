@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { v4 as uuid } from 'uuid';
 import moment from 'moment';
+import * as CryptoIcons from 'react-cryptocoins';
 import {
   Box,
   Button,
@@ -12,9 +13,10 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemAvatar,
+  Avatar,
   ListItemText,
-  makeStyles
+  makeStyles,
+  colors
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
@@ -23,32 +25,26 @@ const data = [
   {
     id: uuid(),
     name: 'Dropbox',
-    imageUrl: '/static/images/products/product_1.png',
+    imageUrl: <CryptoIcons.Btc />,
     updatedAt: moment().subtract(2, 'hours')
   },
   {
     id: uuid(),
     name: 'Medium Corporation',
-    imageUrl: '/static/images/products/product_2.png',
+    imageUrl: <CryptoIcons.Eth />,
     updatedAt: moment().subtract(2, 'hours')
   },
   {
     id: uuid(),
     name: 'Slack',
-    imageUrl: '/static/images/products/product_3.png',
+    imageUrl: <CryptoIcons.Ltc />,
     updatedAt: moment().subtract(3, 'hours')
   },
   {
     id: uuid(),
     name: 'Lyft',
-    imageUrl: '/static/images/products/product_4.png',
+    imageUrl: <CryptoIcons.Doge />,
     updatedAt: moment().subtract(5, 'hours')
-  },
-  {
-    id: uuid(),
-    name: 'GitHub',
-    imageUrl: '/static/images/products/product_5.png',
-    updatedAt: moment().subtract(9, 'hours')
   }
 ];
 
@@ -57,8 +53,10 @@ const useStyles = makeStyles(({
     height: '100%'
   },
   image: {
-    height: 48,
-    width: 48
+    height: 40,
+    width: 40,
+    backgroundColor: colors.common.black,
+    marginRight: 24
   }
 }));
 
@@ -73,7 +71,7 @@ const LatestProducts = ({ className, ...rest }) => {
     >
       <CardHeader
         subtitle={`${products.length} in total`}
-        title="Latest Products"
+        title="Current prices"
       />
       <Divider />
       <List>
@@ -82,13 +80,9 @@ const LatestProducts = ({ className, ...rest }) => {
             divider={i < products.length - 1}
             key={product.id}
           >
-            <ListItemAvatar>
-              <img
-                alt="Product"
-                className={classes.image}
-                src={product.imageUrl}
-              />
-            </ListItemAvatar>
+            <Avatar className={classes.image}>
+              {product.imageUrl}
+            </Avatar>
             <ListItemText
               primary={product.name}
               secondary={`Updated ${product.updatedAt.fromNow()}`}

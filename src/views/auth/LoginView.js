@@ -6,14 +6,11 @@ import {
   Box,
   Button,
   Container,
-  Grid,
   Link,
   TextField,
   Typography,
   makeStyles
 } from '@material-ui/core';
-import FacebookIcon from 'src/icons/Facebook';
-import GoogleIcon from 'src/icons/Google';
 import Page from 'src/components/Page';
 
 const useStyles = makeStyles((theme) => ({
@@ -70,61 +67,6 @@ const LoginView = () => {
                     variant="h2"
                   >
                     Sign in
-                  </Typography>
-                  <Typography
-                    color="textSecondary"
-                    gutterBottom
-                    variant="body2"
-                  >
-                    Sign in on the internal platform
-                  </Typography>
-                </Box>
-                <Grid
-                  container
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      color="primary"
-                      fullWidth
-                      startIcon={<FacebookIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      fullWidth
-                      startIcon={<GoogleIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Google
-                    </Button>
-                  </Grid>
-                </Grid>
-                <Box
-                  mt={3}
-                  mb={1}
-                >
-                  <Typography
-                    align="center"
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    or login with email address
                   </Typography>
                 </Box>
                 <TextField

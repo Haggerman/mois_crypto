@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
 import {
-  Avatar,
   Box,
-  Button,
   Card,
-  CardActions,
   CardContent,
   Divider,
   Typography,
@@ -15,20 +12,14 @@ import {
 } from '@material-ui/core';
 
 const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
   city: 'Los Angeles',
   country: 'USA',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith',
+  name: 'Ivan Novák',
   timezone: 'GTM-7'
 };
 
 const useStyles = makeStyles(() => ({
-  root: {},
-  avatar: {
-    height: 100,
-    width: 100
-  }
+  root: {}
 }));
 
 const Profile = ({ className, ...rest }) => {
@@ -45,10 +36,6 @@ const Profile = ({ className, ...rest }) => {
           display="flex"
           flexDirection="column"
         >
-          <Avatar
-            className={classes.avatar}
-            src={user.avatar}
-          />
           <Typography
             color="textPrimary"
             gutterBottom
@@ -72,15 +59,6 @@ const Profile = ({ className, ...rest }) => {
         </Box>
       </CardContent>
       <Divider />
-      <CardActions>
-        <Button
-          color="primary"
-          fullWidth
-          variant="text"
-        >
-          Upload picture
-        </Button>
-      </CardActions>
     </Card>
   );
 };

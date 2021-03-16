@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
+import * as CryptoIcons from 'react-cryptocoins';
 import {
   Box,
   Card,
@@ -13,9 +14,6 @@ import {
   makeStyles,
   useTheme
 } from '@material-ui/core';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import PhoneIcon from '@material-ui/icons/Phone';
-import TabletIcon from '@material-ui/icons/Tablet';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -68,21 +66,21 @@ const TrafficByDevice = ({ className, ...rest }) => {
 
   const devices = [
     {
-      title: 'Desktop',
+      title: 'Bitcoin',
       value: 63,
-      icon: LaptopMacIcon,
+      icon: CryptoIcons.Btc,
       color: colors.indigo[500]
     },
     {
-      title: 'Tablet',
+      title: 'Ethereum',
       value: 15,
-      icon: TabletIcon,
+      icon: CryptoIcons.Eth,
       color: colors.red[600]
     },
     {
-      title: 'Mobile',
+      title: 'Cardano',
       value: 23,
-      icon: PhoneIcon,
+      icon: CryptoIcons.Ada,
       color: colors.orange[600]
     }
   ];
