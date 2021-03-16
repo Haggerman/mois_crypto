@@ -10,7 +10,6 @@ import LatestOrders from './LatestOrders';
 import LatestProducts from './LatestProducts';
 import Sales from './Sales';
 import TasksProgress from './TasksProgress';
-import TotalCustomers from './TotalCustomers';
 import TotalProfit from './TotalProfit';
 import TrafficByDevice from './TrafficByDevice';
 
@@ -38,36 +37,27 @@ const Dashboard = () => {
         >
           <Grid
             item
-            lg={3}
+            lg={6}
             sm={6}
-            xl={3}
+            xl={4}
             xs={12}
           >
             <Budget />
           </Grid>
           <Grid
             item
-            lg={3}
+            lg={6}
             sm={6}
-            xl={3}
-            xs={12}
-          >
-            <TotalCustomers />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
+            xl={4}
             xs={12}
           >
             <TasksProgress />
           </Grid>
           <Grid
             item
-            lg={3}
+            lg={6}
             sm={6}
-            xl={3}
+            xl={4}
             xs={12}
           >
             <TotalProfit />
