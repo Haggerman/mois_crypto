@@ -42,7 +42,7 @@ const data = [
   },
   {
     id: uuid(),
-    name: 'Lyft',
+    name: '$0.05693',
     imageUrl: <CryptoIcons.Doge />,
     updatedAt: moment().subtract(5, 'hours')
   }
