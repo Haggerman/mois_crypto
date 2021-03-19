@@ -17,7 +17,6 @@ const useFetch = (url) => {
       })
       .then((result) => {
         setData(result);
-        console.log(result.prices);
         setIsPending(false);
       })
       .catch((err) => {
