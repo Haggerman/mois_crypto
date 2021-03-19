@@ -9,6 +9,8 @@ import {
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Graph from './Graph';
+import SearchableList from './SearchableList';
+
 
 const DataFetchView = () => {
   const [error, setError] = useState(null);
@@ -38,6 +40,7 @@ const DataFetchView = () => {
   } else if (!isLoaded) {
     return (
       <Container>
+        <SearchableList/>
         <Button
           onClick={() =>
             fetchFromApi(
@@ -139,7 +142,6 @@ const DataFetchView = () => {
             )
           )}
         </Table>
-
       </Container>
     );
   }
