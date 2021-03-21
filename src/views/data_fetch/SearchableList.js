@@ -72,36 +72,6 @@ const handleSubmit = (e) => {
   })
 }
 
-const body = (
-  <div style={modalStyle} className={classes.paper}>
-    <h2>{selectedCrypto}</h2>
-    <Graph  cryptoId={selectedCrypto}/>
-    <Button hidden={isHidden ? false : true} variant="contained" color="primary" onClick={() => setIsHidden(false)}>Add transaction</Button>
-    <form hidden={isHidden} className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
-      <TextField id="outlined-basic" label="Amount" variant="outlined" value={amount} onChange={(e) => setAmount(e.target.value)}/>
-      <TextField
-        id="datetime-local"
-        label="Transaction time"
-        type="datetime-local"
-        className={classes.textField}
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-        InputLabelProps={{
-          shrink: true,
-      }}
-    /> 
-      <Select
-          value={action}
-          onChange={(e) => setAction(e.target.value)}
-        >
-          <MenuItem value={"Bought"}>Bought</MenuItem>
-          <MenuItem value={"Sold"}>Sold</MenuItem>
-        </Select>
-      <Button type="submit" variant="contained" color="primary" onClick={() => setIsHidden(false) }>Submit</Button>
-    </form>
-  </div>
-);
-
 useEffect(() => {
     fetch("http://localhost:8000/cryptoTransactions").then(res => {
         return res.json()
@@ -192,7 +162,33 @@ useEffect(() => {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        {body}
+      <div style={modalStyle} className={classes.paper}>
+        <h2>{selectedCrypto}</h2>
+        <Graph  cryptoId={selectedCrypto}/>
+        <Button hidden={isHidden ? false : true} variant="contained" color="primary" onClick={() => setIsHidden(false)}>Add transaction</Button>
+        <form hidden={isHidden} className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <TextField id="outlined-basic" label="Amount" variant="outlined" value={amount} onChange={(e) => setAmount(e.target.value)}/>
+          <TextField
+            id="datetime-local"
+            label="Transaction time"
+            type="datetime-local"
+            className={classes.textField}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+          }}
+        /> 
+        <Select
+          value={action}
+          onChange={(e) => setAction(e.target.value)}
+        >
+          <MenuItem value={"Bought"}>Bought</MenuItem>
+          <MenuItem value={"Sold"}>Sold</MenuItem>
+        </Select>
+      <Button type="submit" variant="contained" color="primary" onClick={() => setIsHidden(false) }>Submit</Button>
+    </form>
+  </div>
       </Modal>
 
     {dataTable &&
