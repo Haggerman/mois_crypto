@@ -1,0 +1,7 @@
+tbody + thead{
+    display: none;
+  }
+
+  .table.table-hover tbody tr:hover {
+    cursor: pointer;
+  }
