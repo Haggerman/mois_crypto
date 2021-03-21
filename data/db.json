@@ -1,0 +1,32 @@
+{
+  "cryptoTransactions": [
+    {
+      "id": 1,
+      "cryptoId": "bitcoin",
+      "action": "bought",
+      "amount": 1,
+      "date": "1616259431568"
+    },
+    {
+      "id": 2,
+      "cryptoId": "bitcoin",
+      "action": "sold",
+      "amount": 0.5,
+      "date": "1615259431599"
+    },
+    {
+      "cryptoId": "bitcoin",
+      "action": "Bought",
+      "amount": "5",
+      "date": "2021-01-02T00:01",
+      "id": 3
+    },
+    {
+      "cryptoId": "bitcoin",
+      "action": "Sold",
+      "amount": "5",
+      "date": "2021-01-02T00:01",
+      "id": 4
+    }
+  ]
+}

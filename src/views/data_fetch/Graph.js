@@ -57,8 +57,8 @@ const defaultData = [
   }
 ];
 
-const Graph = ({url}) => {
-const { data, error, isPending} = useFetch(url);
+const Graph = ({cryptoId}) => {
+const { data, error, isPending} = useFetch("https://api.coingecko.com/api/v3/coins/"+cryptoId+"/market_chart?vs_currency=usd&days=30&interval=daily");
 const [dataTable, setDataTable] = useState(null);
 useEffect(() => {
  
