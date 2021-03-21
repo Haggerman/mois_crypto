@@ -52,6 +52,9 @@ const handleClickOpen = (id) => {
 const handleClose = () => {
   setOpen(false);
   setIsHidden(true);
+  setAmount('');
+  setDate('');
+  setAction('Bought');
   console.log("on close");
 };
 

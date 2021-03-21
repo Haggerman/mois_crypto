@@ -14,6 +14,7 @@ const UserCryptosList = ({ userCryptos }) => {
         });
           let rows = userCryptos.map(
             (row, i) => {  
+                let date = new Date(row.date);
                return {
                   cryptoId: row.cryptoId,
                   amount: row.amount,     
@@ -23,9 +24,8 @@ const UserCryptosList = ({ userCryptos }) => {
                     month: '2-digit',
                     day: '2-digit',
                     hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                  }).format(row.date)            
+                    minute: '2-digit'
+                  }).format(date)            
                };
           });
         const dataTable = {

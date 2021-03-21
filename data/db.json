@@ -3,16 +3,16 @@
     {
       "id": 1,
       "cryptoId": "bitcoin",
-      "action": "bought",
+      "action": "Bought",
       "amount": 1,
-      "date": "1616259431568"
+      "date": "2021-01-02T00:01"
     },
     {
       "id": 2,
       "cryptoId": "bitcoin",
-      "action": "sold",
+      "action": "Sold",
       "amount": 0.5,
-      "date": "1615259431599"
+      "date": "2021-01-02T00:01"
     },
     {
       "cryptoId": "bitcoin",
@@ -27,6 +27,27 @@
       "amount": "5",
       "date": "2021-01-02T00:01",
       "id": 4
+    },
+    {
+      "cryptoId": "binancecoin",
+      "action": "Bought",
+      "amount": "56",
+      "date": "2023-03-04T01:05",
+      "id": 5
+    },
+    {
+      "cryptoId": "binancecoin",
+      "action": "Sold",
+      "amount": "56",
+      "date": "2023-03-04T01:05",
+      "id": 6
+    },
+    {
+      "cryptoId": "bitcoin",
+      "action": "Sold",
+      "amount": "455",
+      "date": "",
+      "id": 7
     }
   ]
 }
