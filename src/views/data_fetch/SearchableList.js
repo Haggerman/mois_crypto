@@ -44,11 +44,13 @@ const [date, setDate] = useState('');
 const [action, setAction] = useState('Bought');
 
 const [open, setOpen] = React.useState(false);
-const handleClickOpen = (id) => {
+
+const handleClick = (id) => {
   console.log(Date.now());
   setSelectedCrypto(id);
   setOpen(true); 
 };
+
 const handleClose = () => {
   setOpen(false);
   setIsHidden(true);
@@ -87,14 +89,15 @@ useEffect(() => {
     let rows = data.map(
       (row, i) => {  
          return {
+            clickEvent: () => handleClick(row.id),
             image: <img src={row.image} width="30" />,
             symbol: row.symbol,
             name: row.name,
-            price_change_24h: row.price_change_24h,
-            price_change_percentage_24h: row.price_change_percentage_24h + " %",
+            price_change_24h:  <p searchvalue={row.price_change_24h} style={ row.price_change_percentage_24h>0 ? { color:'#4eaf0a'} : { color:'red'}}>{row.price_change_24h + "$"}</p>,
+            price_change_percentage_24h: <p searchvalue={row.price_change_percentage_24h} style={ row.price_change_percentage_24h>0 ? { color:'#4eaf0a'} : { color:'red'}}>{row.price_change_percentage_24h + "%"}</p>,
             ath: row.ath,
-            current_price: row.current_price,
-            link: <Button variant="contained" color="primary" onClick={() => handleClickOpen(row.id)}>Detail</Button>,
+            current_price: row.current_price + "$"
+
          };
     });
   const dataTable = {
@@ -140,13 +143,7 @@ useEffect(() => {
         field: 'current_price',
         sort: 'asc',
         width: 150
-      },
-      {
-        label: 'Detail',
-        field: 'link',
-        sort: 'asc',
-        width: 150
-      },
+      }
     ],
     rows: rows
   }
@@ -193,9 +190,10 @@ useEffect(() => {
 
     {dataTable &&
     <MDBDataTable
-      striped
-      bordered
+      materialSearch
+      hover
       small
+      sortRows={['price_change_percentage_24h','price_change_24h']}
       data={dataTable}
     /> }
     </div>
