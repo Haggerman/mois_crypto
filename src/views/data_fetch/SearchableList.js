@@ -97,7 +97,7 @@ useEffect(() => {
             name: row.name,
             price_change_24h:  <p searchvalue={row.price_change_24h} style={ row.price_change_percentage_24h>0 ? { color:'#4eaf0a'} : { color:'red'}}>{(Math.round(row.price_change_24h * 100) / 100).toFixed(2) + "$"}</p>,
             price_change_percentage_24h: <p searchvalue={row.price_change_percentage_24h} style={ row.price_change_percentage_24h>0 ? { color:'#4eaf0a'} : { color:'red'}}>{(Math.round(row.price_change_percentage_24h * 100) / 100).toFixed(2) + "%"}</p>,
-            ath: row.ath,
+            ath: row.ath + "$",
             current_price: row.current_price + "$"
 
          };
