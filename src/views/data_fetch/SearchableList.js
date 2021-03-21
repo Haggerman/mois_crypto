@@ -3,31 +3,100 @@ import React from 'react';
 import { MDBDataTable } from 'mdbreact';
 import { useState, useEffect } from 'react';
 import useFetch from './useFetch'
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import { Button, MenuItem, Select, TextField } from '@material-ui/core';
+import Modal from '@material-ui/core/Modal';
+import { makeStyles } from '@material-ui/core/styles';
+import Graph from './Graph';
+import UserCryptosList from './userCryptosList';
 
-const SearchableList = () => {
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 900,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
+
+const SearchableList = () => { 
 const { data, error, isPending} = useFetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=&page=1&sparkline=false&price_change_percentage=24h');
-const [dataTable, setData] = useState({});
+const [dataTable, setDataTable] = useState({});
+const [userCryptos, setUserCryptos] = useState(null);
+const [isHidden, setIsHidden] = useState(true);
 const [selectedCrypto, setSelectedCrypto] = React.useState('');
-const [cryptoSymbols, setCryptoSymbols] = useState({});
-const handleChange = (event) => {
-  setSelectedCrypto(event.target.value);
+const [modalStyle] = React.useState(getModalStyle);
+const classes = useStyles();
+const [amount, setAmount] = useState('');
+const [date, setDate] = useState('');
+const [action, setAction] = useState('Bought');
+
+const [open, setOpen] = React.useState(false);
+const handleClickOpen = (id) => {
+  console.log(Date.now());
+  setSelectedCrypto(id);
+  setOpen(true); 
+};
+const handleClose = () => {
+  setOpen(false);
+  setIsHidden(true);
+  setAmount('');
+  setDate('');
+  setAction('Bought');
+  console.log("on close");
 };
 
-var cryptoSymbolsArray = [];
+const handleSubmit = (e) => {
+  e.preventDefault();
+  let cryptoId = selectedCrypto;
+  const crypto = { cryptoId, action, amount, date}
+  
+  fetch('http://localhost:8000/cryptoTransactions', {
+    method: 'POST',
+    headers: {"Content-Type": "application/json" },
+    body: JSON.stringify(crypto)
+  }).then(() => {
+    console.log("new crypto transaction added");
+  })
+}
+
 useEffect(() => {
+    fetch("http://localhost:8000/cryptoTransactions").then(res => {
+        return res.json()
+    }).then(
+        userCryptosData => {
+          setUserCryptos(userCryptosData);
+      })
+}, [])
+
+useEffect(() => {
+  
   if(data){
-    data.forEach(element => {
-      cryptoSymbolsArray.push(element.symbol);
+    let rows = data.map(
+      (row, i) => {  
+         return {
+            image: <img src={row.image} width="30" />,
+            symbol: row.symbol,
+            name: row.name,
+            price_change_24h: row.price_change_24h,
+            price_change_percentage_24h: row.price_change_percentage_24h + " %",
+            ath: row.ath,
+            current_price: row.current_price,
+            link: <Button variant="contained" color="primary" onClick={() => handleClickOpen(row.id)}>Detail</Button>,
+         };
     });
-    data.forEach(element => {
-      element.image = <img src={element.image} width="30"></img>
-    });
-    setCryptoSymbols(cryptoSymbolsArray);
   const dataTable = {
     columns: [
       {
@@ -72,14 +141,56 @@ useEffect(() => {
         sort: 'asc',
         width: 150
       },
+      {
+        label: 'Detail',
+        field: 'link',
+        sort: 'asc',
+        width: 150
+      },
     ],
-    rows: data
+    rows: rows
   }
-  setData(dataTable)
+  setDataTable(dataTable)
 }
   },[data])
   
   return (<div>
+    {userCryptos && <UserCryptosList userCryptos={userCryptos} />}
+    <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+      <div style={modalStyle} className={classes.paper}>
+        <h2>{selectedCrypto}</h2>
+        <Graph  cryptoId={selectedCrypto}/>
+        <Button hidden={isHidden ? false : true} variant="contained" color="primary" onClick={() => setIsHidden(false)}>Add transaction</Button>
+        <form hidden={isHidden} className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <TextField id="outlined-basic" label="Amount" variant="outlined" value={amount} onChange={(e) => setAmount(e.target.value)}/>
+          <TextField
+            id="datetime-local"
+            label="Transaction time"
+            type="datetime-local"
+            className={classes.textField}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+          }}
+        /> 
+        <Select
+          value={action}
+          onChange={(e) => setAction(e.target.value)}
+        >
+          <MenuItem value={"Bought"}>Bought</MenuItem>
+          <MenuItem value={"Sold"}>Sold</MenuItem>
+        </Select>
+      <Button type="submit" variant="contained" color="primary" onClick={() => setIsHidden(false) }>Submit</Button>
+    </form>
+  </div>
+      </Modal>
+
     {dataTable &&
     <MDBDataTable
       striped
@@ -87,17 +198,6 @@ useEffect(() => {
       small
       data={dataTable}
     /> }
-    <FormControl>
-        <InputLabel id="demo-simple-select-label">Vyber kryptoměnu</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={selectedCrypto}
-          onChange={handleChange}
-        >
-          {/*cryptoSymbols.map((symbol, index) => <MenuItem key={index} value={symbol}>{symbol}</MenuItem>)*/}
-        </Select>
-      </FormControl>
     </div>
   );
 }
