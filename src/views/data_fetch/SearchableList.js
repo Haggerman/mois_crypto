@@ -86,15 +86,17 @@ useEffect(() => {
 useEffect(() => {
   
   if(data){
+    console.log(data)
     let rows = data.map(
       (row, i) => {  
          return {
             clickEvent: () => handleClick(row.id),
+            market_cap_rank: row.market_cap_rank,
             image: <img src={row.image} width="30" />,
             symbol: row.symbol,
             name: row.name,
-            price_change_24h:  <p searchvalue={row.price_change_24h} style={ row.price_change_percentage_24h>0 ? { color:'#4eaf0a'} : { color:'red'}}>{row.price_change_24h + "$"}</p>,
-            price_change_percentage_24h: <p searchvalue={row.price_change_percentage_24h} style={ row.price_change_percentage_24h>0 ? { color:'#4eaf0a'} : { color:'red'}}>{row.price_change_percentage_24h + "%"}</p>,
+            price_change_24h:  <p searchvalue={row.price_change_24h} style={ row.price_change_percentage_24h>0 ? { color:'#4eaf0a'} : { color:'red'}}>{(Math.round(row.price_change_24h * 100) / 100).toFixed(2) + "$"}</p>,
+            price_change_percentage_24h: <p searchvalue={row.price_change_percentage_24h} style={ row.price_change_percentage_24h>0 ? { color:'#4eaf0a'} : { color:'red'}}>{(Math.round(row.price_change_percentage_24h * 100) / 100).toFixed(2) + "%"}</p>,
             ath: row.ath,
             current_price: row.current_price + "$"
 
@@ -102,6 +104,12 @@ useEffect(() => {
     });
   const dataTable = {
     columns: [
+      {
+        label: '#',
+        field: 'market_cap_rank',
+        sort: 'asc',
+        width: 20
+      },
       {
         label: 'Icon',
         field: 'image',
