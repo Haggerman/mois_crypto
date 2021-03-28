@@ -9,43 +9,44 @@ const UserCryptosList = ({ userCryptos }) => {
       useEffect(() => {
   
         if(userCryptos){
-        userCryptos.forEach(element => {
-            
-        });
           let rows = userCryptos.map(
             (row, i) => {  
                 let date = new Date(row.date);
+                console.log(date);
                return {
-                  cryptoId: row.cryptoId,
+                  cryptoName: row.cryptoName,
                   amount: row.amount,     
                   action: row.action,
-                  date: Intl.DateTimeFormat('cz-CZ', {
+                  priceAtDatePerOneCoin: "$ "+ row.priceAtDatePerOneCoin.toLocaleString(),
+                  date: <p searchvalue={row.date}>{date > 0 ? Intl.DateTimeFormat('cz-CZ', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
                     hour: '2-digit',
                     minute: '2-digit'
-                  }).format(date)            
-               };
+                  }).format(date) : "Unknown"}</p>        
+               };               
           });
         const dataTable = {
           columns: [
             {
               label: 'Crypto',
-              field: 'cryptoId',
-              sort: 'asc',
+              field: 'cryptoName',
               width: 150
             },
             {
               label: 'Amount',
               field: 'amount',
-              sort: 'asc',
+              width: 150
+            },
+            {
+              label: 'Price per coin',
+              field: 'priceAtDatePerOneCoin',
               width: 150
             },
             {
               label: 'Action',
               field: 'action',
-              sort: 'asc',
               width: 150
             },
             {
@@ -60,14 +61,14 @@ const UserCryptosList = ({ userCryptos }) => {
         setDataTable(dataTable)
       }
         },[userCryptos])
-    console.log(userCryptos);
-    console.log("test");
     return (
         <div>
            {dataTable &&
     <MDBDataTable
-      striped
-      bordered
+      entriesOptions={[5,10,20,50]}
+      entries={5}
+      materialSearch
+      sortRows={['date']}
       small
       data={dataTable}
     /> }

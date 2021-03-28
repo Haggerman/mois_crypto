@@ -3,51 +3,65 @@
     {
       "id": 1,
       "cryptoId": "bitcoin",
+      "cryptoName": "Bitcoin",
       "action": "Bought",
       "amount": 1,
+      "priceAtDatePerOneCoin": 30000,
+      "date": "2021-01-03T00:01"
+    },
+    {
+      "id": 2,
+      "cryptoId": "bitcoin",
+      "cryptoName": "Bitcoin",
+      "action": "Sold",
+      "amount": 0.5,
+      "priceAtDatePerOneCoin": 30000,
       "date": "2021-01-02T00:01"
     },
     {
       "id": 2,
       "cryptoId": "bitcoin",
+      "cryptoName": "Bitcoin",
       "action": "Sold",
       "amount": 0.5,
+      "priceAtDatePerOneCoin": 30000,
       "date": "2021-01-02T00:01"
     },
     {
-      "cryptoId": "bitcoin",
+      "id": 3,
+      "cryptoId": "cardano",
+      "cryptoName": "Cardano",
       "action": "Bought",
-      "amount": "5",
-      "date": "2021-01-02T00:01",
-      "id": 3
+      "amount": 30000,
+      "priceAtDatePerOneCoin": 1.2,
+      "date": "2020-01-02T00:01"
     },
     {
-      "cryptoId": "bitcoin",
-      "action": "Sold",
-      "amount": "5",
-      "date": "2021-01-02T00:01",
-      "id": 4
-    },
-    {
-      "cryptoId": "binancecoin",
+      "id": 10,
+      "cryptoId": "cardano",
+      "cryptoName": "Cardano",
       "action": "Bought",
-      "amount": "56",
-      "date": "2023-03-04T01:05",
-      "id": 5
+      "amount": 1,
+      "priceAtDatePerOneCoin": 1.2,
+      "date": "2020-01-02T00:01"
     },
     {
-      "cryptoId": "binancecoin",
-      "action": "Sold",
-      "amount": "56",
-      "date": "2023-03-04T01:05",
-      "id": 6
+      "id": 4,
+      "cryptoId": "ripple",
+      "cryptoName": "Ripple",
+      "action": "Bought",
+      "amount": 300,
+      "priceAtDatePerOneCoin": 1.2,
+      "date": "2020-06-05T01:13"
     },
     {
-      "cryptoId": "bitcoin",
-      "action": "Sold",
-      "amount": "455",
-      "date": "",
-      "id": 7
+      "id": 5,
+      "cryptoId": "ripple",
+      "cryptoName": "Ripple",
+      "action": "Bought",
+      "amount": 301,
+      "priceAtDatePerOneCoin": 1.2,
+      "date": "2020-06-05T01:13"
     }
   ]
 }
