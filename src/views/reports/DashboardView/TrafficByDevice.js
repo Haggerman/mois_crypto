@@ -22,22 +22,22 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TrafficByDevice = ({ className, userCryptos, portfolioAmount, ...rest }) => {
+const TrafficByDevice = ({
+  className,
+  userCryptos,
+  portfolioAmount,
+  ...rest
+}) => {
+  let cryptos = [];
   const classes = useStyles();
   const theme = useTheme();
   let result = userCryptos.reduce((c, v) => {
     if (v.action == 'Sold') {
       c[v.cryptoName] =
-        (c[v.cryptoName] || 0) -
-        (
-          ((v.amount * v.priceAtDatePerOneCoin) / portfolioAmount)
-        );
+        (c[v.cryptoName] || 0) - v.amount * v.priceAtDatePerOneCoin;
     } else {
       c[v.cryptoName] =
-        (c[v.cryptoName] || 0) +
-        (
-          ((v.amount * v.priceAtDatePerOneCoin) / portfolioAmount)
-        );
+        (c[v.cryptoName] || 0) + v.amount * v.priceAtDatePerOneCoin;
     }
     return c;
   }, {});
@@ -50,6 +50,7 @@ const TrafficByDevice = ({ className, userCryptos, portfolioAmount, ...rest }) =
       prices.splice([index], 1);
     }
   });
+
   let generatedColors = [
     'rgb(0,104,132)',
     'rgb(176,0,81)',
@@ -68,6 +69,16 @@ const TrafficByDevice = ({ className, userCryptos, portfolioAmount, ...rest }) =
       generatedColors.push('rgb(' + r + ',' + g + ',' + b + ')');
     }
   }
+
+  prices.forEach((element, index) => {
+    cryptos.push({
+      title: cryptoNames[index],
+      value: ((element / portfolioAmount) * 100).toFixed(2) + '%',
+      color: generatedColors[index],
+      icon: CryptoIcons.Btc
+    });
+  });
+
   const data = {
     datasets: [
       {
@@ -99,18 +110,20 @@ const TrafficByDevice = ({ className, userCryptos, portfolioAmount, ...rest }) =
       footerFontColor: theme.palette.text.secondary,
       intersect: false,
       mode: 'index',
-      titleFontColor: theme.palette.text.primary
+      titleFontColor: theme.palette.text.primary,
+      callbacks: {
+        title: function(tooltipItem, data) {
+          return data['labels'][tooltipItem[0]['index']];
+        },
+        label: function(tooltipItem, data) {
+          return (
+            '$' +
+            data['datasets'][0]['data'][tooltipItem['index']].toLocaleString()
+          );
+        }
+      }
     }
   };
-  let cryptos = [];
-  prices.forEach((element, index) => {
-    cryptos.push({
-      title: cryptoNames[index],
-      value: (element*100).toFixed(2) + '%',
-      color: generatedColors[index],
-      icon: CryptoIcons.Btc
-    });
-  });
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
