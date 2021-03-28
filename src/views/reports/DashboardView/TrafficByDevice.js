@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -21,30 +22,68 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TrafficByDevice = ({ className, ...rest }) => {
+const TrafficByDevice = ({ className, userCryptos, portfolioAmount, ...rest }) => {
   const classes = useStyles();
   const theme = useTheme();
+  let result = userCryptos.reduce((c, v) => {
+    if (v.action == 'Sold') {
+      c[v.cryptoName] =
+        (c[v.cryptoName] || 0) -
+        (
+          ((v.amount * v.priceAtDatePerOneCoin) / portfolioAmount)
+        );
+    } else {
+      c[v.cryptoName] =
+        (c[v.cryptoName] || 0) +
+        (
+          ((v.amount * v.priceAtDatePerOneCoin) / portfolioAmount)
+        );
+    }
+    return c;
+  }, {});
 
+  let prices = Object.values(result);
+  let cryptoNames = Object.keys(result);
+  cryptoNames.forEach((element, index) => {
+    if (prices[index] == 0) {
+      cryptoNames.splice([index], 1);
+      prices.splice([index], 1);
+    }
+  });
+  let generatedColors = [
+    'rgb(0,104,132)',
+    'rgb(176,0,81)',
+    'rgb(145,39,143)',
+    'rgb(255,128,128)',
+    'rgb(0,102,204)',
+    'rgb(153,204,0)',
+    'rgb(153,51,102)'
+  ];
+  let generateColorsLength = generatedColors.length;
+  if (cryptoNames.length > generateColorsLength) {
+    for (let i = 7; i < cryptoNames.length; i++) {
+      var r = Math.floor(Math.random() * 255);
+      var g = Math.floor(Math.random() * 255);
+      var b = Math.floor(Math.random() * 255);
+      generatedColors.push('rgb(' + r + ',' + g + ',' + b + ')');
+    }
+  }
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
-        backgroundColor: [
-          colors.indigo[500],
-          colors.red[600],
-          colors.orange[600]
-        ],
+        data: prices,
+        backgroundColor: generatedColors,
         borderWidth: 8,
         borderColor: colors.common.white,
         hoverBorderColor: colors.common.white
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: cryptoNames
   };
 
   const options = {
     animation: false,
-    cutoutPercentage: 80,
+    cutoutPercentage: 50,
     layout: { padding: 0 },
     legend: {
       display: false
@@ -63,74 +102,37 @@ const TrafficByDevice = ({ className, ...rest }) => {
       titleFontColor: theme.palette.text.primary
     }
   };
-
-  const devices = [
-    {
-      title: 'Bitcoin',
-      value: 63,
-      icon: CryptoIcons.Btc,
-      color: colors.indigo[500]
-    },
-    {
-      title: 'Ethereum',
-      value: 15,
-      icon: CryptoIcons.Eth,
-      color: colors.red[600]
-    },
-    {
-      title: 'Cardano',
-      value: 23,
-      icon: CryptoIcons.Ada,
-      color: colors.orange[600]
-    }
-  ];
+  let cryptos = [];
+  prices.forEach((element, index) => {
+    cryptos.push({
+      title: cryptoNames[index],
+      value: (element*100).toFixed(2) + '%',
+      color: generatedColors[index],
+      icon: CryptoIcons.Btc
+    });
+  });
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader title="My portfolio" />
       <Divider />
       <CardContent>
-        <Box
-          height={300}
-          position="relative"
-        >
-          <Doughnut
-            data={data}
-            options={options}
-          />
+        <Box height={300} position="relative">
+          <Doughnut data={data} options={options} />
         </Box>
         <Box
           display="flex"
           justifyContent="center"
           mt={2}
+          style={{ flexFlow: 'wrap' }}
         >
-          {devices.map(({
-            color,
-            icon: Icon,
-            title,
-            value
-          }) => (
-            <Box
-              key={title}
-              p={1}
-              textAlign="center"
-            >
-              <Icon color="action" />
-              <Typography
-                color="textPrimary"
-                variant="body1"
-              >
+          {cryptos.map(({ color, icon: Icon, title, value }) => (
+            <Box key={title} p={1} textAlign="center">
+              <Typography color="textPrimary" variant="body1">
                 {title}
               </Typography>
-              <Typography
-                style={{ color }}
-                variant="h2"
-              >
+              <Typography style={{ color }} variant="h3">
                 {value}
-                %
               </Typography>
             </Box>
           ))}

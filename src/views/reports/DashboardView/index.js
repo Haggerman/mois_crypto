@@ -1,17 +1,22 @@
+/* eslint-disable */
 import React from 'react';
 import {
+  Box,
+  Card,
+  CardHeader,
   Container,
+  Divider,
   Grid,
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Budget from './Budget';
-import LatestOrders from './LatestOrders';
 import LatestProducts from './LatestProducts';
 import Sales from './Sales';
 import TasksProgress from './TasksProgress';
 import TotalProfit from './TotalProfit';
 import TrafficByDevice from './TrafficByDevice';
+import UserCryptosList from 'src/views/data_fetch/userCryptosList';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,9 +27,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const Dashboard = ({userCryptos, portfolioAmount}) => {
   const classes = useStyles();
-
   return (
     <Page
       className={classes.root}
@@ -37,26 +41,26 @@ const Dashboard = () => {
         >
           <Grid
             item
-            lg={6}
-            sm={6}
+            lg={4}
+            sm={4}
             xl={4}
             xs={12}
           >
-            <Budget />
+            <Budget userCryptos={userCryptos} portfolioAmount={portfolioAmount} />
           </Grid>
           <Grid
             item
-            lg={6}
-            sm={6}
+            lg={4}
+            sm={4}
             xl={4}
             xs={12}
           >
-            <TasksProgress />
+            <TasksProgress userCryptos={userCryptos} portfolioAmount={portfolioAmount} />
           </Grid>
           <Grid
             item
-            lg={6}
-            sm={6}
+            lg={4}
+            sm={4}
             xl={4}
             xs={12}
           >
@@ -78,7 +82,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TrafficByDevice />
+            <TrafficByDevice userCryptos={userCryptos} portfolioAmount={portfolioAmount} />
           </Grid>
           <Grid
             item
@@ -96,7 +100,16 @@ const Dashboard = () => {
             xl={9}
             xs={12}
           >
-            <LatestOrders />
+            <Card>
+            <CardHeader
+              title="Latest transactions"
+           />
+           <Divider />
+              <Box p={2}>
+                <UserCryptosList userCryptos={userCryptos} />
+              </Box>
+            </Card>
+            
           </Grid>
         </Grid>
       </Container>

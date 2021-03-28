@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -32,13 +33,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TasksProgress = ({ className, ...rest }) => {
+const TasksProgress = ({ className, userCryptos, ...rest }) => {
   const classes = useStyles();
 
   return (
     <Card
-      className={clsx(classes.root, className)}
-      {...rest}
+    className={clsx(classes.root, className)}
+    {...rest}
     >
       <CardContent>
         <Grid

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -12,7 +13,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import MoneyIcon from '@material-ui/icons/Money';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,13 +33,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Budget = ({ className, ...rest }) => {
+const Budget = ({userCryptos}) => {
+  
   const classes = useStyles();
-
+  let portfolioAmount=0;
+  userCryptos.forEach(item => {
+    if(item.action == "Sold"){
+      portfolioAmount = portfolioAmount - (item.amount*item.priceAtDatePerOneCoin);
+    }else{
+      portfolioAmount = (item.amount*item.priceAtDatePerOneCoin) + portfolioAmount;
+    }
+    
+  })
   return (
     <Card
-      className={clsx(classes.root, className)}
-      {...rest}
+      className={clsx(classes.root, 'dashboard')}
     >
       <CardContent>
         <Grid
@@ -58,12 +67,12 @@ const Budget = ({ className, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              $24,000
+            ${portfolioAmount.toLocaleString()}
             </Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <MoneyIcon />
+              <AttachMoneyIcon />
             </Avatar>
           </Grid>
         </Grid>
