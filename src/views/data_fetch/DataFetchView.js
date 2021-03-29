@@ -12,7 +12,7 @@ import Graph from './Graph';
 import SearchableList from './SearchableList';
 
 
-const DataFetchView = () => {
+const DataFetchView = ({ cryptoData }) => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
@@ -40,7 +40,7 @@ const DataFetchView = () => {
   } else if (!isLoaded) {
     return (
       <Container>
-        <SearchableList/>
+        <SearchableList cryptoData={cryptoData}/>
         <Button
           onClick={() =>
             fetchFromApi(

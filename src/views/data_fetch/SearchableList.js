@@ -6,8 +6,7 @@ import useFetch from './useFetch'
 import UserCryptosList from './userCryptosList';
 import CryptoModalWindow from './CryptoModalWindow';
 
-const SearchableList = () => { 
-const { data, error, isPending} = useFetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=&page=1&sparkline=false&price_change_percentage=24h');
+const SearchableList = ({cryptoData}) => { 
 const [dataTable, setDataTable] = useState({});
 const [userCryptos, setUserCryptos] = useState(null);
 const [selectedCrypto, setSelectedCrypto] = React.useState('');
@@ -29,9 +28,8 @@ useEffect(() => {
 
 useEffect(() => {
   
-  if(data){
-    console.log(data)
-    let rows = data.map(
+  if(cryptoData){
+    let rows = cryptoData.map(
       (row, i) => {  
          return {
             clickEvent: () => handleClick(row),
@@ -100,7 +98,7 @@ useEffect(() => {
   }
   setDataTable(dataTable)
 }
-  },[data])
+  },[])
   
   return (<div>
     {userCryptos && <UserCryptosList userCryptos={userCryptos} />}

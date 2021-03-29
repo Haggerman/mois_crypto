@@ -1,6 +1,6 @@
 /* eslint-disable */
 import 'react-perfect-scrollbar/dist/css/styles.css';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRoutes } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from 'src/components/GlobalStyles';
@@ -23,6 +23,26 @@ import portfolioFetch from './views/data_fetch/PortfolioFetch';
 
 const App = () => {
   const { userCryptos, portfolioAmount } = portfolioFetch();
+  const [cryptoData, setCryptoData] = useState(null);
+
+
+  useEffect(() => {
+    let cryptoData = localStorage.getItem("users");
+
+    if (cryptoData) {
+      cryptoData = JSON.parse(cryptoData);
+      setCryptoData(cryptoData );
+    } else {
+      fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=&page=1&sparkline=false&price_change_percentage=24h")
+        .then(res => res.json())
+        .then(cryptoData => {
+          setCryptoData( cryptoData );
+          localStorage.setItem("users", JSON.stringify(cryptoData));
+        });
+    }
+}, [])
+
+
   const routing = useRoutes([
     {
       path: 'app',
@@ -36,12 +56,13 @@ const App = () => {
             <DashboardView
               userCryptos={userCryptos}
               portfolioAmount={portfolioAmount}
+              cryptoData={cryptoData}
             />
           )
         },
         { path: 'products', element: <ProductListView /> },
         { path: 'settings', element: <SettingsView /> },
-        { path: 'dataFetch', element: <DataFetchView /> },
+        { path: 'dataFetch', element: <DataFetchView cryptoData={cryptoData} /> },
         { path: '*', element: <Navigate to="/404" /> }
       ]
     },
@@ -57,7 +78,8 @@ const App = () => {
       ]
     }
   ]);
-  if (userCryptos) {
+
+  if (userCryptos && cryptoData) {
     console.log(userCryptos);
     return (
       <ThemeProvider theme={theme}>
