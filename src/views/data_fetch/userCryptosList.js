@@ -10,7 +10,6 @@ const UserCryptosList = ({ userCryptos }) => {
     if (userCryptos) {
       let rows = userCryptos.map((row, i) => {
         let date = new Date(row.date);
-        console.log(date);
         return {
           cryptoName: row.cryptoName,
           amount: row.amount,
