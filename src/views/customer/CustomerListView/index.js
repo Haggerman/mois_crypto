@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+/* eslint-disable */
+import React from 'react';
 import {
-  Box,
   Container,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Results from './Results';
-import Toolbar from './Toolbar';
-import data from './data';
+import SearchableList from './SearchableList';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,20 +16,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CustomerListView = () => {
+const CustomerListView = ({cryptoData}) => {
   const classes = useStyles();
-  const [customers] = useState(data);
-
+  
   return (
     <Page
       className={classes.root}
-      title="Customers"
+      title="Crypto list"
     >
       <Container maxWidth={false}>
-        <Toolbar />
-        <Box mt={3}>
-          <Results customers={customers} />
-        </Box>
+      <SearchableList cryptoData={cryptoData}/>
       </Container>
     </Page>
   );

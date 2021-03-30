@@ -18,7 +18,6 @@ import NotFoundView from 'src/views/errors/NotFoundView';
 import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
-import DataFetchView from 'src/views/data_fetch/DataFetchView';
 import portfolioFetch from './views/data_fetch/PortfolioFetch';
 
 const App = () => {
@@ -43,7 +42,7 @@ const App = () => {
       element: <DashboardLayout />,
       children: [
         { path: 'account', element: <AccountView /> },
-        { path: 'customers', element: <CustomerListView /> },
+        { path: 'customers', element: <CustomerListView cryptoData={cryptoData} /> },
         {
           path: 'dashboard',
           element: (
@@ -56,7 +55,6 @@ const App = () => {
         },
         { path: 'products', element: <ProductListView /> },
         { path: 'settings', element: <SettingsView /> },
-        { path: 'dataFetch', element: <DataFetchView cryptoData={cryptoData} /> },
         { path: '*', element: <Navigate to="/404" /> }
       ]
     },

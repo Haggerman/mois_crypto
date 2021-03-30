@@ -21,7 +21,7 @@ import {
   ShoppingBag as ShoppingBagIcon,
   User as UserIcon,
   UserPlus as UserPlusIcon,
-  Users as UsersIcon
+  DollarSign as DollarSignIcon
 } from 'react-feather';
 import NavItem from './NavItem';
 
@@ -38,8 +38,8 @@ const items = [
   },
   {
     href: '/app/customers',
-    icon: UsersIcon,
-    title: 'Customers'
+    icon: DollarSignIcon,
+    title: 'Crypto List'
   },
   {
     href: '/app/products',
