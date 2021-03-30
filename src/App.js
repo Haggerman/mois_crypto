@@ -27,19 +27,13 @@ const App = () => {
 
 
   useEffect(() => {
-    let cryptoData = localStorage.getItem("users");
-
-    if (cryptoData) {
-      cryptoData = JSON.parse(cryptoData);
-      setCryptoData(cryptoData );
-    } else {
       fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=&page=1&sparkline=false&price_change_percentage=24h")
         .then(res => res.json())
         .then(cryptoData => {
           setCryptoData( cryptoData );
           localStorage.setItem("users", JSON.stringify(cryptoData));
         });
-    }
+
 }, [])
 
 
