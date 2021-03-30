@@ -13,7 +13,7 @@ import {
   colors
 } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import useFetch from 'src/views/data_fetch/useFetch';
+import useFetch from 'src/views/customer/CustomerListView/useFetch';
 
 const useStyles = makeStyles(() => ({
   root: {

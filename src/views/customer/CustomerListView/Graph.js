@@ -8,6 +8,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  ResponsiveContainer
 } from 'recharts';
 import useFetch from './useFetch';
 const Graph = ({cryptoId}) => {
@@ -30,6 +31,8 @@ if(data){
 
 
   return (<div width={width} height={height}>  
+
+<ResponsiveContainer width="95%" height={400}>
     <LineChart
       width={width}
       height={height}
@@ -52,6 +55,7 @@ if(data){
       isAnimationActive={false}
       />
     </LineChart>
+    </ResponsiveContainer>
     </div> );
 };
 
