@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = ({userCryptos, portfolioAmount, cryptoData}) => {
+const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites}) => {
   const classes = useStyles();
   return (
     <Page
@@ -91,7 +91,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData}) => {
             xl={3}
             xs={12}
           >
-            <LatestProducts />
+            <LatestProducts userFavorites={userFavorites} />
           </Grid>
           <Grid
             item

@@ -21,7 +21,7 @@ import SettingsView from 'src/views/settings/SettingsView';
 import portfolioFetch from './views/data_fetch/PortfolioFetch';
 
 const App = () => {
-  const { userCryptos, portfolioAmount } = portfolioFetch();
+  const { userCryptos, portfolioAmount, userFavorites } = portfolioFetch();
   const [cryptoData, setCryptoData] = useState(null);
 
 
@@ -50,6 +50,7 @@ const App = () => {
               userCryptos={userCryptos}
               portfolioAmount={portfolioAmount}
               cryptoData={cryptoData}
+              userFavorites={userFavorites}
             />
           )
         },
@@ -71,7 +72,7 @@ const App = () => {
     }
   ]);
 
-  if (userCryptos && cryptoData) {
+  if (userCryptos && cryptoData && userFavorites ) {
     console.log(userCryptos);
     return (
       <ThemeProvider theme={theme}>

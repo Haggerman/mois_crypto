@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 const portfolioFetch = () => {
     const [userCryptos, setUserCryptos] = useState(null);
+    const [userFavorites, setUserFavorites] = useState(null);
     const [portfolioAmount, setPortfolioAmount] = useState(0);
     useEffect(() => {
       fetch("http://localhost:8000/cryptoTransactions").then(res => {
@@ -23,7 +24,16 @@ const portfolioFetch = () => {
             setPortfolioAmount(portfolio);
         })
   }, [])
-  return {userCryptos, portfolioAmount}
+
+  useEffect(() => {
+    fetch("http://localhost:8000/favorites").then(res => {
+        return res.json()
+    }).then(
+        userFavorites => {
+          setUserFavorites(userFavorites);
+      })
+}, [])
+  return {userCryptos, portfolioAmount, userFavorites}
 }
 
 export default portfolioFetch;

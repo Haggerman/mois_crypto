@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+/* eslint-disable */
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { v4 as uuid } from 'uuid';
-import moment from 'moment';
-import * as CryptoIcons from 'react-cryptocoins';
 import {
   Box,
   Button,
@@ -21,36 +19,9 @@ import {
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-const data = [
-  {
-    id: uuid(),
-    name: 'Dropbox',
-    imageUrl: <CryptoIcons.Btc />,
-    updatedAt: moment().subtract(2, 'hours')
-  },
-  {
-    id: uuid(),
-    name: 'Medium Corporation',
-    imageUrl: <CryptoIcons.Eth />,
-    updatedAt: moment().subtract(2, 'hours')
-  },
-  {
-    id: uuid(),
-    name: 'Slack',
-    imageUrl: <CryptoIcons.Ltc />,
-    updatedAt: moment().subtract(3, 'hours')
-  },
-  {
-    id: uuid(),
-    name: '$0.05693',
-    imageUrl: <CryptoIcons.Doge />,
-    updatedAt: moment().subtract(5, 'hours')
-  }
-];
-
 const useStyles = makeStyles(({
   root: {
-    height: '100%'
+    
   },
   image: {
     height: 40,
@@ -60,9 +31,61 @@ const useStyles = makeStyles(({
   }
 }));
 
-const LatestProducts = ({ className, ...rest }) => {
+const LatestProducts = ({ className, userFavorites, ...rest }) => {
   const classes = useStyles();
-  const [products] = useState(data);
+  const [products] = useState(userFavorites);
+  const [listLength, setLength]= useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [buttonText, setButton]= useState("View all");
+  const handleClick = () => {
+    if(listLength == products.length){
+    if (products.length > 4){
+    setLength(4);
+    }
+    setButton("View all");
+    }
+    else{
+      setLength(products.length);
+      setButton("View less");
+    }
+}
+useEffect(()=> {
+  if (products.length > 4){
+    setLength(4);
+    setIsVisible(true);
+    }
+    else{
+      setLength(products.length); 
+    }
+
+}, [userFavorites]) 
+
+  const getFavorites = products => {
+    let content = []; 
+    for (let i = 0; i < listLength; i++) {
+      const item = products[i];
+      content.push(          <ListItem
+        divider={i < listLength - 1}
+        key={item.id}
+      >
+        <Avatar className={classes.image} src= {item.image}>
+        </Avatar>
+        <ListItemText
+          primary={item.cryptoName}
+        />
+        <IconButton
+          edge="end"
+          size="small"
+        >
+          <MoreVertIcon />
+        </IconButton>
+      </ListItem>);
+    }
+    if(listLength > 0){
+    content.push(<Divider />)
+    }
+    return content;
+  };
 
   return (
     <Card
@@ -70,45 +93,34 @@ const LatestProducts = ({ className, ...rest }) => {
       {...rest}
     >
       <CardHeader
-        subtitle={`${products.length} in total`}
-        title="Current prices"
+        title="Favorites"
       />
       <Divider />
       <List>
-        {products.map((product, i) => (
-          <ListItem
-            divider={i < products.length - 1}
-            key={product.id}
-          >
-            <Avatar className={classes.image}>
-              {product.imageUrl}
-            </Avatar>
-            <ListItemText
-              primary={product.name}
-              secondary={`Updated ${product.updatedAt.fromNow()}`}
-            />
-            <IconButton
-              edge="end"
-              size="small"
-            >
-              <MoreVertIcon />
-            </IconButton>
-          </ListItem>
-        ))}
+      {listLength > 0 ?  getFavorites(products) :
+       <ListItem
+     >
+       <ListItemText
+         primary={"Favorite list is empty"}
+       />
+     </ListItem>
+      }
+     
       </List>
-      <Divider />
       <Box
         display="flex"
         justifyContent="flex-end"
         p={2}
       >
         <Button
+          hidden={isVisible ? false : true}
           color="primary"
           endIcon={<ArrowRightIcon />}
           size="small"
           variant="text"
+          onClick={handleClick}
         >
-          View all
+          {buttonText}
         </Button>
       </Box>
     </Card>
