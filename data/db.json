@@ -63,5 +63,37 @@
       "priceAtDatePerOneCoin": 1.2,
       "date": "2020-06-05T01:13"
     }
+  ],
+  "favorites": [
+    {
+      "id": 1,
+      "cryptoId": "bitcoin",
+      "cryptoName": "Bitcoin",
+      "image": "https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579"
+    },
+    {
+      "id": 2,
+      "cryptoId": "ripple",
+      "cryptoName": "Ripple",
+      "image": "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1605778731"
+    },
+    {
+      "id": 3,
+      "cryptoId": "cardano",
+      "cryptoName": "Cardano",
+      "image": "https://assets.coingecko.com/coins/images/975/large/cardano.png?1547034860"
+    },
+    {
+      "id": 4,
+      "cryptoId": "kakanek",
+      "cryptoName": "Kakanek",
+      "image": "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1605778731"
+    },
+    {
+      "id": 5,
+      "cryptoId": "curanek",
+      "cryptoName": "Curanek",
+      "image": "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1605778731"
+    }
   ]
 }
