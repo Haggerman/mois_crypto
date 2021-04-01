@@ -30,7 +30,7 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
   const classes = useStyles();
   const [profit, setProfit] = useState(0);
 
-  let result = userCryptos.reduce((c, v) => {
+  const result = userCryptos.reduce((c, v) => {
     if (v.action == 'Sold') {
       c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
     } else {

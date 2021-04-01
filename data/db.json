@@ -6,94 +6,50 @@
       "cryptoName": "Bitcoin",
       "action": "Bought",
       "amount": 1,
-      "priceAtDatePerOneCoin": 30000,
+      "pricePerUnit": 30000,
       "date": "2021-01-03T00:01"
-    },
-    {
-      "id": 2,
-      "cryptoId": "bitcoin",
-      "cryptoName": "Bitcoin",
-      "action": "Sold",
-      "amount": 0.5,
-      "priceAtDatePerOneCoin": 30000,
-      "date": "2021-01-02T00:01"
-    },
-    {
-      "id": 2,
-      "cryptoId": "bitcoin",
-      "cryptoName": "Bitcoin",
-      "action": "Sold",
-      "amount": 0.5,
-      "priceAtDatePerOneCoin": 30000,
-      "date": "2021-01-02T00:01"
-    },
-    {
-      "id": 3,
-      "cryptoId": "cardano",
-      "cryptoName": "Cardano",
-      "action": "Bought",
-      "amount": 30000,
-      "priceAtDatePerOneCoin": 1.2,
-      "date": "2020-01-02T00:01"
-    },
-    {
-      "id": 10,
-      "cryptoId": "cardano",
-      "cryptoName": "Cardano",
-      "action": "Bought",
-      "amount": 1,
-      "priceAtDatePerOneCoin": 1.2,
-      "date": "2020-01-02T00:01"
-    },
-    {
-      "id": 4,
-      "cryptoId": "ripple",
-      "cryptoName": "Ripple",
-      "action": "Bought",
-      "amount": 300,
-      "priceAtDatePerOneCoin": 1.2,
-      "date": "2020-06-05T01:13"
-    },
-    {
-      "id": 5,
-      "cryptoId": "ripple",
-      "cryptoName": "Ripple",
-      "action": "Bought",
-      "amount": 301,
-      "priceAtDatePerOneCoin": 1.2,
-      "date": "2020-06-05T01:13"
     }
   ],
   "favorites": [
     {
-      "id": 1,
-      "cryptoId": "bitcoin",
-      "cryptoName": "Bitcoin",
-      "image": "https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579"
+      "id": "holotoken",
+      "name": "Holo",
+      "image": "https://assets.coingecko.com/coins/images/3348/large/Holologo_Profile.png?1547037966"
     },
     {
-      "id": 2,
-      "cryptoId": "ripple",
-      "cryptoName": "Ripple",
-      "image": "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1605778731"
-    },
-    {
-      "id": 3,
-      "cryptoId": "cardano",
-      "cryptoName": "Cardano",
+      "id": "cardano",
+      "name": "Cardano",
       "image": "https://assets.coingecko.com/coins/images/975/large/cardano.png?1547034860"
     },
     {
-      "id": 4,
-      "cryptoId": "kakanek",
-      "cryptoName": "Kakanek",
-      "image": "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1605778731"
+      "id": "kusama",
+      "name": "Kusama",
+      "image": "https://assets.coingecko.com/coins/images/9568/large/m4zRhP5e_400x400.jpg?1576190080"
     },
     {
-      "id": 5,
-      "cryptoId": "curanek",
-      "cryptoName": "Curanek",
-      "image": "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1605778731"
+      "id": "compound-ether",
+      "name": "cETH",
+      "image": "https://assets.coingecko.com/coins/images/10643/large/ceth2.JPG?1581389598"
+    },
+    {
+      "id": "binancecoin",
+      "name": "Binance Coin",
+      "image": "https://assets.coingecko.com/coins/images/825/large/binance-coin-logo.png?1547034615"
+    },
+    {
+      "id": "iota",
+      "name": "IOTA",
+      "image": "https://assets.coingecko.com/coins/images/692/large/IOTA_Swirl.png?1604238557"
+    },
+    {
+      "id": "bitcoin",
+      "name": "Bitcoin",
+      "image": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"
+    },
+    {
+      "id": "vechain",
+      "name": "VeChain",
+      "image": "https://assets.coingecko.com/coins/images/1167/large/VeChain-Logo-768x725.png?1547035194"
     }
   ]
 }

@@ -5,19 +5,9 @@ import { MDBDataTable } from 'mdbreact';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CryptoModalWindow from './CryptoModalWindow';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
-  Avatar,
   Box,
   Card,
-  Checkbox,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Typography,
   makeStyles
 } from '@material-ui/core';
 
@@ -28,16 +18,26 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SearchableList = ({ className, cryptoData, ...rest }) => {
+const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction, userFavorites, ...rest }) => {
   const classes = useStyles();
   const [dataTable, setDataTable] = useState({});
-  const [selectedCrypto, setSelectedCrypto] = React.useState('');
-  const [open, setOpen] = React.useState(false);
+  const [selectedCrypto, setSelectedCrypto] = useState('');
+  const [open, setOpen] = useState(false);
+  const [hideFavoritesButton, sethideFavoritesButton] = useState(false);
+  const [favorites, setFavorites] = useState(userFavorites);
 
   const handleClick = row => {
     setSelectedCrypto(row);
     setOpen(true);
+    let obj = favorites.find(o => o.id === row.id);
+    if(obj){
+      sethideFavoritesButton(true);
+    }
+    else{
+      sethideFavoritesButton(false);
+    }
   };
+  
 
   useEffect(() => {
     if (cryptoData) {
@@ -142,6 +142,9 @@ const SearchableList = ({ className, cryptoData, ...rest }) => {
           open={open}
           selectedCrypto={selectedCrypto}
           onClose={() => setOpen(false)}
+          handleUpdate={handleUpdate}
+          hideFavoritesButton={hideFavoritesButton}
+          handleTransaction={handleTransaction}
         />
         {dataTable && (
           <MDBDataTable
