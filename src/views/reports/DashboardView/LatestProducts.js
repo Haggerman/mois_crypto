@@ -14,113 +14,137 @@ import {
   Avatar,
   ListItemText,
   makeStyles,
-  colors
+  colors,
+  Typography
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import CryptoModalWindow from 'src/views/customer/CustomerListView/CryptoModalWindow';
+import { CodeSharp } from '@material-ui/icons';
 
-const useStyles = makeStyles(({
-  root: {
-    
-  },
+const useStyles = makeStyles({
+  root: {},
   image: {
     height: 40,
     width: 40,
-    backgroundColor: colors.common.black,
+    backgroundColor: 'transparent',
     marginRight: 24
   }
-}));
+});
 
-const LatestProducts = ({ className, userFavorites, ...rest }) => {
+const LatestProducts = ({ className, userFavorites, handleUpdate, handleTransactions, ...rest }) => {
   const classes = useStyles();
-  const [products] = useState(userFavorites);
-  const [listLength, setLength]= useState(0);
+  
+  const [products, setProducts] = useState(userFavorites);
+  const [listLength, setLength] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [buttonText, setButton]= useState("View all");
-  const handleClick = () => {
-    if(listLength == products.length){
-    if (products.length > 4){
-    setLength(4);
+  const [viewAll, setViewAll] = useState(true);
+  const [selectedCrypto, setSelectedCrypto] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const handleClickModal = (row) => {
+    setSelectedCrypto(row);
+    setOpen(true);
+  };
+  const handleDeleFavorit = (id) =>{
+    fetch('http://localhost:8000/favorites/' + id,
+    {method: 'DELETE'}).then(()=>{
+        console.log("Deleted");
+        handleUpdate();
+    }) 
+    const newProducts = products.filter(product => product.id !== id);
+    setProducts(newProducts);
+    if (newProducts.length > 4){
+      if(viewAll){
+        setLength(4);
+      }
+      else{
+        setLength(newProducts.length); 
+      }
+
     }
-    setButton("View all");
-    }
-    else{
-      setLength(products.length);
-      setButton("View less");
+    else
+    {
+      setLength(newProducts.length); 
+      setIsVisible(false);
     }
 }
-useEffect(()=> {
-  if (products.length > 4){
-    setLength(4);
-    setIsVisible(true);
-    }
-    else{
-      setLength(products.length); 
-    }
 
-}, [userFavorites]) 
+  const handleClick = () => {
+    if (listLength == products.length) {
+      if (products.length > 4) {
+        setLength(4);
+      }
+      setViewAll(true);
+    } else {
+      setLength(products.length);
+      setViewAll(false);
+    }
+  };
+  useEffect(() => {
+    if (products.length > 4) {
+      setLength(4);
+      setIsVisible(true);
+    } else {
+      setLength(products.length);
+      setIsVisible(false);
+    }
+  }, []);
 
   const getFavorites = products => {
-    let content = []; 
+    let content = [];
     for (let i = 0; i < listLength; i++) {
       const item = products[i];
-      content.push(          <ListItem
-        divider={i < listLength - 1}
-        key={item.id}
-      >
-        <Avatar className={classes.image} src= {item.image}>
-        </Avatar>
-        <ListItemText
-          primary={item.cryptoName}
-        />
-        <IconButton
-          edge="end"
-          size="small"
-        >
-          <MoreVertIcon />
-        </IconButton>
-      </ListItem>);
-    }
-    if(listLength > 0){
-    content.push(<Divider />)
+      content.push(
+        <ListItem divider={i < listLength } key={item.id}>
+          <Avatar className={classes.image} src={item.image}></Avatar>
+          <ListItemText primary={item.name} secondary={<Typography style={{ color: item.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{(Math.round(item.price_change_24h * 100) / 100).toFixed(2) + '%'}</Typography>} />
+          <IconButton  onClick={() => handleClickModal(item)} edge="end" size="small">
+            <MoreVertIcon  />
+          </IconButton>
+          <IconButton  onClick={() => handleDeleFavorit(item.id)} edge="end" size="small">
+            <DeleteOutlinedIcon  />
+          </IconButton>
+        </ListItem>
+      );
     }
     return content;
   };
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
-      <CardHeader
-        title="Favorites"
+    <Card className={clsx(classes.root, className)} {...rest}>
+      <CryptoModalWindow
+        open={open}
+        selectedCrypto={selectedCrypto}
+        onClose={() => setOpen(false)}
+        handleUpdate={handleUpdate}
+        hideFavoritesButton={true}
+        handleTransactions={handleTransactions}
       />
+      <CardHeader title="Favorites" />
       <Divider />
       <List>
-      {listLength > 0 ?  getFavorites(products) :
-       <ListItem
-     >
-       <ListItemText
-         primary={"Favorite list is empty"}
-       />
-     </ListItem>
-      }
-     
+        {listLength > 0 ? (
+          getFavorites(products)
+        ) : (
+          <ListItem>
+            <ListItemText primary={'Favorites list is empty'} />
+            <Divider />
+          </ListItem>
+        )}
       </List>
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        p={2}
-      >
+      <Box display="flex" justifyContent="flex-end" p={2}>
         <Button
           hidden={isVisible ? false : true}
           color="primary"
-          endIcon={<ArrowRightIcon />}
+          endIcon={viewAll ? <ArrowDropDownIcon/>: <ArrowDropUpIcon/>}
           size="small"
           variant="text"
-          onClick={handleClick}
+          onClick={() => handleClick()}
         >
-          {buttonText}
+          {viewAll ? "View all" : "View less"}
         </Button>
       </Box>
     </Card>

@@ -19,7 +19,10 @@ export default function CryptoModalWindow({
   open,
   selectedCrypto,
   onClose,
-  graph
+  graph,
+  handleUpdate,
+  hideFavoritesButton,
+  handleTransaction
 }) {
   function getModalStyle() {
     const top = 50;
@@ -39,8 +42,10 @@ export default function CryptoModalWindow({
 
   const clear = () => {
     setIsHidden(true);
-    setAmount('');
+    setIsHiddenFavourites(false);
+    setAmount();
     setDate('');
+    setPrice();
     setAction('Bought');
   };
 
@@ -49,7 +54,10 @@ export default function CryptoModalWindow({
     e.preventDefault();
     let cryptoId = selectedCrypto.id;
     let cryptoName = selectedCrypto.name;
-    const crypto = { cryptoId, cryptoName, action, amount, date };
+    setAmount(parseFloat(amount));
+    setPrice(parseFloat(pricePerUnit));
+
+    const crypto = { cryptoId, cryptoName, action, amount, date, pricePerUnit };
 
     fetch('http://localhost:8000/cryptoTransactions', {
       method: 'POST',
@@ -57,6 +65,25 @@ export default function CryptoModalWindow({
       body: JSON.stringify(crypto)
     }).then(() => {
       console.log('new crypto transaction added');
+      handleTransaction();
+    });
+  };
+
+  const handleSubmitFavorites = e => {
+    clear();
+    e.preventDefault();
+    let id = selectedCrypto.id;
+    let name = selectedCrypto.name;
+    let image = selectedCrypto.image;
+    const crypto = { id, name, image };
+    fetch('http://localhost:8000/favorites', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(crypto)
+    }).then(() => {
+      console.log('new crypto added to favorites');
+      handleUpdate();
+      setIsHiddenFavourites(true);
     });
   };
 
@@ -72,11 +99,14 @@ export default function CryptoModalWindow({
   }));
 
   const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle);
+  const [modalStyle] = useState(getModalStyle);
   const [isHidden, setIsHidden] = useState(true);
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(0);
+  const [pricePerUnit, setPrice] = useState(0);
   const [date, setDate] = useState('');
   const [action, setAction] = useState('Bought');
+  const [isHiddenFavourites, setIsHiddenFavourites] = useState(hideFavoritesButton)
+ 
 
   return (
     <Modal
@@ -96,23 +126,23 @@ export default function CryptoModalWindow({
        </Helmet>
        <div dangerouslySetInnerHTML={{__html: '<coingecko-coin-compare-chart-widget  coin-ids="'+selectedCrypto.id+'" currency="usd" locale="en"></coingecko-coin-compare-chart-widget>'}}></div>
    */}
-<Grid container spacing={0.1} justify='space-evenly'>
-          <Button
-            hidden={isHidden ? false : true}
-            variant="contained"
-            color="primary"
-            onClick={() => setIsHidden(false)}
-          >
-            Add transaction
-          </Button>
-
-          <Button
-            variant="contained"
-            color="primary"
-            hidden={isHidden ? false : true}
-          >
-            Add to favourites
-          </Button>
+          <Grid container spacing={0.1} justify="space-evenly">
+            <Button
+              hidden={isHidden ? false : true}
+              variant="contained"
+              color="primary"
+              onClick={() => setIsHidden(false)}
+            >
+              Add transaction
+            </Button>
+            <Button
+              hidden={isHiddenFavourites}
+              variant="contained"
+              color="primary"
+              onClick={handleSubmitFavorites}
+            >
+              Add to favourites
+            </Button>
           </Grid>
 
           <form
@@ -132,6 +162,16 @@ export default function CryptoModalWindow({
                   shrink: true
                 }}
               />
+              <TextField
+                required
+                id="outlined-basic"
+                label="Price per unit"
+                value={pricePerUnit}
+                onChange={e => setPrice(e.target.value)}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
 
               <TextField
                 required
@@ -145,8 +185,8 @@ export default function CryptoModalWindow({
                   shrink: true
                 }}
               />
-              
-              <TextField 
+
+              <TextField
                 style={style}
                 required
                 id="standard-select-currency"

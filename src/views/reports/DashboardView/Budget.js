@@ -39,9 +39,9 @@ const Budget = ({userCryptos}) => {
   let portfolioAmount=0;
   userCryptos.forEach(item => {
     if(item.action == "Sold"){
-      portfolioAmount = portfolioAmount - (item.amount*item.priceAtDatePerOneCoin);
+      portfolioAmount = portfolioAmount - (item.amount*item.pricePerUnit);
     }else{
-      portfolioAmount = (item.amount*item.priceAtDatePerOneCoin) + portfolioAmount;
+      portfolioAmount = (item.amount*item.pricePerUnit) + portfolioAmount;
     }
     
   })

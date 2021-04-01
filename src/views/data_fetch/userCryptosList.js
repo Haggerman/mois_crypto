@@ -14,8 +14,8 @@ const UserCryptosList = ({ userCryptos }) => {
           cryptoName: row.cryptoName,
           amount: row.amount,
           action: row.action,
-          priceAtDatePerOneCoin:
-            '$ ' + row.priceAtDatePerOneCoin.toLocaleString(),
+          pricePerUnit:
+            '$ ' + row.pricePerUnit.toLocaleString(),
           date: (
             <p searchvalue={date.getTime()}>
               {date > 0
@@ -45,7 +45,7 @@ const UserCryptosList = ({ userCryptos }) => {
           },
           {
             label: 'Price per coin',
-            field: 'priceAtDatePerOneCoin',
+            field: 'pricePerUnit',
             width: 150
           },
           {

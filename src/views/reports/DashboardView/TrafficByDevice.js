@@ -34,10 +34,10 @@ const TrafficByDevice = ({
   let result = userCryptos.reduce((c, v) => {
     if (v.action == 'Sold') {
       c[v.cryptoName] =
-        (c[v.cryptoName] || 0) - v.amount * v.priceAtDatePerOneCoin;
+        (c[v.cryptoName] || 0) - v.amount * v.pricePerUnit;
     } else {
       c[v.cryptoName] =
-        (c[v.cryptoName] || 0) + v.amount * v.priceAtDatePerOneCoin;
+        (c[v.cryptoName] || 0) + v.amount * v.pricePerUnit;
     }
     return c;
   }, {});

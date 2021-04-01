@@ -21,28 +21,14 @@ import SettingsView from 'src/views/settings/SettingsView';
 import portfolioFetch from './views/data_fetch/PortfolioFetch';
 
 const App = () => {
-  const { userCryptos, portfolioAmount, userFavorites } = portfolioFetch();
-  const [cryptoData, setCryptoData] = useState(null);
-
-
-  useEffect(() => {
-      fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=&page=1&sparkline=false&price_change_percentage=24h")
-        .then(res => res.json())
-        .then(cryptoData => {
-          setCryptoData( cryptoData );
-          localStorage.setItem("users", JSON.stringify(cryptoData));
-        });
-
-}, [])
-
-
+  const { userCryptos, portfolioAmount, userFavorites, cryptoData, handleUpdate, handleTransaction } = portfolioFetch();
   const routing = useRoutes([
     {
       path: 'app',
       element: <DashboardLayout />,
       children: [
         { path: 'account', element: <AccountView /> },
-        { path: 'customers', element: <CustomerListView cryptoData={cryptoData} /> },
+        { path: 'customers', element: <CustomerListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} /> },
         {
           path: 'dashboard',
           element: (
@@ -51,6 +37,8 @@ const App = () => {
               portfolioAmount={portfolioAmount}
               cryptoData={cryptoData}
               userFavorites={userFavorites}
+              handleUpdate={handleUpdate}
+              handleTransaction={handleTransaction}
             />
           )
         },
