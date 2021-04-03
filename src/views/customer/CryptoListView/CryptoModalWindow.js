@@ -19,7 +19,6 @@ export default function CryptoModalWindow({
   open,
   selectedCrypto,
   onClose,
-  graph,
   handleUpdate,
   hideFavoritesButton,
   handleTransaction
@@ -64,7 +63,6 @@ export default function CryptoModalWindow({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(crypto)
     }).then(() => {
-      console.log('new crypto transaction added');
       handleTransaction();
     });
   };
@@ -81,7 +79,6 @@ export default function CryptoModalWindow({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(crypto)
     }).then(() => {
-      console.log('new crypto added to favorites');
       handleUpdate();
       setIsHiddenFavourites(true);
     });
@@ -126,7 +123,7 @@ export default function CryptoModalWindow({
        </Helmet>
        <div dangerouslySetInnerHTML={{__html: '<coingecko-coin-compare-chart-widget  coin-ids="'+selectedCrypto.id+'" currency="usd" locale="en"></coingecko-coin-compare-chart-widget>'}}></div>
    */}
-          <Grid container spacing={0.1} justify="space-evenly">
+          <Grid container spacing={1} justify="space-evenly">
             <Button
               hidden={isHidden ? false : true}
               variant="contained"
@@ -154,7 +151,7 @@ export default function CryptoModalWindow({
             <div>
               <TextField
                 required
-                id="outlined-basic"
+                className="outlined-basic"
                 label="Amount"
                 value={amount}
                 onChange={e => setAmount(e.target.value)}
@@ -164,7 +161,7 @@ export default function CryptoModalWindow({
               />
               <TextField
                 required
-                id="outlined-basic"
+                className="outlined-basic"
                 label="Price per unit"
                 value={pricePerUnit}
                 onChange={e => setPrice(e.target.value)}

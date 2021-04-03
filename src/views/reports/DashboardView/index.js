@@ -55,7 +55,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={4}
             xs={12}
           >
-            <TasksProgress userCryptos={userCryptos} portfolioAmount={portfolioAmount} />
+            <TasksProgress userCryptos={userCryptos} />
           </Grid>
           <Grid
             item

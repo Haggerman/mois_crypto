@@ -24,7 +24,6 @@ if(data){
     for(i=0; i < data.prices.length; i++){
         dataTable.push({time: i, price:data.prices[i][1]})
     }
-    console.log(dataTable);
     setDataTable(dataTable);
 }
   },[data])

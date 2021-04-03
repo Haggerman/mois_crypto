@@ -12,44 +12,9 @@
   ],
   "favorites": [
     {
-      "id": "holotoken",
-      "name": "Holo",
-      "image": "https://assets.coingecko.com/coins/images/3348/large/Holologo_Profile.png?1547037966"
-    },
-    {
-      "id": "cardano",
-      "name": "Cardano",
-      "image": "https://assets.coingecko.com/coins/images/975/large/cardano.png?1547034860"
-    },
-    {
-      "id": "kusama",
-      "name": "Kusama",
-      "image": "https://assets.coingecko.com/coins/images/9568/large/m4zRhP5e_400x400.jpg?1576190080"
-    },
-    {
-      "id": "compound-ether",
-      "name": "cETH",
-      "image": "https://assets.coingecko.com/coins/images/10643/large/ceth2.JPG?1581389598"
-    },
-    {
-      "id": "binancecoin",
-      "name": "Binance Coin",
-      "image": "https://assets.coingecko.com/coins/images/825/large/binance-coin-logo.png?1547034615"
-    },
-    {
-      "id": "iota",
-      "name": "IOTA",
-      "image": "https://assets.coingecko.com/coins/images/692/large/IOTA_Swirl.png?1604238557"
-    },
-    {
       "id": "bitcoin",
       "name": "Bitcoin",
       "image": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"
-    },
-    {
-      "id": "vechain",
-      "name": "VeChain",
-      "image": "https://assets.coingecko.com/coins/images/1167/large/VeChain-Logo-768x725.png?1547035194"
     }
   ]
 }

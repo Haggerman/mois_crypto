@@ -44,11 +44,6 @@ const items = [
     href: '/app/settings',
     icon: SettingsIcon,
     title: 'Settings'
-  },
-  {
-    href: '/app/dataFetch',
-    icon: AlertCircleIcon,
-    title: 'Data fetch'
   }
 ];
 

@@ -11,7 +11,7 @@ import { Navigate } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/DashboardLayout';
 import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
-import CustomerListView from 'src/views/customer/CustomerListView';
+import CryptoListView from 'src/views/customer/CryptoListView';
 import DashboardView from 'src/views/reports/DashboardView';
 import LoginView from 'src/views/auth/LoginView';
 import NotFoundView from 'src/views/errors/NotFoundView';
@@ -27,7 +27,7 @@ const App = () => {
       element: <DashboardLayout />,
       children: [
         { path: 'account', element: <AccountView /> },
-        { path: 'list', element: <CustomerListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} /> },
+        { path: 'list', element: <CryptoListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} /> },
         {
           path: 'dashboard',
           element: (
@@ -59,7 +59,6 @@ const App = () => {
   ]);
 
   if (userCryptos && cryptoData && userFavorites ) {
-    console.log(userCryptos);
     return (
       <ThemeProvider theme={theme}>
         <GlobalStyles />
