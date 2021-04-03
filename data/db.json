@@ -12,9 +12,19 @@
   ],
   "favorites": [
     {
-      "id": "bitcoin",
-      "name": "Bitcoin",
-      "image": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"
+      "id": "tezos",
+      "name": "Tezos",
+      "image": "https://assets.coingecko.com/coins/images/976/large/Tezos-logo.png?1547034862"
+    },
+    {
+      "id": "ethereum",
+      "name": "Ethereum",
+      "image": "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880"
+    },
+    {
+      "id": "polkadot",
+      "name": "Polkadot",
+      "image": "https://assets.coingecko.com/coins/images/12171/large/aJGBjJFU_400x400.jpg?1597804776"
     }
   ]
 }

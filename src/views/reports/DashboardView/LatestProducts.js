@@ -21,7 +21,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import CryptoModalWindow from 'src/views/customer/CustomerListView/CryptoModalWindow';
+import CryptoModalWindow from 'src/views/customer/CryptoListView/CryptoModalWindow';
 import { CodeSharp } from '@material-ui/icons';
 
 const useStyles = makeStyles({

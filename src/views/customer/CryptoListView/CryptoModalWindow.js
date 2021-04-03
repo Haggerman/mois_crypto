@@ -1,11 +1,10 @@
 /* eslint-disable */
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Modal from '@material-ui/core/Modal';
-import { MenuItem, Select, Box, Grid } from '@material-ui/core';
-import FormControl from '@material-ui/core/FormControl';
+import { MenuItem, Box, Grid, Card, CardContent, Typography } from '@material-ui/core';
 import Graph from './Graph';
 import { makeStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet';
@@ -19,8 +18,6 @@ export default function CryptoModalWindow({
   open,
   selectedCrypto,
   onClose,
-  handleUpdate,
-  hideFavoritesButton,
   handleTransaction
 }) {
   function getModalStyle() {
@@ -41,7 +38,6 @@ export default function CryptoModalWindow({
 
   const clear = () => {
     setIsHidden(true);
-    setIsHiddenFavourites(false);
     setAmount();
     setDate('');
     setPrice();
@@ -67,23 +63,6 @@ export default function CryptoModalWindow({
     });
   };
 
-  const handleSubmitFavorites = e => {
-    clear();
-    e.preventDefault();
-    let id = selectedCrypto.id;
-    let name = selectedCrypto.name;
-    let image = selectedCrypto.image;
-    const crypto = { id, name, image };
-    fetch('http://localhost:8000/favorites', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(crypto)
-    }).then(() => {
-      handleUpdate();
-      setIsHiddenFavourites(true);
-    });
-  };
-
   const useStyles = makeStyles(theme => ({
     paper: {
       position: 'absolute',
@@ -102,10 +81,11 @@ export default function CryptoModalWindow({
   const [pricePerUnit, setPrice] = useState(0);
   const [date, setDate] = useState('');
   const [action, setAction] = useState('Bought');
-  const [isHiddenFavourites, setIsHiddenFavourites] = useState(hideFavoritesButton)
  
 
   return (
+    <div>
+    { selectedCrypto && (
     <Modal
       open={open}
       onClose={handleClose}
@@ -115,8 +95,15 @@ export default function CryptoModalWindow({
       <div style={modalStyle} className={classes.paper}>
         <h2>{selectedCrypto.name}</h2>
         <Box textAlign="center">
+          
+        <Card>
+            <CardContent>
+              <Typography>
+                Market Cap: {selectedCrypto.market_cap.toLocaleString()}
+              </Typography>
+            </CardContent>
+          </Card>
           <Graph cryptoId={selectedCrypto.id} />
-
           {/*         
        <Helmet>
           <script src="https://widgets.coingecko.com/coingecko-coin-compare-chart-widget.js"></script>
@@ -131,14 +118,6 @@ export default function CryptoModalWindow({
               onClick={() => setIsHidden(false)}
             >
               Add transaction
-            </Button>
-            <Button
-              hidden={isHiddenFavourites}
-              variant="contained"
-              color="primary"
-              onClick={handleSubmitFavorites}
-            >
-              Add to favourites
             </Button>
           </Grid>
 
@@ -210,5 +189,8 @@ export default function CryptoModalWindow({
         </Box>
       </div>
     </Modal>
+     )}
+     
+    </div>
   );
 }
