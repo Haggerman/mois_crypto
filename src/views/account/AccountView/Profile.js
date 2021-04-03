@@ -1,21 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import moment from 'moment';
 import {
   Box,
-  Card,
-  CardContent,
-  Divider,
   Typography,
   makeStyles
 } from '@material-ui/core';
 
 const user = {
-  city: 'Los Angeles',
-  country: 'USA',
-  name: 'Ivan Novák',
-  timezone: 'GTM-7'
+  name: 'Ivan Novák'
 };
 
 const useStyles = makeStyles(() => ({
@@ -26,40 +19,21 @@ const Profile = ({ className, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <Card
+    <Box
       className={clsx(classes.root, className)}
       {...rest}
+      alignItems="center"
+      display="flex"
+      flexDirection="column"
     >
-      <CardContent>
-        <Box
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
-        >
-          <Typography
-            color="textPrimary"
-            gutterBottom
-            variant="h3"
-          >
-            {user.name}
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body1"
-          >
-            {`${user.city} ${user.country}`}
-          </Typography>
-          <Typography
-            className={classes.dateText}
-            color="textSecondary"
-            variant="body1"
-          >
-            {`${moment().format('hh:mm A')} ${user.timezone}`}
-          </Typography>
-        </Box>
-      </CardContent>
-      <Divider />
-    </Card>
+      <Typography
+        color="textPrimary"
+        gutterBottom
+        variant="h3"
+      >
+        {user.name}
+      </Typography>
+    </Box>
   );
 };
 

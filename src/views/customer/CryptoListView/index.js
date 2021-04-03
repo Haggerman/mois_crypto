@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CustomerListView = ({cryptoData, handleUpdate, handleTransaction, userFavorites}) => {
+const CryptoListView = ({cryptoData, handleUpdate, handleTransaction, userFavorites}) => {
   const classes = useStyles();
   
   return (
@@ -31,4 +31,4 @@ const CustomerListView = ({cryptoData, handleUpdate, handleTransaction, userFavo
   );
 };
 
-export default CustomerListView;
+export default CryptoListView;
