@@ -8,7 +8,10 @@ import {
   Card,
   CardHeader,
   Divider,
+  Grid,
   IconButton,
+  CardContent,
+  CardActions,
   List,
   ListItem,
   Avatar,
@@ -28,7 +31,7 @@ const useStyles = makeStyles({
     height: 40,
     width: 40,
     backgroundColor: 'transparent',
-    marginRight: 24
+    marginRight: 5
   }
 });
 
@@ -54,9 +57,9 @@ const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, 
     }) 
     const newFavorites = favorites.filter(favorite => favorite.id !== id);
     setFavorites(newFavorites);
-    if (newFavorites.length > 4){
+    if (newFavorites.length > 3){
       if(viewAll){
-        setLength(4);
+        setLength(3);
       }
       else{
         setLength(newFavorites.length); 
@@ -72,8 +75,8 @@ const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, 
 
   const handleClick = () => {
     if (listLength == favorites.length) {
-      if (favorites.length > 4) {
-        setLength(4);
+      if (favorites.length > 3) {
+        setLength(3);
       }
       setViewAll(true);
     } else {
@@ -82,8 +85,8 @@ const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, 
     }
   };
   useEffect(() => {
-    if (favorites.length > 4) {
-      setLength(4);
+    if (favorites.length > 3) {
+      setLength(3);
       setIsVisible(true);
     } else {
       setLength(favorites.length);
@@ -111,17 +114,56 @@ const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, 
       let userCryptoIndex = cryptoIDs.indexOf(item.id);
       let ownedPrice = itemData.current_price * (amounts[userCryptoIndex]?? 0);
       content.push(
-        <ListItem divider={i < listLength } key={item.id}>
-          <Avatar className={classes.image} src={item.image}></Avatar>
-          <ListItemText primary={item.name} secondary={<Typography style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{(itemData.price_change_percentage_24h).toFixed(2) + '%'} </Typography>} />
-          <ListItemText primary="Price" secondary={<Typography style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{"$ "+(itemData.current_price).toFixed(2)} </Typography>} />
-          <ListItemText primary="Holdings" secondary={<Typography style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{"$ " +(ownedPrice).toFixed(2)}</Typography>} />
-          <IconButton  onClick={() => handleClickModal(itemData)} edge="end" size="small">
-            <MoreVertIcon  />
-          </IconButton>
+        <ListItem  key={item.id}>
+          <Card  className={clsx(classes.root, className)} {...rest}>
+      <CardContent style={{padding:'10px'}}>
+        <Grid container justify="space-between" spacing={1}>
+        <Grid item>
+        <Typography color="textPrimary" gutterBottom variant="h5">
+              {item.name}
+            </Typography>
+        <Avatar className={classes.image} src={item.image} style={{ display: "block" }}></Avatar>
+       
+
+          </Grid>
+          <Grid item>
+            <Typography color="textSecondary" gutterBottom variant="h6">
+              Amount
+            </Typography>
+            <Typography color="textSecondary">
+            {amounts[userCryptoIndex]}
+            </Typography>
+            <Typography color="textSecondary" gutterBottom variant="h6">
+              Holdings
+            </Typography>
+            {<Typography noWrap style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{"$" +(ownedPrice).toFixed(2)}</Typography>}
+          </Grid>
+          <Grid item>
+            <Typography color="textSecondary" gutterBottom variant="h6">
+              Price
+            </Typography>
+            {<Typography  style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{"$"+(itemData.current_price).toFixed(2)} </Typography>}
+            <Typography color="textSecondary" gutterBottom variant="h6">
+              Change
+            </Typography>
+            {<Typography  style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{(itemData.price_change_percentage_24h).toFixed(2)+"%"} </Typography>}
+          </Grid>
+          <Grid item>
+            <Typography gutterBottom variant="button">
           <IconButton  onClick={() => handleDeleFavorit(item.id)} edge="end" size="small">
             <DeleteOutlinedIcon  />
           </IconButton>
+          </Typography>
+          <Box height={1/4}></Box>
+          <Typography >
+          <IconButton  onClick={() => handleClickModal(itemData)} edge="end" size="small">
+            <MoreVertIcon  />
+          </IconButton>
+          </Typography>
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
         </ListItem>
       );
     }
@@ -146,7 +188,7 @@ const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, 
         ) : (
           <ListItem>
             <ListItemText primary={'Favorites list is empty'} />
-            <Divider />
+            
           </ListItem>
         )}
       </List>
