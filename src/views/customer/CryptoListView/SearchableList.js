@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction, userFavorites, ...rest }) => {
+const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction, userFavorites, userCryptos, ...rest }) => {
   const classes = useStyles();
   const [dataTable, setDataTable] = useState({});
   const [selectedCrypto, setSelectedCrypto] = useState('');
@@ -65,19 +65,32 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
 
   useEffect(() => {    
     if (cryptoData) {
-      
+      const result = userCryptos.reduce((c, v) => {
+        if (v.action == 'Sold') {
+          c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
+        } else {
+          c[v.cryptoId] = (c[v.cryptoId] || 0) + v.amount;
+        }
+        return c;
+      }, {});
+    
+      let amounts = Object.values(result);
+      let cryptoIDs = Object.keys(result);
       let rows = cryptoData.map((row, i) => {
         let obj = favorites.find(o => o.id === row.id);
         let isFavorite = false;
         if(obj){
           isFavorite = true;          
         }
+        let userCryptoIndex = cryptoIDs.indexOf(row.id);
+        let ownedPrice = row.current_price * (amounts[userCryptoIndex]?? 0);
         return {
           market_cap_rank: row.market_cap_rank,
           image: <img src={row.image} width="30" />,
           symbol: row.symbol,
           current_price: <p searchvalue={row.current_price}>{'$ ' + row.current_price.toLocaleString()}</p> ,
           name: row.name,
+          ownedPrice: <p searchvalue={ownedPrice}>{'$ ' + ownedPrice.toLocaleString()}</p>,
           price_change_24h: (
             <p
               searchvalue={row.price_change_24h}
@@ -136,6 +149,11 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
           {
             label: 'Name',
             field: 'name',
+            width: 150
+          },
+          {
+            label: 'Holdings',
+            field: 'ownedPrice',
             width: 150
           },
           {
@@ -202,7 +220,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
             entries={5}
             materialSearch
             small
-            sortRows={['price_change_percentage_24h', 'current_price', 'price_change_24h', "isFavorites"]}
+            sortRows={['ownedPrice', 'price_change_percentage_24h', 'current_price', 'price_change_24h', "isFavorites"]}
             data={dataTable}
           />
         )}
