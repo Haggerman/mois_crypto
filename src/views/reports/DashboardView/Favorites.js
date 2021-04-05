@@ -22,8 +22,10 @@ import {
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import ClearIcon from '@material-ui/icons/Clear';
 import CryptoModalWindow from 'src/views/customer/CryptoListView/CryptoModalWindow';
+import Tooltip from '@material-ui/core/Tooltip';
+
 
 const useStyles = makeStyles({
   root: {},
@@ -150,9 +152,11 @@ const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, 
           </Grid>
           <Grid item>
             <Typography gutterBottom variant="button">
+          <Tooltip title="Remove from favorites">    
           <IconButton  onClick={() => handleDeleFavorit(item.id)} edge="end" size="small">
-            <DeleteOutlinedIcon  />
+            <ClearIcon  />
           </IconButton>
+          </Tooltip>
           </Typography>
           <Box height={1/4}></Box>
           <Typography >
