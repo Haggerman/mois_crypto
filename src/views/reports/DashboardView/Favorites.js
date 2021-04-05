@@ -14,15 +14,13 @@ import {
   Avatar,
   ListItemText,
   makeStyles,
-  colors,
   Typography
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import CryptoModalWindow from 'src/views/customer/CustomerListView/CryptoModalWindow';
-import { CodeSharp } from '@material-ui/icons';
+import CryptoModalWindow from 'src/views/customer/CryptoListView/CryptoModalWindow';
 
 const useStyles = makeStyles({
   root: {},
@@ -34,10 +32,10 @@ const useStyles = makeStyles({
   }
 });
 
-const LatestProducts = ({ className, userFavorites, handleUpdate, handleTransactions, ...rest }) => {
+const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, userCryptos, cryptoData, ...rest }) => {
   const classes = useStyles();
   
-  const [products, setProducts] = useState(userFavorites);
+  const [favorites, setFavorites] = useState(userFavorites);
   const [listLength, setLength] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [viewAll, setViewAll] = useState(true);
@@ -54,54 +52,71 @@ const LatestProducts = ({ className, userFavorites, handleUpdate, handleTransact
         console.log("Deleted");
         handleUpdate();
     }) 
-    const newProducts = products.filter(product => product.id !== id);
-    setProducts(newProducts);
-    if (newProducts.length > 4){
+    const newFavorites = favorites.filter(favorite => favorite.id !== id);
+    setFavorites(newFavorites);
+    if (newFavorites.length > 4){
       if(viewAll){
         setLength(4);
       }
       else{
-        setLength(newProducts.length); 
+        setLength(newFavorites.length); 
       }
 
     }
     else
     {
-      setLength(newProducts.length); 
+      setLength(newFavorites.length); 
       setIsVisible(false);
     }
 }
 
   const handleClick = () => {
-    if (listLength == products.length) {
-      if (products.length > 4) {
+    if (listLength == favorites.length) {
+      if (favorites.length > 4) {
         setLength(4);
       }
       setViewAll(true);
     } else {
-      setLength(products.length);
+      setLength(favorites.length);
       setViewAll(false);
     }
   };
   useEffect(() => {
-    if (products.length > 4) {
+    if (favorites.length > 4) {
       setLength(4);
       setIsVisible(true);
     } else {
-      setLength(products.length);
+      setLength(favorites.length);
       setIsVisible(false);
     }
   }, []);
 
-  const getFavorites = products => {
+  const getFavorites = favoriteItem => {
+    const result = userCryptos.reduce((c, v) => {
+      if (v.action == 'Sold') {
+        c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
+      } else {
+        c[v.cryptoId] = (c[v.cryptoId] || 0) + v.amount;
+      }
+      return c;
+    }, {});
+    let amounts = Object.values(result);
+    let cryptoIDs = Object.keys(result);
     let content = [];
     for (let i = 0; i < listLength; i++) {
-      const item = products[i];
+      const item = favoriteItem[i];
+      let itemData = cryptoData.find(o => o.id === item.id);
+      console.log(itemData);
+      
+      let userCryptoIndex = cryptoIDs.indexOf(item.id);
+      let ownedPrice = itemData.current_price * (amounts[userCryptoIndex]?? 0);
       content.push(
         <ListItem divider={i < listLength } key={item.id}>
           <Avatar className={classes.image} src={item.image}></Avatar>
-          <ListItemText primary={item.name} secondary={<Typography style={{ color: item.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{(Math.round(item.price_change_24h * 100) / 100).toFixed(2) + '%'}</Typography>} />
-          <IconButton  onClick={() => handleClickModal(item)} edge="end" size="small">
+          <ListItemText primary={item.name} secondary={<Typography style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{(itemData.price_change_percentage_24h).toFixed(2) + '%'} </Typography>} />
+          <ListItemText primary="Price" secondary={<Typography style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{"$ "+(itemData.current_price).toFixed(2)} </Typography>} />
+          <ListItemText primary="Holdings" secondary={<Typography style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{"$ " +(ownedPrice).toFixed(2)}</Typography>} />
+          <IconButton  onClick={() => handleClickModal(itemData)} edge="end" size="small">
             <MoreVertIcon  />
           </IconButton>
           <IconButton  onClick={() => handleDeleFavorit(item.id)} edge="end" size="small">
@@ -121,13 +136,13 @@ const LatestProducts = ({ className, userFavorites, handleUpdate, handleTransact
         onClose={() => setOpen(false)}
         handleUpdate={handleUpdate}
         hideFavoritesButton={true}
-        handleTransactions={handleTransactions}
+        handleTransaction={handleTransaction}
       />
       <CardHeader title="Favorites" />
       <Divider />
       <List>
         {listLength > 0 ? (
-          getFavorites(products)
+          getFavorites(favorites)
         ) : (
           <ListItem>
             <ListItemText primary={'Favorites list is empty'} />
@@ -151,8 +166,8 @@ const LatestProducts = ({ className, userFavorites, handleUpdate, handleTransact
   );
 };
 
-LatestProducts.propTypes = {
+Favorites.propTypes = {
   className: PropTypes.string
 };
 
-export default LatestProducts;
+export default Favorites;

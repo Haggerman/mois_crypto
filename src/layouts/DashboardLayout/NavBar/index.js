@@ -3,9 +3,7 @@ import React, { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
   Box,
-  Button,
   Divider,
   Drawer,
   Hidden,
@@ -16,17 +14,13 @@ import {
 import {
   AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
-  Lock as LockIcon,
   Settings as SettingsIcon,
-  ShoppingBag as ShoppingBagIcon,
   User as UserIcon,
-  UserPlus as UserPlusIcon,
   DollarSign as DollarSignIcon
 } from 'react-feather';
 import NavItem from './NavItem';
 
 const user = {
-  jobTitle: 'Senior Developer',
   name: 'Ivan Novák'
 };
 
@@ -37,14 +31,9 @@ const items = [
     title: 'Dashboard'
   },
   {
-    href: '/app/customers',
+    href: '/app/list',
     icon: DollarSignIcon,
     title: 'Crypto List'
-  },
-  {
-    href: '/app/products',
-    icon: ShoppingBagIcon,
-    title: 'Products'
   },
   {
     href: '/app/account',
@@ -55,26 +44,6 @@ const items = [
     href: '/app/settings',
     icon: SettingsIcon,
     title: 'Settings'
-  },
-  {
-    href: '/login',
-    icon: LockIcon,
-    title: 'Login'
-  },
-  {
-    href: '/register',
-    icon: UserPlusIcon,
-    title: 'Register'
-  },
-  {
-    href: '/404',
-    icon: AlertCircleIcon,
-    title: 'Error'
-  },
-  {
-    href: '/app/dataFetch',
-    icon: AlertCircleIcon,
-    title: 'Data fetch'
   }
 ];
 

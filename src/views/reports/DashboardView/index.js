@@ -11,11 +11,11 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Budget from './Budget';
-import LatestProducts from './LatestProducts';
+import Favorites from './Favorites';
 import Sales from './Sales';
 import TasksProgress from './TasksProgress';
 import TotalProfit from './TotalProfit';
-import TrafficByDevice from './TrafficByDevice';
+import DoghnutGraph from './DoghnutGraph';
 import UserCryptosList from 'src/views/data_fetch/userCryptosList';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, handleUpdate, handleTransactions}) => {
+const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, handleUpdate, handleTransaction}) => {
   const classes = useStyles();
   return (
     <Page
@@ -46,7 +46,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={4}
             xs={12}
           >
-            <Budget userCryptos={userCryptos} portfolioAmount={portfolioAmount} />
+            <Budget userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />
           </Grid>
           <Grid
             item
@@ -55,7 +55,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={4}
             xs={12}
           >
-            <TasksProgress userCryptos={userCryptos} portfolioAmount={portfolioAmount} />
+            <TasksProgress userCryptos={userCryptos} cryptoData={cryptoData} />
           </Grid>
           <Grid
             item
@@ -82,7 +82,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={3}
             xs={12}
           >
-            <TrafficByDevice userCryptos={userCryptos} portfolioAmount={portfolioAmount} />
+            <DoghnutGraph userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />
           </Grid>
           <Grid
             item
@@ -91,7 +91,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={3}
             xs={12}
           >
-            <LatestProducts userFavorites={userFavorites} handleUpdate={handleUpdate} handleTransactions={handleTransactions} />
+            <Favorites userFavorites={userFavorites} handleUpdate={handleUpdate} handleTransaction={handleTransaction} userCryptos={userCryptos} cryptoData={cryptoData} />
           </Grid>
           <Grid
             item

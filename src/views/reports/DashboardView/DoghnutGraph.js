@@ -22,10 +22,11 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TrafficByDevice = ({
+const DoghnutGraph = ({
   className,
   userCryptos,
   portfolioAmount,
+  cryptoData,
   ...rest
 }) => {
   let cryptos = [];
@@ -34,20 +35,21 @@ const TrafficByDevice = ({
   let result = userCryptos.reduce((c, v) => {
     if (v.action == 'Sold') {
       c[v.cryptoName] =
-        (c[v.cryptoName] || 0) - v.amount * v.pricePerUnit;
+        (c[v.cryptoName] || 0) - v.amount;
     } else {
       c[v.cryptoName] =
-        (c[v.cryptoName] || 0) + v.amount * v.pricePerUnit;
+        (c[v.cryptoName] || 0) + v.amount;
     }
     return c;
   }, {});
 
-  let prices = Object.values(result);
+  let amount = Object.values(result);
+  let prices = [];
   let cryptoNames = Object.keys(result);
   cryptoNames.forEach((element, index) => {
-    if (prices[index] == 0) {
+    if (amount[index] == 0) {
       cryptoNames.splice([index], 1);
-      prices.splice([index], 1);
+      amount.splice([index], 1);
     }
   });
 
@@ -70,10 +72,12 @@ const TrafficByDevice = ({
     }
   }
 
-  prices.forEach((element, index) => {
+  amount.forEach((element, index) => {
+    let obj = cryptoData.find(o => o.name === cryptoNames[index]);
+    prices.push(obj.current_price*amount[index]);
     cryptos.push({
       title: cryptoNames[index],
-      value: ((element / portfolioAmount) * 100).toFixed(2) + '%',
+      value: ((obj.current_price*amount[index] / portfolioAmount) * 100).toFixed(2) + '%',
       color: generatedColors[index],
       icon: CryptoIcons.Btc
     });
@@ -155,8 +159,8 @@ const TrafficByDevice = ({
   );
 };
 
-TrafficByDevice.propTypes = {
+DoghnutGraph.propTypes = {
   className: PropTypes.string
 };
 
-export default TrafficByDevice;
+export default DoghnutGraph;

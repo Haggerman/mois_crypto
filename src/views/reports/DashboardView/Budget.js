@@ -33,18 +33,33 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Budget = ({userCryptos}) => {
-  
+const Budget = ({userCryptos, cryptoData}) => {
+  const result = userCryptos.reduce((c, v) => {
+    if (v.action == 'Sold') {
+      c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
+    } else {
+      c[v.cryptoId] = (c[v.cryptoId] || 0) + v.amount;
+    }
+    return c;
+  }, {});
+
+  let amounts = Object.values(result);
+  let cryptoIDs = Object.keys(result);
   const classes = useStyles();
   let portfolioAmount=0;
-  userCryptos.forEach(item => {
-    if(item.action == "Sold"){
-      portfolioAmount = portfolioAmount - (item.amount*item.pricePerUnit);
-    }else{
-      portfolioAmount = (item.amount*item.pricePerUnit) + portfolioAmount;
-    }
-    
-  })
+  
+    if (cryptoData) {
+      cryptoIDs.forEach((element, index) => {
+        let obj = cryptoData.find(o => o.id === cryptoIDs[index]);
+        portfolioAmount += obj.current_price * amounts[index];
+      });
+      /*let obj = cryptoData.find(o => o.id === cryptoIDs[index]);
+      if(item.action == "Sold"){
+        portfolioAmount = portfolioAmount - (item.amount*obj.current_price);
+      }else{
+        portfolioAmount = (item.amount*obj.current_price) + portfolioAmount;
+    }*/
+  }
   return (
     <Card
       className={clsx(classes.root, 'dashboard')}

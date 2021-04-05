@@ -123,7 +123,6 @@ const DataFetchView = ({ cryptoData }) => {
           </TableHead>
           {[items.prices].map(
             pricesArray => (
-              console.log(pricesArray.length),
               pricesArray.map(priceInOneDay => (
                 <TableRow>
                   <TableCell>

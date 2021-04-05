@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CustomerListView = ({cryptoData, handleUpdate, handleTransaction, userFavorites}) => {
+const CryptoListView = ({cryptoData, handleUpdate, handleTransaction, userFavorites, userCryptos}) => {
   const classes = useStyles();
   
   return (
@@ -25,10 +25,10 @@ const CustomerListView = ({cryptoData, handleUpdate, handleTransaction, userFavo
       title="Crypto list"
     >
       <Container maxWidth={false}>
-      <SearchableList cryptoData={cryptoData} handleUpdate={handleUpdate} userFavorites={userFavorites} handleTransaction={handleTransaction}/>
+      <SearchableList cryptoData={cryptoData} handleUpdate={handleUpdate} userFavorites={userFavorites} handleTransaction={handleTransaction} userCryptos={userCryptos}/>
       </Container>
     </Page>
   );
 };
 
-export default CustomerListView;
+export default CryptoListView;

@@ -11,11 +11,10 @@ import { Navigate } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/DashboardLayout';
 import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
-import CustomerListView from 'src/views/customer/CustomerListView';
+import CryptoListView from 'src/views/customer/CryptoListView';
 import DashboardView from 'src/views/reports/DashboardView';
 import LoginView from 'src/views/auth/LoginView';
 import NotFoundView from 'src/views/errors/NotFoundView';
-import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 import portfolioFetch from './views/data_fetch/PortfolioFetch';
@@ -28,7 +27,7 @@ const App = () => {
       element: <DashboardLayout />,
       children: [
         { path: 'account', element: <AccountView /> },
-        { path: 'customers', element: <CustomerListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} /> },
+        { path: 'list', element: <CryptoListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} userCryptos={userCryptos} /> },
         {
           path: 'dashboard',
           element: (
@@ -42,7 +41,6 @@ const App = () => {
             />
           )
         },
-        { path: 'products', element: <ProductListView /> },
         { path: 'settings', element: <SettingsView /> },
         { path: '*', element: <Navigate to="/404" /> }
       ]
@@ -61,7 +59,6 @@ const App = () => {
   ]);
 
   if (userCryptos && cryptoData && userFavorites ) {
-    console.log(userCryptos);
     return (
       <ThemeProvider theme={theme}>
         <GlobalStyles />
