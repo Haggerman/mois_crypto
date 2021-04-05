@@ -5,9 +5,72 @@
       "cryptoId": "bitcoin",
       "cryptoName": "Bitcoin",
       "action": "Bought",
-      "amount": 1,
+      "amount": 0.23,
       "pricePerUnit": 30000,
       "date": "2021-01-03T00:01"
+    },
+    {
+      "cryptoId": "ethereum",
+      "cryptoName": "Ethereum",
+      "action": "Bought",
+      "amount": 3,
+      "date": "2021-02-03T02:02",
+      "pricePerUnit": 1300,
+      "id": 3
+    },
+    {
+      "cryptoId": "ethereum",
+      "cryptoName": "Ethereum",
+      "action": "Bought",
+      "amount": 1,
+      "date": "2021-01-02T00:00",
+      "pricePerUnit": 2000,
+      "id": 4
+    },
+    {
+      "cryptoId": "polkadot",
+      "cryptoName": "Polkadot",
+      "action": "Bought",
+      "amount": 3,
+      "date": "2021-01-01T01:00",
+      "pricePerUnit": 2,
+      "id": 7
+    },
+    {
+      "cryptoId": "tezos",
+      "cryptoName": "Tezos",
+      "action": "Bought",
+      "amount": 2000,
+      "date": "2021-01-01T00:00",
+      "pricePerUnit": 1,
+      "id": 8
+    },
+    {
+      "cryptoId": "tezos",
+      "cryptoName": "Tezos",
+      "action": "Bought",
+      "amount": 330,
+      "date": "2021-01-01T00:00",
+      "pricePerUnit": 1,
+      "id": 9
+    },
+    {
+      "cryptoId": "tezos",
+      "cryptoName": "Tezos",
+      "action": "Bought",
+      "amount": 1000,
+      "date": "2021-01-01T01:00",
+      "pricePerUnit": 1,
+      "id": 10
+    },
+    {
+      "cryptoId": "nem",
+      "cryptoName": "NEM",
+      "action": "Bought",
+      "amount": 1,
+      "date": "2021-01-01T00:00",
+      "pricePerUnit": 1,
+      "id": 11
     }
   ],
   "favorites": [
@@ -25,6 +88,11 @@
       "id": "polkadot",
       "name": "Polkadot",
       "image": "https://assets.coingecko.com/coins/images/12171/large/aJGBjJFU_400x400.jpg?1597804776"
+    },
+    {
+      "id": "nem",
+      "name": "NEM",
+      "image": "https://assets.coingecko.com/coins/images/242/large/NEM_Logo_256x256.png?1598687029"
     }
   ]
 }

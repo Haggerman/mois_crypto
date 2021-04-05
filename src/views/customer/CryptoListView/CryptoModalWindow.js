@@ -51,13 +51,11 @@ export default function CryptoModalWindow({
     let cryptoName = selectedCrypto.name;
     setAmount(parseFloat(amount));
     setPrice(parseFloat(pricePerUnit));
-
-    const crypto = { cryptoId, cryptoName, action, amount, date, pricePerUnit };
-
+    
     fetch('http://localhost:8000/cryptoTransactions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(crypto)
+      body: JSON.stringify({cryptoId: cryptoId, cryptoName: cryptoName, action: action, amount: parseFloat(amount), date: date, pricePerUnit: parseFloat(pricePerUnit)})
     }).then(() => {
       handleTransaction();
     });
@@ -132,6 +130,7 @@ export default function CryptoModalWindow({
                 required
                 className="outlined-basic"
                 label="Amount"
+                type="number"
                 value={amount}
                 onChange={e => setAmount(e.target.value)}
                 InputLabelProps={{
@@ -143,6 +142,7 @@ export default function CryptoModalWindow({
                 className="outlined-basic"
                 label="Price per unit"
                 value={pricePerUnit}
+                type="number"
                 onChange={e => setPrice(e.target.value)}
                 InputLabelProps={{
                   shrink: true

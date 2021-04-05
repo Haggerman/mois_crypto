@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CryptoListView = ({cryptoData, handleUpdate, handleTransaction, userFavorites}) => {
+const CryptoListView = ({cryptoData, handleUpdate, handleTransaction, userFavorites, userCryptos}) => {
   const classes = useStyles();
   
   return (
@@ -25,7 +25,7 @@ const CryptoListView = ({cryptoData, handleUpdate, handleTransaction, userFavori
       title="Crypto list"
     >
       <Container maxWidth={false}>
-      <SearchableList cryptoData={cryptoData} handleUpdate={handleUpdate} userFavorites={userFavorites} handleTransaction={handleTransaction}/>
+      <SearchableList cryptoData={cryptoData} handleUpdate={handleUpdate} userFavorites={userFavorites} handleTransaction={handleTransaction} userCryptos={userCryptos}/>
       </Container>
     </Page>
   );

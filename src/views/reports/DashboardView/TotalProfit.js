@@ -10,25 +10,19 @@ import {
   Grid,
   Typography,
   makeStyles,
-  colors
+  colors,
+  Box
 } from '@material-ui/core';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import useFetch from 'src/views/customer/CryptoListView/useFetch';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import MoneyIcon from '@material-ui/icons/Money';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
-const useStyles = makeStyles(() => ({
-  root: {
-    height: '100%'
-  },
-  avatar: {
-    backgroundColor: colors.indigo[600],
-    height: 56,
-    width: 56
-  }
-}));
+
 
 const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...rest }) => {
-  const classes = useStyles();
+  
   const [profit, setProfit] = useState(0);
+  const [percentChange, setPercentChange] = useState(0);
 
   const result = userCryptos.reduce((c, v) => {
     if (v.action == 'Sold') {
@@ -45,14 +39,34 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
     if (cryptoData) {
       let currentGain = 0;
       cryptoIDs.forEach((element, index) => {
-        let obj = cryptoData.find(o => o.id === cryptoIDs[index]);
-        currentGain += obj.current_price * amounts[index];
+        let obj = userCryptos.find(o => o.cryptoId === cryptoIDs[index]);
+        currentGain += obj.pricePerUnit * amounts[index];
       });
-      const profit = currentGain - portfolioAmount;
+      const profit = portfolioAmount - currentGain;
       setProfit(profit);
+      setPercentChange(profit / portfolioAmount * 100);
     }
   }, [portfolioAmount]);
+  
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      height: '100%'
+    },
+    avatar: {
+      backgroundColor: colors.indigo[500],
+      height: 56,
+      width: 56
+    },
+    differenceIcon: {
+      color: profit < 0 ? colors.red[600] : colors.green[600]
+    },
+    differenceValue: {
+      color: profit < 0 ? colors.red[600] : colors.green[600],
+      marginRight: theme.spacing(1)
+    }
+  }));
 
+  const classes = useStyles();
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardContent>
@@ -73,10 +87,29 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <AttachMoneyIcon />
+              <MoneyIcon />
             </Avatar>
           </Grid>
         </Grid>
+        <Box
+          mt={2}
+          display="flex"
+          alignItems="center"
+        >
+          {percentChange > 0 ? <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon} /> }
+          <Typography
+            className={classes.differenceValue}
+            variant="body2"
+          >
+            {percentChange.toFixed(2).toLocaleString()}%
+          </Typography>
+          <Typography
+            color="textSecondary"
+            variant="caption"
+          >
+            In total
+          </Typography>
+        </Box>
       </CardContent>
     </Card>
   );
