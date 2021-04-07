@@ -106,7 +106,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
            />
            <Divider />
               <Box p={2}>
-                <UserCryptosList userCryptos={userCryptos} />
+                <UserCryptosList userCryptos={userCryptos} cryptoData={cryptoData} />
               </Box>
             </Card>
             

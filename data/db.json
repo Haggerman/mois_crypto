@@ -71,6 +71,15 @@
       "date": "2021-01-01T00:00",
       "pricePerUnit": 1,
       "id": 11
+    },
+    {
+      "cryptoId": "ethereum",
+      "cryptoName": "Ethereum",
+      "action": "Sold",
+      "amount": 3,
+      "date": "2021-01-01T00:00",
+      "pricePerUnit": 100,
+      "id": 12
     }
   ],
   "favorites": [

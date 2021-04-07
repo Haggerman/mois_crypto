@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable */
+import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -25,6 +26,28 @@ const useStyles = makeStyles((theme) => ({
 const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [Username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [values, setValues] = useState(null);
+  const [tokens, setTokens] = useState(null);
+  const [isPending, setIsPending] = useState(false);
+
+  const handleSubmit = (e) => {
+    //Aby se stranka nerefreshla pri kliknuti na Add
+    e.preventDefault();
+    const user = {Username, password};
+    console.log(JSON.stringify(user));
+    setIsPending(true);
+    fetch('https://cryptfolio.azurewebsites.net/api/Auth/login', {
+        method:'POST',
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify(user)
+    }).then(res => res.json())
+    .then(newTokens => {
+      setTokens(newTokens);
+    });
+   
+}
 
   return (
     <Page
@@ -40,11 +63,11 @@ const LoginView = () => {
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              email: 'demo@devias.io',
-              password: 'Password123'
+              userName: Username,
+              password: password
             }}
             validationSchema={Yup.object().shape({
-              email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+              userName: Yup.string().max(255).required('User name is required'),
               password: Yup.string().max(255).required('Password is required')
             })}
             onSubmit={() => {
@@ -54,8 +77,6 @@ const LoginView = () => {
             {({
               errors,
               handleBlur,
-              handleChange,
-              handleSubmit,
               isSubmitting,
               touched,
               values
@@ -70,16 +91,15 @@ const LoginView = () => {
                   </Typography>
                 </Box>
                 <TextField
-                  error={Boolean(touched.email && errors.email)}
+                  error={Boolean(touched.userName && errors.userName)}
                   fullWidth
-                  helperText={touched.email && errors.email}
-                  label="Email Address"
+                  helperText={touched.userName && errors.userName}
+                  label="User name"
                   margin="normal"
-                  name="email"
+                  name="userName"
                   onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="email"
-                  value={values.email}
+                  type="text"
+                  value={Username} onChange={(e) => setUserName(e.target.value)}
                   variant="outlined"
                 />
                 <TextField
@@ -90,9 +110,8 @@ const LoginView = () => {
                   margin="normal"
                   name="password"
                   onBlur={handleBlur}
-                  onChange={handleChange}
                   type="password"
-                  value={values.password}
+                  value={password} onChange={(e) => setPassword(e.target.value)}
                   variant="outlined"
                 />
                 <Box my={2}>
