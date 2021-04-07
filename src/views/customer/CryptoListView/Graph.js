@@ -31,7 +31,7 @@ if(data){
 
   return (<div width={width} height={height}>  
 
-<ResponsiveContainer width="95%" height={400}>
+<ResponsiveContainer width="95%" height={300}>
     <LineChart
       width={width}
       height={height}
