@@ -92,9 +92,11 @@ export default function CryptoModalWindow({
  
 
   return (
-    console.log(selectedCrypto),
     <div>
     { selectedCrypto && (
+      selectedCrypto.marketCap = 0,
+      selectedCrypto.circulatingSupply = 0,
+      selectedCrypto.totalSupply = 0,
     <Modal
       open={open}
       onClose={handleClose}
@@ -131,7 +133,7 @@ export default function CryptoModalWindow({
               <Typography className={classes.root}>
                 Current price:
               </Typography>
-              <Typography>{"$ " + selectedCrypto.current_price.toLocaleString()}
+              <Typography>{"$ " + selectedCrypto.currentPrice.toLocaleString()}
               </Typography>
             </CardContent>
           </Card>
@@ -140,7 +142,7 @@ export default function CryptoModalWindow({
               <Typography>
                 Market Cap:
               </Typography>
-              <Typography>{"$ "+ selectedCrypto.market_cap.toLocaleString()}
+              <Typography>{"$ "+ selectedCrypto.marketCap.toLocaleString()}
               </Typography>
             </CardContent>
           </Card>
@@ -149,7 +151,7 @@ export default function CryptoModalWindow({
               <Typography>
                 Supply:
               </Typography>
-              <Typography>{(selectedCrypto.circulating_supply).toFixed(2)+ " / "+ (selectedCrypto.total_supply != null ? (selectedCrypto.total_supply).toFixed(2) : "NaN")}
+              <Typography>{(selectedCrypto.circulatingSupply).toFixed(2)+ " / "+ (selectedCrypto.totalSupply != null ? (selectedCrypto.totalSupply).toFixed(2) : "NaN")}
               </Typography>
             </CardContent>
           </Card>

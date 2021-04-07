@@ -74,10 +74,10 @@ const DoghnutGraph = ({
 
   amount.forEach((element, index) => {
     let obj = cryptoData.find(o => o.name === cryptoNames[index]);
-    prices.push(obj.current_price*amount[index]);
+    prices.push(obj.currentPrice*amount[index]);
     cryptos.push({
       title: cryptoNames[index],
-      value: ((obj.current_price*amount[index] / portfolioAmount) * 100).toFixed(2) + '%',
+      value: ((obj.currentPrice*amount[index] / portfolioAmount) * 100).toFixed(2) + '%',
       color: generatedColors[index],
       icon: CryptoIcons.Btc
     });

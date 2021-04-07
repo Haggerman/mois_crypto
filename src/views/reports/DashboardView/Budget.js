@@ -51,14 +51,8 @@ const Budget = ({userCryptos, cryptoData}) => {
     if (cryptoData) {
       cryptoIDs.forEach((element, index) => {
         let obj = cryptoData.find(o => o.id === cryptoIDs[index]);
-        portfolioAmount += obj.current_price * amounts[index];
+        portfolioAmount += obj.currentPrice * amounts[index];
       });
-      /*let obj = cryptoData.find(o => o.id === cryptoIDs[index]);
-      if(item.action == "Sold"){
-        portfolioAmount = portfolioAmount - (item.amount*obj.current_price);
-      }else{
-        portfolioAmount = (item.amount*obj.current_price) + portfolioAmount;
-    }*/
   }
   return (
     <Card

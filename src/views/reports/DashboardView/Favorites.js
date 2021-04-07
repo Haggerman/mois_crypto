@@ -33,6 +33,9 @@ const useStyles = makeStyles({
     width: 40,
     backgroundColor: 'transparent',
     marginRight: 5
+  },
+  fit: {
+    width: "100%"
   }
 });
 
@@ -109,14 +112,12 @@ const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, 
     let content = [];
     for (let i = 0; i < listLength; i++) {
       const item = favoriteItem[i];
-      let itemData = cryptoData.find(o => o.id === item.id);
-      console.log(itemData);
-      
+      let itemData = cryptoData.find(o => o.id === item.id);      
       let userCryptoIndex = cryptoIDs.indexOf(item.id);
-      let ownedPrice = itemData.current_price * (amounts[userCryptoIndex]?? 0);
+      let ownedPrice = itemData.currentPrice * (amounts[userCryptoIndex]?? 0);
       content.push(
         <ListItem  key={item.id}>
-          <Card  className={clsx(classes.root, className)} {...rest}>
+          <Card  className={clsx(classes.fit, className)} {...rest}>
       <CardContent style={{padding:'10px'}}>
         <Grid container justify="space-between" spacing={1}>
         <Grid item>
@@ -137,17 +138,17 @@ const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, 
             <Typography color="textSecondary" gutterBottom variant="h6">
               Holdings
             </Typography>
-            {<Typography noWrap style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{"$" +(ownedPrice).toFixed(2)}</Typography>}
+            {<Typography noWrap style={{ color: itemData.priceChangePercentage24H > 0 ? '#4eaf0a' : 'red' }}>{"$" +(ownedPrice).toFixed(2)}</Typography>}
           </Grid>
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="h6">
               Price
             </Typography>
-            {<Typography  style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{"$"+(itemData.current_price).toFixed(2)} </Typography>}
+            {<Typography  style={{ color: itemData.priceChangePercentage24H > 0 ? '#4eaf0a' : 'red' }}>{"$"+(itemData.currentPrice).toFixed(2)} </Typography>}
             <Typography color="textSecondary" gutterBottom variant="h6">
               Change
             </Typography>
-            {<Typography  style={{ color: itemData.price_change_percentage_24h > 0 ? '#4eaf0a' : 'red' }}>{(itemData.price_change_percentage_24h).toFixed(2)+"%"} </Typography>}
+            {<Typography  style={{ color: itemData.priceChangePercentage24H > 0 ? '#4eaf0a' : 'red' }}>{(itemData.priceChangePercentage24H).toFixed(2)+"%"} </Typography>}
           </Grid>
           <Grid item>
             <Typography gutterBottom variant="button">
