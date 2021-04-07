@@ -16,7 +16,7 @@ const portfolioFetch = () => {
     }
 
     useEffect(() => {
-      fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=&page=1&sparkline=false&price_change_percentage=24h")
+      fetch("https://cryptfolio.azurewebsites.net/api/Crypto")
         .then(res => res.json())
         .then(cryptoData => {
           setCryptoData( cryptoData );
@@ -45,7 +45,7 @@ const portfolioFetch = () => {
               let portfolio=0;
               cryptoIDs.forEach((element, index) => {
                 let obj = cryptoData.find(o => o.id === cryptoIDs[index]);
-                portfolio += obj.current_price * amounts[index];
+                portfolio += obj.currentPrice * amounts[index];
               });
               setPortfolioAmount(portfolio);
             }

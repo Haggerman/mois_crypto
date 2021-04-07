@@ -94,11 +94,6 @@
       "image": "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880"
     },
     {
-      "id": "polkadot",
-      "name": "Polkadot",
-      "image": "https://assets.coingecko.com/coins/images/12171/large/aJGBjJFU_400x400.jpg?1597804776"
-    },
-    {
       "id": "nem",
       "name": "NEM",
       "image": "https://assets.coingecko.com/coins/images/242/large/NEM_Logo_256x256.png?1598687029"

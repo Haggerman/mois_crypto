@@ -14,7 +14,7 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
         let profit = 0;
         let obj = cryptoData.find(o => o.id === row.cryptoId);
         if(obj){
-        currentPrice = obj.current_price
+        currentPrice = obj.currentPrice
         }
         if(row.action === 'Bought'){
           profit = (currentPrice - row.pricePerUnit)*row.amount

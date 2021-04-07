@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 import useFetch from './useFetch';
 const Graph = ({cryptoId}) => {
-const { data, error, isPending} = useFetch("https://api.coingecko.com/api/v3/coins/"+cryptoId+"/market_chart?vs_currency=usd&days=30&interval=daily");
+const { data, error, isPending} = useFetch("https://cryptfolio.azurewebsites.net/api/HistoryPrice/"+cryptoId);
 const [dataTable, setDataTable] = useState(null);
 const [width, setWidth] = useState(500);
 const [height, setHeight] = useState(300);
@@ -22,7 +22,17 @@ if(data){
     var i;
     var dataTable = [];
     for(i=0; i < data.prices.length; i++){
-        dataTable.push({time: i, price:data.prices[i][1]})
+      const unixTime = data.prices[i][1];
+const date = new Date(unixTime*1000);
+const formattedDate = Intl.DateTimeFormat('cz-CZ', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit'
+}).format(date)
+console.log(date.toLocaleDateString("cz-CZ"));
+        dataTable.push({time: formattedDate, price:data.prices[i][0]})
     }
     setDataTable(dataTable);
 }
@@ -31,7 +41,7 @@ if(data){
 
   return (<div width={width} height={height}>  
 
-<ResponsiveContainer width="95%" height={400}>
+<ResponsiveContainer width="95%" height={300}>
     <LineChart
       width={width}
       height={height}
@@ -50,8 +60,8 @@ if(data){
       <Line
         type="monotone"
         dataKey="price"
-        stroke="#8884d8"
-      isAnimationActive={false}
+        dot={false}
+        isAnimationActive={false}
       />
     </LineChart>
     </ResponsiveContainer>

@@ -83,37 +83,37 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
           isFavorite = true;          
         }
         let userCryptoIndex = cryptoIDs.indexOf(row.id);
-        let ownedPrice = row.current_price * (amounts[userCryptoIndex]?? 0);
+        let ownedPrice = row.currentPrice * (amounts[userCryptoIndex]?? 0);
         return {
-          market_cap_rank: row.market_cap_rank,
+          market_cap_rank: row.marketCapRank,
           image: <img src={row.image} width="30" />,
           symbol: row.symbol,
-          current_price: <p searchvalue={row.current_price}>{'$ ' + row.current_price.toLocaleString()}</p> ,
+          currentPrice: <p searchvalue={row.currentPrice}>{'$ ' + row.currentPrice.toLocaleString()}</p> ,
           name: row.name,
           ownedPrice: <p searchvalue={ownedPrice}>{'$ ' + ownedPrice.toLocaleString()}</p>,
-          price_change_24h: (
+          priceChange24H: (
             <p
-              searchvalue={row.price_change_24h}
+              searchvalue={row.priceChange24H}
               style={
-                row.price_change_percentage_24h > 0
+                row.priceChangePercentage24H > 0
                   ? { color: '#4eaf0a' }
                   : { color: 'red' }
               }
             >
-              {'$ '+(Math.round(row.price_change_24h * 100) / 100).toFixed(2).toLocaleString()}
+              {'$ '+(Math.round(row.priceChange24H * 100) / 100).toFixed(2).toLocaleString()}
             </p>
           ),
-          price_change_percentage_24h: (
+          priceChangePercentage24H: (
             <p
-              searchvalue={row.price_change_percentage_24h}
+              searchvalue={row.priceChangePercentage24H}
               style={
-                row.price_change_percentage_24h > 0
+                row.priceChangePercentage24H > 0
                   ? { color: '#4eaf0a' }
                   : { color: 'red' }
               }
             >
               {(
-                Math.round(row.price_change_percentage_24h * 100) / 100
+                Math.round(row.priceChangePercentage24H * 100) / 100
               ).toFixed(2).toLocaleString() + '%'}
             </p>
           ),
@@ -163,17 +163,17 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
           },
           {
             label: 'Price',
-            field: 'current_price',
+            field: 'currentPrice',
             width: 150
           },
           {
             label: 'Price change 24h',
-            field: 'price_change_24h',
+            field: 'priceChange24H',
             width: 200
           },
           {
             label: 'Percent change 24h',
-            field: 'price_change_percentage_24h',
+            field: 'priceChangePercentage24H',
             width: 200
           },
           {
@@ -220,7 +220,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
             entries={5}
             materialSearch
             small
-            sortRows={['ownedPrice', 'price_change_percentage_24h', 'current_price', 'price_change_24h', "isFavorites"]}
+            sortRows={['ownedPrice', 'priceChangePercentage24H', 'currentPrice', 'priceChange24H', "isFavorites"]}
             data={dataTable}
           />
         )}

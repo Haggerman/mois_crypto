@@ -8,6 +8,7 @@ import { MenuItem, Box, Grid, Card, CardContent, Typography } from '@material-ui
 import Graph from './Graph';
 import { makeStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet';
+import { Navigate } from 'react-router';
 
 const style = {
   minWidth: 90,
@@ -51,7 +52,7 @@ export default function CryptoModalWindow({
     let cryptoName = selectedCrypto.name;
     setAmount(parseFloat(amount));
     setPrice(parseFloat(pricePerUnit));
-    
+
     fetch('http://localhost:8000/cryptoTransactions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -69,6 +70,15 @@ export default function CryptoModalWindow({
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       outline: 'none'
+    },
+    root: {
+      minWidth: 200,
+      padding: 0,
+      paddingBottom: 0
+      
+    },
+    graph: {
+      width: "100%",
     }
   }));
 
@@ -84,6 +94,9 @@ export default function CryptoModalWindow({
   return (
     <div>
     { selectedCrypto && (
+      selectedCrypto.marketCap = 0,
+      selectedCrypto.circulatingSupply = 0,
+      selectedCrypto.totalSupply = 0,
     <Modal
       open={open}
       onClose={handleClose}
@@ -93,15 +106,57 @@ export default function CryptoModalWindow({
       <div style={modalStyle} className={classes.paper}>
         <h2>{selectedCrypto.name}</h2>
         <Box textAlign="center">
-          
-        <Card>
+        
+        <Grid container>  
+          <Grid
+            item
+            lg={9}
+            sm={9}
+            xl={10}
+            xs={12}
+          >
+            <Card className={classes.graph} variant="outlined">
             <CardContent>
-              <Typography>
-                Market Cap: {selectedCrypto.market_cap.toLocaleString()}
+               <Graph cryptoId={selectedCrypto.id} /> 
+            </CardContent>
+            </Card>         
+         </Grid>
+        <Grid
+            item
+            lg={2}
+            sm={2}
+            xl={4}
+            xs={12}
+          >
+        <Card className={classes.root} variant="outlined">
+            <CardContent className={classes.root}  >
+              <Typography className={classes.root}>
+                Current price:
+              </Typography>
+              <Typography>{"$ " + selectedCrypto.currentPrice.toLocaleString()}
               </Typography>
             </CardContent>
           </Card>
-          <Graph cryptoId={selectedCrypto.id} />
+          <Card className={classes.root} variant="outlined">
+            <CardContent className={classes.root}>
+              <Typography>
+                Market Cap:
+              </Typography>
+              <Typography>{"$ "+ selectedCrypto.marketCap.toLocaleString()}
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card className={classes.root} variant="outlined">
+            <CardContent className={classes.root}>
+              <Typography>
+                Supply:
+              </Typography>
+              <Typography>{(selectedCrypto.circulatingSupply).toFixed(2)+ " / "+ (selectedCrypto.totalSupply != null ? (selectedCrypto.totalSupply).toFixed(2) : "NaN")}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+          </Grid>
           {/*         
        <Helmet>
           <script src="https://widgets.coingecko.com/coingecko-coin-compare-chart-widget.js"></script>

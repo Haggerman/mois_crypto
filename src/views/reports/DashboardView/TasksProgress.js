@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 const TasksProgress = ({ className, userCryptos, cryptoData, ...rest }) => {
   const classes = useStyles();
   const bitcoin = cryptoData.find(o => o.id === "bitcoin");
-  const bitcoinPrice = bitcoin.current_price;
+  const bitcoinPrice = bitcoin.currentPrice;
   return (
     <Card
     className={clsx(classes.root, className)}
@@ -60,7 +60,7 @@ const TasksProgress = ({ className, userCryptos, cryptoData, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              ${bitcoinPrice.toLocaleString()}
+              ${bitcoinPrice != null ? bitcoinPrice.toLocaleString() : "NaN"}
             </Typography>
           </Grid>
           <Grid item>
