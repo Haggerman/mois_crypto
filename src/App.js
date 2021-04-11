@@ -7,7 +7,7 @@ import GlobalStyles from 'src/components/GlobalStyles';
 import 'src/mixins/chartjs';
 import theme from 'src/theme';
 import './customCSS.css';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Router } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/DashboardLayout';
 import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
@@ -18,16 +18,29 @@ import NotFoundView from 'src/views/errors/NotFoundView';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 import portfolioFetch from './views/data_fetch/PortfolioFetch';
+import authAndGraphDataFetch from './views/data_fetch/AuthFetch';
+import TokenRefresher from './views/auth/TokenRefresher';
 
 const App = () => {
-  const { userCryptos, portfolioAmount, userFavorites, cryptoData, handleUpdate, handleTransaction } = portfolioFetch();
-  const routing = useRoutes([
+  const { isAuth, isPending } = authAndGraphDataFetch();
+  const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, handleUpdate, handleTransaction } = portfolioFetch();
+  const [ authenticated, setAuthenticated ] = useState(true); 
+
+  TokenRefresher({isPending});
+  useEffect(() => {
+    if(isPending == false){
+      setAuthenticated(isAuth);
+    }
+  }, [isPending])
+  const routing = authenticated ? useRoutes([
     {
       path: 'app',
       element: <DashboardLayout />,
       children: [
         { path: 'account', element: <AccountView /> },
-        { path: 'list', element: <CryptoListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} userCryptos={userCryptos} /> },
+        { path: 'list', element: <CryptoListView
+         cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} userCryptos={userCryptos}
+         /> },
         {
           path: 'dashboard',
           element: (
@@ -38,6 +51,7 @@ const App = () => {
               userFavorites={userFavorites}
               handleUpdate={handleUpdate}
               handleTransaction={handleTransaction}
+              userCryptoGraphData={userCryptoGraphData}
             />
           )
         },
@@ -49,16 +63,30 @@ const App = () => {
       path: '/',
       element: <MainLayout />,
       children: [
-        { path: 'login', element: <LoginView /> },
+        { path: 'login', element: <LoginView handleUpdate={handleUpdate} /> },
         { path: 'register', element: <RegisterView /> },
         { path: '404', element: <NotFoundView /> },
         { path: '/', element: <Navigate to="/app/dashboard" /> },
         { path: '*', element: <Navigate to="/404" /> }
       ]
     }
+  ])
+  : 
+  useRoutes([    
+    {
+      path: '/',
+      element: <MainLayout />,
+      children: [
+        { path: 'login', element: <LoginView handleUpdate={handleUpdate} 
+         /> },
+        { path: 'register', element: <RegisterView /> },
+        { path: '/', element: <Navigate to="/login" /> },
+        { path: '*', element: <Navigate to="/login" /> }
+      ]
+    }
   ]);
 
-  if (userCryptos && cryptoData && userFavorites ) {
+  if (routing) {
     return (
       <ThemeProvider theme={theme}>
         <GlobalStyles />
@@ -66,7 +94,9 @@ const App = () => {
       </ThemeProvider>
     );
   } else {
-    return null;
+    
+    
+    return (<div>Hello darkness my old friend</div>);
   }
 };
 

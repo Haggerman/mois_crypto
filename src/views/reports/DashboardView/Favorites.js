@@ -100,7 +100,7 @@ const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, 
 
   const getFavorites = favoriteItem => {
     const result = userCryptos.reduce((c, v) => {
-      if (v.action == 'Sold') {
+      if (v.action == 'Sell') {
         c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
       } else {
         c[v.cryptoId] = (c[v.cryptoId] || 0) + v.amount;
@@ -112,8 +112,8 @@ const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, 
     let content = [];
     for (let i = 0; i < listLength; i++) {
       const item = favoriteItem[i];
-      let itemData = cryptoData.find(o => o.id === item.id);      
-      let userCryptoIndex = cryptoIDs.indexOf(item.id);
+      let itemData = cryptoData.find(o => o.id === item.cryptoId);      
+      let userCryptoIndex = cryptoIDs.indexOf(item.cryptoId);
       let ownedPrice = itemData.currentPrice * (amounts[userCryptoIndex]?? 0);
       content.push(
         <ListItem  key={item.id}>
@@ -133,7 +133,7 @@ const Favorites = ({ className, userFavorites, handleUpdate, handleTransaction, 
               Amount
             </Typography>
             <Typography color="textSecondary">
-            {amounts[userCryptoIndex]}
+            {amounts[userCryptoIndex] && amounts[userCryptoIndex].toFixed(7)}
             </Typography>
             <Typography color="textSecondary" gutterBottom variant="h6">
               Holdings

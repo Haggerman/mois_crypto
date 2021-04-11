@@ -13,6 +13,8 @@ import {
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
+import Cookies from "js-cookie";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LoginView = () => {
+const LoginView = ({handleUpdate}) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [Username, setUserName] = useState('');
@@ -36,15 +38,20 @@ const LoginView = () => {
     //Aby se stranka nerefreshla pri kliknuti na Add
     e.preventDefault();
     const user = {Username, password};
-    console.log(JSON.stringify(user));
     setIsPending(true);
     fetch('https://cryptfolio.azurewebsites.net/api/Auth/login', {
         method:'POST',
         headers: {"Content-type": "application/json"},
         body: JSON.stringify(user)
     }).then(res => res.json())
-    .then(newTokens => {
-      setTokens(newTokens);
+    .then(data => {
+        const accessToken  = data.accessToken;
+        const refreshToken = data.refreshToken;
+        Cookies.set("access", accessToken);
+        Cookies.set("refresh", refreshToken);
+      setTokens(data);
+      handleUpdate();
+      navigate('/app/dashboard', { replace: true });
     });
    
 }
@@ -67,11 +74,11 @@ const LoginView = () => {
               password: password
             }}
             validationSchema={Yup.object().shape({
-              userName: Yup.string().max(255).required('User name is required'),
-              password: Yup.string().max(255).required('Password is required')
+              userName: Yup.string().max(255),
+              password: Yup.string().max(255)
             })}
             onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+              handleSubmit();              
             }}
           >
             {({

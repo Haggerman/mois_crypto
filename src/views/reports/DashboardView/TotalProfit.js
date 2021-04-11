@@ -40,7 +40,7 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
       let currentGain = 0;
       cryptoIDs.forEach((element, index) => {
         let obj = userCryptos.find(o => o.cryptoId === cryptoIDs[index]);
-        currentGain += obj.pricePerUnit * amounts[index];
+        currentGain += obj.priceAtDatePerCoin * amounts[index];
       });
       const profit = portfolioAmount - currentGain;
       setProfit(profit);

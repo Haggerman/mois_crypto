@@ -10,37 +10,36 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
-import useFetch from './useFetch';
-const Graph = ({cryptoId}) => {
-const { data, error, isPending} = useFetch("https://cryptfolio.azurewebsites.net/api/HistoryPrice/"+cryptoId);
+import { Card } from '@material-ui/core';
+const PortfolioGraph = ({userCryptoGraphData}) => {
+const [ data, setData] = useState(userCryptoGraphData);
 const [dataTable, setDataTable] = useState(null);
 const [width, setWidth] = useState(500);
 const [height, setHeight] = useState(300);
-
 useEffect(() => { 
-if(data){
-    var i;
+if(userCryptoGraphData){
     var dataTable = [];
-    for(i=0; i < data.prices.length; i++){
-      const unixTime = data.prices[i][1];
-const date = new Date(unixTime*1000);
-const formattedDate = Intl.DateTimeFormat('cz-CZ', {
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit'
-}).format(date)
-        dataTable.push({time: formattedDate, price:data.prices[i][0]})
+    for(let i=0; i < userCryptoGraphData.portfolioStatuses.length; i++){
+      const unixTime = userCryptoGraphData.portfolioStatuses[i][1];
+      const date = new Date(unixTime*1000);
+      const formattedDate = Intl.DateTimeFormat('cz-CZ', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(date)
+      dataTable.push({time: formattedDate, price:userCryptoGraphData.portfolioStatuses[i][0]})
     }
     setDataTable(dataTable);
 }
-  },[data])
+  },[userCryptoGraphData])
 
 
   return (<div width={width} height={height}>  
 
-<ResponsiveContainer width="95%" height={300}>
+<Card>
+<ResponsiveContainer width="95%" height={500}>
     <LineChart
       width={width}
       height={height}
@@ -64,7 +63,8 @@ const formattedDate = Intl.DateTimeFormat('cz-CZ', {
       />
     </LineChart>
     </ResponsiveContainer>
+    </Card>
     </div> );
 };
 
-export default Graph;
+export default PortfolioGraph;

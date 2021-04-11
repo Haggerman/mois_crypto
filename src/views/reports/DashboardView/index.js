@@ -12,7 +12,7 @@ import {
 import Page from 'src/components/Page';
 import Budget from './Budget';
 import Favorites from './Favorites';
-import Sales from './Sales';
+import PortfolioGraph from './PortfolioGraph';
 import TasksProgress from './TasksProgress';
 import TotalProfit from './TotalProfit';
 import DoghnutGraph from './DoghnutGraph';
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, handleUpdate, handleTransaction}) => {
+const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, handleUpdate, handleTransaction, userCryptoGraphData}) => {
   const classes = useStyles();
   return (
     <Page
@@ -46,7 +46,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={4}
             xs={12}
           >
-            <Budget userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />
+            {userCryptos && portfolioAmount && cryptoData &&<Budget userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />}
           </Grid>
           <Grid
             item
@@ -55,7 +55,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={4}
             xs={12}
           >
-            <TasksProgress userCryptos={userCryptos} cryptoData={cryptoData} />
+            {userCryptos && cryptoData && <TasksProgress userCryptos={userCryptos} cryptoData={cryptoData} />}
           </Grid>
           <Grid
             item
@@ -64,7 +64,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={4}
             xs={12}
           >
-            <TotalProfit userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />
+            { userCryptos && portfolioAmount && cryptoData && <TotalProfit userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />}
           </Grid>
           <Grid
             item
@@ -73,7 +73,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={9}
             xs={12}
           >
-            <Sales />
+            {userCryptoGraphData && <PortfolioGraph userCryptoGraphData={userCryptoGraphData} />}
           </Grid>
           <Grid
             item
@@ -82,7 +82,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={3}
             xs={12}
           >
-            <DoghnutGraph userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />
+            {cryptoData && userCryptos && portfolioAmount &&<DoghnutGraph userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />}
           </Grid>
           <Grid
             item
@@ -91,7 +91,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={3}
             xs={12}
           >
-            <Favorites userFavorites={userFavorites} handleUpdate={handleUpdate} handleTransaction={handleTransaction} userCryptos={userCryptos} cryptoData={cryptoData} />
+            {userFavorites && handleUpdate && userCryptos && cryptoData && <Favorites userFavorites={userFavorites} handleUpdate={handleUpdate} handleTransaction={handleTransaction} userCryptos={userCryptos} cryptoData={cryptoData} />}
           </Grid>
           <Grid
             item
@@ -106,7 +106,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
            />
            <Divider />
               <Box p={2}>
-                <UserCryptosList userCryptos={userCryptos} cryptoData={cryptoData} />
+                {cryptoData && userCryptos && <UserCryptosList userCryptos={userCryptos} cryptoData={cryptoData} />}
               </Box>
             </Card>
             

@@ -42,7 +42,7 @@ export default function CryptoModalWindow({
     setAmount();
     setDate('');
     setPrice();
-    setAction('Bought');
+    setAction('Buy');
   };
 
   const handleSubmit = e => {
@@ -51,12 +51,12 @@ export default function CryptoModalWindow({
     let cryptoId = selectedCrypto.id;
     let cryptoName = selectedCrypto.name;
     setAmount(parseFloat(amount));
-    setPrice(parseFloat(pricePerUnit));
+    setPrice(parseFloat(priceAtDatePerCoin));
 
     fetch('http://localhost:8000/cryptoTransactions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({cryptoId: cryptoId, cryptoName: cryptoName, action: action, amount: parseFloat(amount), date: date, pricePerUnit: parseFloat(pricePerUnit)})
+      body: JSON.stringify({cryptoId: cryptoId, cryptoName: cryptoName, action: action, amount: parseFloat(amount), date: date, priceAtDatePerCoin: parseFloat(priceAtDatePerCoin)})
     }).then(() => {
       handleTransaction();
     });
@@ -86,17 +86,14 @@ export default function CryptoModalWindow({
   const [modalStyle] = useState(getModalStyle);
   const [isHidden, setIsHidden] = useState(true);
   const [amount, setAmount] = useState(0);
-  const [pricePerUnit, setPrice] = useState(0);
+  const [priceAtDatePerCoin, setPrice] = useState(0);
   const [date, setDate] = useState('');
-  const [action, setAction] = useState('Bought');
+  const [action, setAction] = useState('Buy');
  
 
   return (
     <div>
     { selectedCrypto && (
-      selectedCrypto.marketCap = 0,
-      selectedCrypto.circulatingSupply = 0,
-      selectedCrypto.totalSupply = 0,
     <Modal
       open={open}
       onClose={handleClose}
@@ -112,7 +109,7 @@ export default function CryptoModalWindow({
             item
             lg={9}
             sm={9}
-            xl={10}
+            xl={9}
             xs={12}
           >
             <Card className={classes.graph} variant="outlined">
@@ -125,7 +122,7 @@ export default function CryptoModalWindow({
             item
             lg={2}
             sm={2}
-            xl={4}
+            xl={2}
             xs={12}
           >
         <Card className={classes.root} variant="outlined">
@@ -196,7 +193,7 @@ export default function CryptoModalWindow({
                 required
                 className="outlined-basic"
                 label="Price per unit"
-                value={pricePerUnit}
+                value={priceAtDatePerCoin}
                 type="number"
                 onChange={e => setPrice(e.target.value)}
                 InputLabelProps={{
@@ -226,7 +223,7 @@ export default function CryptoModalWindow({
                 value={action}
                 onChange={e => setAction(e.target.value)}
               >
-                <MenuItem value={'Bought'}>Bought</MenuItem>
+                <MenuItem value={'Buy'}>Buy</MenuItem>
                 <MenuItem value={'Sold'}>Sold</MenuItem>
               </TextField>
             </div>

@@ -16,18 +16,18 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
         if(obj){
         currentPrice = obj.currentPrice
         }
-        if(row.action === 'Bought'){
-          profit = (currentPrice - row.pricePerUnit)*row.amount
+        if(row.action === 'Buy'){
+          profit = (currentPrice - row.priceAtDatePerCoin)*row.amount
         }
         else{
-          profit = - (currentPrice - row.pricePerUnit)*row.amount 
+          profit = - (currentPrice - row.priceAtDatePerCoin)*row.amount 
         }
         return {
           cryptoName: row.cryptoName,
           amount: row.amount,
           action: row.action,
-          pricePerUnit:
-            '$ ' + row.pricePerUnit.toLocaleString(),
+          priceAtDatePerCoin:
+            '$ ' + row.priceAtDatePerCoin.toLocaleString(),
           profit: (
             <p
               searchvalue={profit}
@@ -69,7 +69,7 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
           },
           {
             label: 'Price per coin',
-            field: 'pricePerUnit',
+            field: 'priceAtDatePerCoin',
             width: 150
           },
           {

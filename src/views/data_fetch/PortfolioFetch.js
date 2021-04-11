@@ -1,19 +1,34 @@
 /* eslint-disable */
 import { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+
 
 const portfolioFetch = () => {
     const [userCryptos, setUserCryptos] = useState(null);
     const [userFavorites, setUserFavorites] = useState(null);
+    const [userCryptoGraphData, setUserCryptoGraphData] = useState(null);
     const [portfolioAmount, setPortfolioAmount] = useState(0);
     const [cryptoData, setCryptoData] = useState(null);
-    const [change, setChange] = useState(0)
-    const [transaction, setTransaction] = useState(0)
+    const [change, setChange] = useState(0);
+    const [isAuth, setIsAuth] = useState(null);
+    const [transaction, setTransaction] = useState(0);
     const handleUpdate = () => {
       setChange(change + 1);
     }
     const handleTransaction = () => {
       setTransaction(transaction + 1);
     }
+    useEffect(() => {
+      let accessToken  = Cookies.get("access");
+      fetch('https://cryptfolio.azurewebsites.net/api/Portfolio/Graph/user', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json',
+                   'authorization' : 'Bearer ' + accessToken },
+      }).then(res => res.json())
+    .then(userCryptoGraphData => {   
+      setUserCryptoGraphData( userCryptoGraphData );
+    });
+    }, [change])
 
     useEffect(() => {
       fetch("https://cryptfolio.azurewebsites.net/api/Crypto")
@@ -21,13 +36,19 @@ const portfolioFetch = () => {
         .then(cryptoData => {
           setCryptoData( cryptoData );
         });
-    }, [])
+    }, [change])
 
     useEffect(() => {
       console.log("TRANSAKCE");
-      fetch("http://localhost:8000/cryptoTransactions").then(res => {
+      let accessTokenTest  = Cookies.get("access");
+      fetch("https://cryptfolio.azurewebsites.net/api/Transaction/user", {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json',
+                   'authorization' : 'Bearer ' + accessTokenTest },
+      }).then(res => {
           return res.json()
-      }).then(
+      })
+      .then(
           userCryptosData => {
             setUserCryptos(userCryptosData);
              if(cryptoData){
@@ -39,7 +60,6 @@ const portfolioFetch = () => {
                 }
                 return c;
               }, {});
-            
               let amounts = Object.values(result);
               let cryptoIDs = Object.keys(result);
               let portfolio=0;
@@ -48,13 +68,20 @@ const portfolioFetch = () => {
                 portfolio += obj.currentPrice * amounts[index];
               });
               setPortfolioAmount(portfolio);
-            }
+          }
+        }).catch((err) => {
+          console.log(err);
         })
-  }, [transaction, cryptoData])
+  }, [transaction, cryptoData, change])
 
   useEffect(() => {
     console.log("ZMĚNA");
-    fetch("http://localhost:8000/favorites").then(res => {
+    let accessTokenTest  = Cookies.get("access");
+    fetch("https://cryptfolio.azurewebsites.net/api/FavoriteCrypto/user", {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json',
+                 'authorization' : 'Bearer ' + accessTokenTest },
+    }).then(res => {
         return res.json()
     }).then(
         userFavorites => {
@@ -62,7 +89,7 @@ const portfolioFetch = () => {
       })
 }, [change])
 
-  return {userCryptos, portfolioAmount, userFavorites, cryptoData, handleUpdate, handleTransaction}
+  return {userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isAuth, handleUpdate, handleTransaction}
 }
 
 export default portfolioFetch;

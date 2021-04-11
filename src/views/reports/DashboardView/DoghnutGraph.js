@@ -33,12 +33,12 @@ const DoghnutGraph = ({
   const classes = useStyles();
   const theme = useTheme();
   let result = userCryptos.reduce((c, v) => {
-    if (v.action == 'Sold') {
-      c[v.cryptoName] =
-        (c[v.cryptoName] || 0) - v.amount;
+    if (v.action == 'Sell') {
+      c[v.cryptoId] =
+        (c[v.cryptoId] || 0) - v.amount;
     } else {
-      c[v.cryptoName] =
-        (c[v.cryptoName] || 0) + v.amount;
+      c[v.cryptoId] =
+        (c[v.cryptoId] || 0) + v.amount;
     }
     return c;
   }, {});
@@ -73,7 +73,7 @@ const DoghnutGraph = ({
   }
 
   amount.forEach((element, index) => {
-    let obj = cryptoData.find(o => o.name === cryptoNames[index]);
+    let obj = cryptoData.find(o => o.id === cryptoNames[index]);
     prices.push(obj.currentPrice*amount[index]);
     cryptos.push({
       title: cryptoNames[index],
