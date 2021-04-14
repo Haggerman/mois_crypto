@@ -36,12 +36,12 @@ const items = [
     title: 'Crypto List'
   },
   {
-    href: '/app/account',
+    href: '/account',
     icon: UserIcon,
     title: 'Account'
   },
   {
-    href: '/app/settings',
+    href: '/settings',
     icon: SettingsIcon,
     title: 'Settings'
   }

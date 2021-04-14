@@ -78,74 +78,21 @@ const App = () => {
   }
  
 
-//  TokenRefresher({isPending});
+  TokenRefresher({isPending});
   useEffect(() => {
       setAuthenticated(isAuth);
   }, [isAuth])
-  /*const routing = authenticated ? useRoutes([
-    {
-      path: 'app',
-      element: <DashboardLayout />,
-      children: [
-        { path: 'account', element: <AccountView /> },
-        { path: 'list', element: <CryptoListView
-         cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} userCryptos={userCryptos}
-         /> },
-        {
-          path: 'dashboard',
-          element: (
-            <DashboardView
-              userCryptos={userCryptos}
-              portfolioAmount={portfolioAmount}
-              cryptoData={cryptoData}
-              userFavorites={userFavorites}
-              handleUpdate={handleUpdate}
-              handleTransaction={handleTransaction}
-              userCryptoGraphData={userCryptoGraphData}
-            />
-          )
-        },
-        { path: 'settings', element: <SettingsView /> },
-        { path: '*', element: <Navigate to="/404" /> }
-      ]
-    },
-    {
-      path: '/',
-      element: <MainLayout />,
-      children: [
-        { path: 'login', element: <LoginView handleUpdate={handleUpdate} /> },
-        { path: 'register', element: <RegisterView /> },
-        { path: '404', element: <NotFoundView /> },
-        { path: '/', element: <Navigate to="/app/dashboard" /> },
-        { path: '*', element: <Navigate to="/404" /> }
-      ]
-    }
-  ])
-  : 
-  useRoutes([    
-    {
-      path: '/',
-      element: <MainLayout />,
-      children: [
-        { path: 'login', element: <LoginView handleUpdate={handleUpdate} 
-         /> },
-        { path: 'register', element: <RegisterView /> },
-        { path: '/', element: <Navigate to="/login" /> },
-        { path: '*', element: <Navigate to="/login" /> }
-      ]
-    }
-  ]);
-*/
+
     return (
       <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <div className={classes.root}>
-          <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} />
-            <NavBar
+          {authTokens ? <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} /> : null }
+            {authTokens ? <NavBar
               onMobileClose={() => setMobileNavOpen(false)}
               openMobile={isMobileNavOpen}
-            />
+            /> : null }
               <div className={classes.wrapper}>
               <div className={classes.contentContainer}>
                 <div className={classes.content}>
@@ -158,20 +105,20 @@ const App = () => {
                   handleUpdate={handleUpdate}
                   handleTransaction={handleTransaction}
                   userCryptoGraphData={userCryptoGraphData}
-                />}>
-              
-                </PrivateRoute>
+                />}/>
                 <PrivateRoute path="/list" element={
                    <CryptoListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} userCryptos={userCryptos} />
-                   }>
-                 
-                </PrivateRoute>
+                   }/>
+                <PrivateRoute path="/settings" element={
+                   <SettingsView />
+                   }/>
+                  <PrivateRoute path="/account" element={
+                  <AccountView />
+                  }/>
                 <Route path="/login">
                       <LoginView handleUpdate={handleUpdate} />
                 </Route>
-                <Route path='*' element={<Navigate to="/" />}>
-                      
-                </Route>
+                <Route path='*' element={<Navigate to="/" />}/>
               </Routes>
                 </div>
               </div>
