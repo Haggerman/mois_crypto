@@ -17,6 +17,7 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import Logo from 'src/components/Logo';
 import Cookies from "js-cookie";
+import { useAuth } from "src/context/auth";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -34,9 +35,12 @@ const TopBar = ({
   const classes = useStyles();
   const [notifications] = useState([]);  
   const navigate = useNavigate();
+  const { setAuthTokens } = useAuth();
 
   const handleLogout = () => {    
-    Cookies.set("access", "logout");
+   // Cookies.remove("access");    
+   // Cookies.remove("remove");
+    setAuthTokens();
     navigate('/login', { replace: true });
   };
 

@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Cookies from "js-cookie";
+import { useAuth } from "src/context/auth";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,14 +26,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LoginView = ({handleUpdate}) => {
+const LoginView = ({handleUpdate, setAuthenticated, authenticated}) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [Username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [values, setValues] = useState(null);
   const [tokens, setTokens] = useState(null);
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, setIsPending] = useState(false);  
+  const { setAuthTokens } = useAuth();
 
   const handleSubmit = (e) => {
     //Aby se stranka nerefreshla pri kliknuti na Add
@@ -49,13 +51,16 @@ const LoginView = ({handleUpdate}) => {
         const refreshToken = data.refreshToken;
         Cookies.set("access", accessToken);
         Cookies.set("refresh", refreshToken);
+        setAuthTokens(data);
       setTokens(data);
       handleUpdate();
-      navigate('/app/dashboard', { replace: true });
+      navigate('/', { replace: true });
     });
    
 }
-
+  if(authenticated){
+    navigate('/', { replace: true });
+  }
   return (
     <Page
       className={classes.root}

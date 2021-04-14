@@ -1,13 +1,12 @@
 /* eslint-disable */
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import React, { useEffect, useState } from 'react';
-import { useRoutes } from 'react-router-dom';
+import { useRoutes, Navigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from 'src/components/GlobalStyles';
 import 'src/mixins/chartjs';
 import theme from 'src/theme';
 import './customCSS.css';
-import { Navigate, Router } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/DashboardLayout';
 import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
@@ -20,19 +19,70 @@ import SettingsView from 'src/views/settings/SettingsView';
 import portfolioFetch from './views/data_fetch/PortfolioFetch';
 import authAndGraphDataFetch from './views/data_fetch/AuthFetch';
 import TokenRefresher from './views/auth/TokenRefresher';
+import { makeStyles } from '@material-ui/core';
+import TopBarLogin from 'src/layouts/MainLayout/TopBar';
+import NavBar from 'src/layouts/DashboardLayout/NavBar';
+import TopBar from 'src/layouts/DashboardLayout/TopBar';
+import { AuthContext } from "./context/auth";
+import PrivateRoute from './route/PrivateRoute';
+import Cookies from 'js-cookie';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    display: 'flex',
+    height: '100%',
+    overflow: 'hidden',
+    width: '100%'
+  },
+  wrapper: {
+    display: 'flex',
+    flex: '1 1 auto',
+    overflow: 'hidden',
+    paddingTop: 64,
+    [theme.breakpoints.up('lg')]: {
+      paddingLeft: 256
+    }
+  },
+  contentContainer: {
+    display: 'flex',
+    flex: '1 1 auto',
+    overflow: 'hidden'
+  },
+  content: {
+    flex: '1 1 auto',
+    height: '100%',
+    overflow: 'auto'
+  }
+}));
 
 const App = () => {
   const { isAuth, isPending } = authAndGraphDataFetch();
   const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, handleUpdate, handleTransaction } = portfolioFetch();
   const [ authenticated, setAuthenticated ] = useState(true); 
-
-  TokenRefresher({isPending});
-  useEffect(() => {
-    if(isPending == false){
-      setAuthenticated(isAuth);
+  const classes = useStyles();
+  const [isMobileNavOpen, setMobileNavOpen] = useState(false);
+  const existingAccessToken = Cookies.get("access");
+  const [authTokens, setAuthTokens] = useState(existingAccessToken);
+  const setTokens = (data) => {
+    console.log(data);
+    if(data){
+    Cookies.set("access", data.accessToken);
+    setAuthTokens(data.accessToken);
     }
-  }, [isPending])
-  const routing = authenticated ? useRoutes([
+    else{
+       Cookies.remove("access");    
+       Cookies.remove("remove");       
+    setAuthTokens();
+    }
+  }
+ 
+
+//  TokenRefresher({isPending});
+  useEffect(() => {
+      setAuthenticated(isAuth);
+  }, [isAuth])
+  /*const routing = authenticated ? useRoutes([
     {
       path: 'app',
       element: <DashboardLayout />,
@@ -85,19 +135,51 @@ const App = () => {
       ]
     }
   ]);
-
-  if (routing) {
+*/
     return (
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        {routing}
-      </ThemeProvider>
+      <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          <div className={classes.root}>
+          <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} />
+            <NavBar
+              onMobileClose={() => setMobileNavOpen(false)}
+              openMobile={isMobileNavOpen}
+            />
+              <div className={classes.wrapper}>
+              <div className={classes.contentContainer}>
+                <div className={classes.content}>
+          <Routes>
+            <PrivateRoute path="/" element={<DashboardView
+                  userCryptos={userCryptos}
+                  portfolioAmount={portfolioAmount}
+                  cryptoData={cryptoData}
+                  userFavorites={userFavorites}
+                  handleUpdate={handleUpdate}
+                  handleTransaction={handleTransaction}
+                  userCryptoGraphData={userCryptoGraphData}
+                />}>
+              
+                </PrivateRoute>
+                <PrivateRoute path="/list" element={
+                   <CryptoListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} userCryptos={userCryptos} />
+                   }>
+                 
+                </PrivateRoute>
+                <Route path="/login">
+                      <LoginView handleUpdate={handleUpdate} />
+                </Route>
+                <Route path='*' element={<Navigate to="/" />}>
+                      
+                </Route>
+              </Routes>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ThemeProvider>
+      </AuthContext.Provider>
     );
-  } else {
-    
-    
-    return (<div>Hello darkness my old friend</div>);
-  }
 };
 
 export default App;

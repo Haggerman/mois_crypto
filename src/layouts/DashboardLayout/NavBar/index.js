@@ -26,12 +26,12 @@ const user = {
 
 const items = [
   {
-    href: '/app/dashboard',
+    href: '/',
     icon: BarChartIcon,
     title: 'Dashboard'
   },
   {
-    href: '/app/list',
+    href: 'list',
     icon: DollarSignIcon,
     title: 'Crypto List'
   },
