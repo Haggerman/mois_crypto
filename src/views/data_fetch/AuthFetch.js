@@ -22,7 +22,6 @@ const authAndGraphDataFetch = () => {
         }else{
         setIsAuth(false);
     }    
-    console.log("mrdka");
     setIsPending(false);
     }).catch((err) => {
         if (err.name === 'AbortError') {

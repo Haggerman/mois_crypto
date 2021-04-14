@@ -1,6 +1,8 @@
+/* eslint-disable */
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
+import LoginView from 'src/views/auth/LoginView';
 import TopBar from './TopBar';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,20 +31,26 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const MainLayout = () => {
+const MainLayout = ({handleUpdate}) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <TopBar />
-      <div className={classes.wrapper}>
-        <div className={classes.contentContainer}>
-          <div className={classes.content}>
-            <Outlet />
+    <Router>
+      <div className={classes.root}>
+        <TopBar />
+          <div className={classes.wrapper}>
+          <div className={classes.contentContainer}>
+            <div className={classes.content}>
+              <Routes>
+                <Route path="/">
+                  <LoginView handleUpdate={handleUpdate} />
+                </Route>
+              </Routes>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Router>
   );
 };
 
