@@ -59,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const { isAuth, isPending } = authAndGraphDataFetch();
   const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, handleUpdate, handleTransaction } = portfolioFetch();
-  const [ authenticated, setAuthenticated ] = useState(true); 
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const existingAccessToken = Cookies.get("access");
@@ -79,9 +78,6 @@ const App = () => {
  
 
   TokenRefresher({isPending});
-  useEffect(() => {
-      setAuthenticated(isAuth);
-  }, [isAuth])
 
     return (
       <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
