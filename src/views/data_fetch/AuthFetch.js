@@ -6,23 +6,20 @@ import Cookies from 'js-cookie';
 const authAndGraphDataFetch = () => {
     const [isPending, setIsPending] = useState(true);
     const [error, setError] = useState(null);
-    const [isAuth, setIsAuth] = useState(null);
+
     useEffect(() => {
-        let accessTokenTest  = Cookies.get("access");
+        let accessToken  = Cookies.get("access");
         fetch('https://cryptfolio.azurewebsites.net/api/Portfolio/Graph/user', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json',
-                   'authorization' : 'Bearer ' + accessTokenTest },
+                   'authorization' : 'Bearer ' + accessToken },
     }).then(res => { 
-        if (!res.ok) {
-            throw Error('could not fetch the data from that resource');
-          }
-        if(res.status == 200){
-        setIsAuth(true);
-        }else{
-        setIsAuth(false);
-    }    
-    setIsPending(false);
+        if (!res.ok) {     
+          console.log("ssdsd");
+            throw Error('could not fetch the data from that resource');    
+        }    
+        
+        setIsPending(false);
     }).catch((err) => {
         if (err.name === 'AbortError') {
           console.log('fetch aborted');
@@ -32,7 +29,7 @@ const authAndGraphDataFetch = () => {
         }
       })
     }, [])
-  return {isAuth, error, isPending }
+  return { error, isPending }
 }
 
 export default authAndGraphDataFetch;
