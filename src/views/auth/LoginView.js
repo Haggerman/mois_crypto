@@ -53,10 +53,12 @@ const LoginView = ({handleUpdate, authenticated}) => {
     });
    
 }
+/* Tohle je potřeba, aby se lognutý uživatel nemohl dostat na login, ale občas se to cyklí
   if(isAuthenticated){
     navigate('/', { replace: true });
   }
-  
+  */
+  console.log(isAuthenticated);
   return (
     <Page
       className={classes.root}
@@ -152,7 +154,7 @@ const LoginView = ({handleUpdate, authenticated}) => {
             )}
           </Formik>
         </Container>
-      </Box>
+      </Box>  
     </Page>
   );
 };

@@ -80,6 +80,24 @@
       "date": "2021-01-01T00:00",
       "pricePerUnit": 100,
       "id": 12
+    },
+    {
+      "cryptoId": "blockstack",
+      "cryptoName": "Stacks",
+      "action": "Buy",
+      "amount": 1,
+      "date": "2021-01-01T00:00",
+      "priceAtDatePerCoin": 6,
+      "id": 13
+    },
+    {
+      "cryptoId": "0x",
+      "cryptoName": "0x",
+      "action": "Buy",
+      "amount": 2,
+      "date": "2021-04-02T00:00",
+      "priceAtDatePerCoin": 3,
+      "id": 14
     }
   ],
   "favorites": [

@@ -77,7 +77,7 @@ const App = () => {
   } 
 
   TokenRefresher({isPending});
-
+  console.log(isAuthenticated);
     return (
       <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens, isAuthenticated, isError }}>
         <ThemeProvider theme={theme}>
