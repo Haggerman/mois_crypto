@@ -10,7 +10,7 @@ const portfolioFetch = () => {
     const [portfolioAmount, setPortfolioAmount] = useState(0);
     const [cryptoData, setCryptoData] = useState(null);
     const [change, setChange] = useState(0);
-    const [isAuth, setIsAuth] = useState(null);
+    const [isError, setIsError] = useState(false);
     const [transaction, setTransaction] = useState(0);
     const handleUpdate = () => {
       setChange(change + 1);
@@ -24,7 +24,14 @@ const portfolioFetch = () => {
         method: 'GET',
         headers: { 'Content-Type': 'application/json',
                    'authorization' : 'Bearer ' + accessToken },
-      }).then(res => res.json())
+      }).then(res => {
+        if(res.status == 200){
+            setIsError(false);
+          }else{
+            setIsError(true);
+        }
+        
+        return res.json()})
     .then(userCryptoGraphData => {   
       setUserCryptoGraphData( userCryptoGraphData );
     });
@@ -40,11 +47,11 @@ const portfolioFetch = () => {
 
     useEffect(() => {
       console.log("TRANSAKCE");
-      let accessTokenTest  = Cookies.get("access");
+      let accessToken  = Cookies.get("access");
       fetch("https://cryptfolio.azurewebsites.net/api/Transaction/user", {
         method: 'GET',
         headers: { 'Content-Type': 'application/json',
-                   'authorization' : 'Bearer ' + accessTokenTest },
+                   'authorization' : 'Bearer ' + accessToken },
       }).then(res => {
           return res.json()
       })
@@ -76,11 +83,11 @@ const portfolioFetch = () => {
 
   useEffect(() => {
     console.log("ZMĚNA");
-    let accessTokenTest  = Cookies.get("access");
+    let accessToken  = Cookies.get("access");
     fetch("https://cryptfolio.azurewebsites.net/api/FavoriteCrypto/user", {
       method: 'GET',
       headers: { 'Content-Type': 'application/json',
-                 'authorization' : 'Bearer ' + accessTokenTest },
+                 'authorization' : 'Bearer ' + accessToken },
     }).then(res => {
         return res.json()
     }).then(
@@ -89,7 +96,7 @@ const portfolioFetch = () => {
       })
 }, [change])
 
-  return {userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isAuth, handleUpdate, handleTransaction}
+  return {userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, handleUpdate, handleTransaction}
 }
 
 export default portfolioFetch;

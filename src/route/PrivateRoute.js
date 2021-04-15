@@ -4,9 +4,9 @@ import { Route, Navigate } from "react-router-dom";
 import { useAuth } from "src/context/auth";
 
 function PrivateRoute({ component: Component, ...rest }) {
-  const { authTokens } = useAuth();
-
-    if(!authTokens){
+  const { authTokens, isAuthenticated, isError } = useAuth();
+  console.log("isError - token expired " + isError);
+    if(!authTokens || !isAuthenticated || isError){
         return <Navigate to="/login" />
     }
   return (

@@ -1,14 +1,12 @@
 /* eslint-disable */
 import 'react-perfect-scrollbar/dist/css/styles.css';
-import React, { useEffect, useState } from 'react';
-import { useRoutes, Navigate, BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Navigate, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from 'src/components/GlobalStyles';
 import 'src/mixins/chartjs';
 import theme from 'src/theme';
 import './customCSS.css';
-import DashboardLayout from 'src/layouts/DashboardLayout';
-import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
 import CryptoListView from 'src/views/customer/CryptoListView';
 import DashboardView from 'src/views/reports/DashboardView';
@@ -20,7 +18,6 @@ import portfolioFetch from './views/data_fetch/PortfolioFetch';
 import authAndGraphDataFetch from './views/data_fetch/AuthFetch';
 import TokenRefresher from './views/auth/TokenRefresher';
 import { makeStyles } from '@material-ui/core';
-import TopBarLogin from 'src/layouts/MainLayout/TopBar';
 import NavBar from 'src/layouts/DashboardLayout/NavBar';
 import TopBar from 'src/layouts/DashboardLayout/TopBar';
 import { AuthContext } from "./context/auth";
@@ -57,35 +54,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
-  const { isAuth, isPending } = authAndGraphDataFetch();
-  const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, handleUpdate, handleTransaction } = portfolioFetch();
+  const { isPending } = authAndGraphDataFetch();
+  const [ isAuthenticated, setIsAuthenticated ] = useState(true);
+  const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, handleUpdate, handleTransaction } = portfolioFetch();
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const existingAccessToken = Cookies.get("access");
   const [authTokens, setAuthTokens] = useState(existingAccessToken);
-  const setTokens = (data) => {
-    console.log(data);
+  const setTokens = (data) => {    
     if(data){
-    Cookies.set("access", data.accessToken);
-    setAuthTokens(data.accessToken);
+      Cookies.set("access", data.accessToken);
+      setIsAuthenticated(true);
+      setAuthTokens(data.accessToken);
     }
     else{
-       Cookies.remove("access");    
-       Cookies.remove("remove");       
-    setAuthTokens();
+      setIsAuthenticated(false);       
+      console.log("nastavuji na false");       
+      Cookies.remove("access");    
+      Cookies.remove("refresh");       
+      setAuthTokens();
     }
-  }
- 
+  } 
 
   TokenRefresher({isPending});
 
     return (
-      <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+      <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens, isAuthenticated, isError }}>
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <div className={classes.root}>
-          {authTokens ? <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} /> : null }
-            {authTokens ? <NavBar
+          {isAuthenticated && authTokens ? <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} /> : null }
+            {isAuthenticated && authTokens ? <NavBar
               onMobileClose={() => setMobileNavOpen(false)}
               openMobile={isMobileNavOpen}
             /> : null }
@@ -105,14 +104,20 @@ const App = () => {
                 <PrivateRoute path="/list" element={
                    <CryptoListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} userCryptos={userCryptos} />
                    }/>
+                <PrivateRoute path="*" element={
+                <NotFoundView />
+                }/>
                 <PrivateRoute path="/settings" element={
                    <SettingsView />
                    }/>
-                  <PrivateRoute path="/account" element={
-                  <AccountView />
-                  }/>
+                <PrivateRoute path="/account" element={
+                <AccountView />
+                }/>
                 <Route path="/login">
                       <LoginView handleUpdate={handleUpdate} />
+                </Route>
+                <Route path="/register">
+                      <RegisterView />
                 </Route>
                 <Route path='*' element={<Navigate to="/" />}/>
               </Routes>

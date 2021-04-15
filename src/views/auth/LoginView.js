@@ -26,21 +26,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LoginView = ({handleUpdate, setAuthenticated, authenticated}) => {
+const LoginView = ({handleUpdate, authenticated}) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [Username, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [values, setValues] = useState(null);
-  const [tokens, setTokens] = useState(null);
-  const [isPending, setIsPending] = useState(false);  
-  const { setAuthTokens } = useAuth();
+  const { isAuthenticated ,setAuthTokens } = useAuth();
 
   const handleSubmit = (e) => {
     //Aby se stranka nerefreshla pri kliknuti na Add
     e.preventDefault();
     const user = {Username, password};
-    setIsPending(true);
     fetch('https://cryptfolio.azurewebsites.net/api/Auth/login', {
         method:'POST',
         headers: {"Content-type": "application/json"},
@@ -52,15 +48,15 @@ const LoginView = ({handleUpdate, setAuthenticated, authenticated}) => {
         Cookies.set("access", accessToken);
         Cookies.set("refresh", refreshToken);
         setAuthTokens(data);
-      setTokens(data);
-      handleUpdate();
-      navigate('/', { replace: true });
+        handleUpdate();
+        navigate('/', { replace: true });
     });
    
 }
-  if(authenticated){
+  if(isAuthenticated){
     navigate('/', { replace: true });
   }
+  
   return (
     <Page
       className={classes.root}

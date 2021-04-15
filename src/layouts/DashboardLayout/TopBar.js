@@ -38,8 +38,6 @@ const TopBar = ({
   const { setAuthTokens } = useAuth();
 
   const handleLogout = () => {    
-   // Cookies.remove("access");    
-   // Cookies.remove("remove");
     setAuthTokens();
     navigate('/login', { replace: true });
   };
