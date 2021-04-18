@@ -30,6 +30,7 @@ const useStyles = makeStyles(() => ({
 const TopBar = ({
   className,
   onMobileNavOpen,
+  handleLog,
   ...rest
 }) => {
   const classes = useStyles();
@@ -39,6 +40,7 @@ const TopBar = ({
 
   const handleLogout = () => {    
     setAuthTokens();
+    handleLog();
     navigate('/login', { replace: true });
   };
 

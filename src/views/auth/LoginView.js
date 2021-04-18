@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LoginView = ({handleUpdate, authenticated}) => {
+const LoginView = ({handleLogin, authenticated}) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [Username, setUserName] = useState('');
@@ -41,15 +41,19 @@ const LoginView = ({handleUpdate, authenticated}) => {
         method:'POST',
         headers: {"Content-type": "application/json"},
         body: JSON.stringify(user)
-    }).then(res => res.json())
+    }).then((res) => {
+      if (!res.ok) {
+        throw Error('could not fetch the data from that resource');
+      }
+      return res.json();
+    })
     .then(data => {
-        const accessToken  = data.accessToken;
-        const refreshToken = data.refreshToken;
-        Cookies.set("access", accessToken);
-        Cookies.set("refresh", refreshToken);
         setAuthTokens(data);
-        handleUpdate();
+        handleLogin();
         navigate('/', { replace: true });
+    })
+    .catch((err) => {
+      console.log("Právě jsi byl vykryptoměnován");
     });
    
 }
@@ -58,7 +62,6 @@ const LoginView = ({handleUpdate, authenticated}) => {
     navigate('/', { replace: true });
   }
   */
-  console.log(isAuthenticated);
   return (
     <Page
       className={classes.root}

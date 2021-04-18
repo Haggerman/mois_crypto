@@ -1,6 +1,6 @@
 /* eslint-disable */
 import 'react-perfect-scrollbar/dist/css/styles.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from 'src/components/GlobalStyles';
@@ -54,9 +54,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
-  const { isPending } = authAndGraphDataFetch();
+  const [ isCookiesOn, setCookies ] = useState();
   const [ isAuthenticated, setIsAuthenticated ] = useState(true);
-  const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, handleUpdate, handleTransaction } = portfolioFetch();
+  const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, handleUpdate, handleTransaction, handleLogin, handleLogout } = portfolioFetch();
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const existingAccessToken = Cookies.get("access");
@@ -64,6 +64,7 @@ const App = () => {
   const setTokens = (data) => {    
     if(data){
       Cookies.set("access", data.accessToken);
+      Cookies.set("refresh", data.refreshToken);
       setIsAuthenticated(true);
       setAuthTokens(data.accessToken);
     }
@@ -75,15 +76,65 @@ const App = () => {
       setAuthTokens();
     }
   } 
+  useEffect(() => {
+    let accessToken  = Cookies.get("access");
+    fetch('https://cryptfolio.azurewebsites.net/api/Portfolio/Graph/user', {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json',
+               'authorization' : 'Bearer ' + accessToken },
+}).then(res => { 
+  console.log("Proběhlo")
+  if(res.ok){
+  setCookies(true);
+  handleLogin();
+  setIsAuthenticated(true);
+  handleUpdate();
+  }
+   else if (!res.ok) { 
+      console.log("Něproběhlo");
+      setIsAuthenticated(false);    
+      setCookies(false);
+        throw Error('could not fetch the data from that resource');    
+    }    
+}).catch((err) => {
+    if (err.name === 'AbortError') {
+      console.log('fetch aborted');
+    } 
+  })
+},[])
 
-  TokenRefresher({isPending});
-  console.log(isAuthenticated);
+useEffect(() => {
+  if(isAuthenticated){
+  const intervalId = setInterval(() => {
+    let accessToken  =  Cookies.get("access");
+    let refreshToken = Cookies.get("refresh"); 
+    fetch('https://cryptfolio.azurewebsites.net/api/Token/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',
+                 'authorization' : 'Bearer ' + accessToken },
+      body: JSON.stringify({accessToken, refreshToken})
+        }).then(res => res.json())
+        .then(data => {
+          Cookies.remove("access");    
+          Cookies.remove("refresh");   
+          Cookies.set("access", data.accessToken);
+          Cookies.set("refresh", data.refreshToken);      
+        });
+  }, 280000)
+  return () => clearInterval(intervalId);
+}
+}, [isAuthenticated])
+
+if(isCookiesOn===undefined){
+ return <>Still loading...</>;
+}
+
     return (
       <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens, isAuthenticated, isError }}>
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <div className={classes.root}>
-          {isAuthenticated && authTokens ? <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} /> : null }
+          {isAuthenticated && authTokens ? <TopBar  onMobileNavOpen={() => setMobileNavOpen(true)} handleLog={handleLogout} /> : null }
             {isAuthenticated && authTokens ? <NavBar
               onMobileClose={() => setMobileNavOpen(false)}
               openMobile={isMobileNavOpen}
@@ -114,7 +165,7 @@ const App = () => {
                 <AccountView />
                 }/>
                 <Route path="/login">
-                      <LoginView handleUpdate={handleUpdate} />
+                      <LoginView handleLogin={handleLogin} />
                 </Route>
                 <Route path="/register">
                       <RegisterView />

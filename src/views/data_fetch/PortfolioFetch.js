@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-
+import TokenRefresher from 'src/views/auth/TokenRefresher';
 
 const portfolioFetch = () => {
     const [userCryptos, setUserCryptos] = useState(null);
@@ -12,48 +12,82 @@ const portfolioFetch = () => {
     const [change, setChange] = useState(0);
     const [isError, setIsError] = useState(false);
     const [transaction, setTransaction] = useState(0);
+    const [isAuth, setIsAuth] = useState(false);
+    
+    const handleLogin = () => { 
+        setIsAuth(true);
+    }
+    const handleLogout = () => {
+      setIsAuth(false);
+    }
+   
     const handleUpdate = () => {
-      setChange(change + 1);
+      setChange(change + 1);   
+      console.log("Kakánek");
     }
     const handleTransaction = () => {
       setTransaction(transaction + 1);
     }
     useEffect(() => {
+      if(isAuth){
       let accessToken  = Cookies.get("access");
       fetch('https://cryptfolio.azurewebsites.net/api/Portfolio/Graph/user', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json',
                    'authorization' : 'Bearer ' + accessToken },
-      }).then(res => {
-        if(res.status == 200){
-            setIsError(false);
-          }else{
-            setIsError(true);
+      }).then((res) => {
+        setIsError(false)
+        if (!res.ok) {
+          setIsError(true)
+          throw Error('could not fetch the data from that resource');
         }
-        
-        return res.json()})
+        return res.json();
+      })
     .then(userCryptoGraphData => {   
       setUserCryptoGraphData( userCryptoGraphData );
+    }).catch((err) => {
+      console.log("Právě jsi byl vykryproměnován");
     });
-    }, [change])
+  }else{
+    setUserCryptoGraphData(null)
+  }
+    }, [change, isAuth])
 
     useEffect(() => {
+      if(isAuth){
       fetch("https://cryptfolio.azurewebsites.net/api/Crypto")
-        .then(res => res.json())
+      .then((res) => {
+        setIsError(false)
+        if (!res.ok) {
+          setIsError(true)
+          throw Error('could not fetch the data from that resource');
+        }
+        return res.json();
+      })
         .then(cryptoData => {
           setCryptoData( cryptoData );
+        }).catch((err) => {
+          console.log("Právě jsi byl vykryproměnován");
         });
-    }, [change])
+      }else{
+        setCryptoData( null );
+      }
+    }, [change, isAuth])
 
     useEffect(() => {
-      console.log("TRANSAKCE");
+      if(isAuth){
       let accessToken  = Cookies.get("access");
       fetch("https://cryptfolio.azurewebsites.net/api/Transaction/user", {
         method: 'GET',
         headers: { 'Content-Type': 'application/json',
                    'authorization' : 'Bearer ' + accessToken },
-      }).then(res => {
-          return res.json()
+      }).then((res) => {
+        setIsError(false)
+        if (!res.ok) {
+          setIsError(true)
+          throw Error('could not fetch the data from that resource');
+        }
+        return res.json();
       })
       .then(
           userCryptosData => {
@@ -77,26 +111,42 @@ const portfolioFetch = () => {
               setPortfolioAmount(portfolio);
           }
         }).catch((err) => {
-          console.log(err);
-        })
-  }, [transaction, cryptoData, change])
+          console.log("Právě jsi byl vykryproměnován");
+        });
+      }
+      else{
+        setUserCryptos(null);
+        setPortfolioAmount(0);
+      }
+  }, [transaction, cryptoData, change, isAuth])
 
   useEffect(() => {
-    console.log("ZMĚNA");
+    if(isAuth){
     let accessToken  = Cookies.get("access");
     fetch("https://cryptfolio.azurewebsites.net/api/FavoriteCrypto/user", {
       method: 'GET',
       headers: { 'Content-Type': 'application/json',
                  'authorization' : 'Bearer ' + accessToken },
-    }).then(res => {
-        return res.json()
+    }).then((res) => {
+      setIsError(false)
+      if (!res.ok) {
+        setIsError(true)
+        throw Error('could not fetch the data from that resource');
+      }
+      return res.json();
     }).then(
         userFavorites => {
           setUserFavorites(userFavorites);
-      })
-}, [change])
+      }).catch((err) => {
+        console.log("Právě jsi byl vykryproměnován");
+      });
+    }
+    else{
+      setUserFavorites(null);
+    }
+}, [change, isAuth])
 
-  return {userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, handleUpdate, handleTransaction}
+  return {userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, handleUpdate, handleTransaction, handleLogin, handleLogout}
 }
 
 export default portfolioFetch;
