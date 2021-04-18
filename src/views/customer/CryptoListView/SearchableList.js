@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import CryptoModalWindow from './CryptoModalWindow';
 import NotFavoriteIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import FavoriteIcon  from '@material-ui/icons/Favorite';
+import Cookies from 'js-cookie';
 import {
   Box,
   Card,
@@ -38,20 +39,19 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
   };
 
   const handleFavorite = (row, isFavorite) => {
-    let id = row.id;
-    let name = row.name;
-    let image = row.image;
-    const crypto = { id, name, image };
     if(!isFavorite){
-      userFavorites.push(crypto);
-      fetch('http://localhost:8000/favorites', {
+      let accessToken  = Cookies.get("access");
+      fetch('https://cryptfolio.azurewebsites.net/api/FavoriteCrypto/add', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(crypto)
+        headers: { 'Content-Type': 'application/json', 
+          'authorization' : 'Bearer ' + accessToken  
+        },
+        body: JSON.stringify({CryptoId: row.id})
       }).then(() => {
         handleUpdate();
       });
     } else{
+      /*
       let newFavourites = userFavorites.filter(favourite => favourite.id !== id);
       setFavorites(newFavourites);
       fetch('http://localhost:8000/favorites/' + id, {
@@ -59,12 +59,13 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
     }).then(() => {
       handleUpdate();
     })
+    */
     }
   };
   
 
   useEffect(() => {    
-    if (cryptoData) {
+    if (cryptoData && userCryptos && favorites) {
       const result = userCryptos.reduce((c, v) => {
         if (v.action == 'Sold') {
           c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
@@ -76,16 +77,11 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
     
       let amounts = Object.values(result);
       let cryptoIDs = Object.keys(result);
-      let rows = cryptoData.map((row, i) => {
-        let obj = favorites.find(o => o.id === row.id);
-        let isFavorite = false;
-        if(obj){
-          isFavorite = true;          
-        }
+      let rows = cryptoData.map((row) => {
         let userCryptoIndex = cryptoIDs.indexOf(row.id);
         let ownedPrice = row.currentPrice * (amounts[userCryptoIndex]?? 0);
         return {
-          market_cap_rank: row.marketCapRank,
+          marketCapRank: row.marketCapRank,
           image: <img src={row.image} width="30" />,
           symbol: row.symbol,
           currentPrice: <p searchvalue={row.currentPrice}>{'$ ' + row.currentPrice.toLocaleString()}</p> ,
@@ -118,12 +114,12 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
             </p>
           ),
           ath: '$ ' + row.ath.toLocaleString(),
-          isFavorites: isFavorite ? (
-            <IconButton className="icon" color="primary" onClick={() => handleFavorite(row, isFavorite)} searchvalue="a" className={classes.icon}>
+          isFavorites: row.isFavorite ? (
+            <IconButton className="icon" color="primary" onClick={() => handleFavorite(row, row.isFavorite)} searchvalue="a" className={classes.icon}>
               <FavoriteIcon />
           </IconButton>
           ) : (
-            <IconButton className="icon" color="secondary" onClick={() => handleFavorite(row, isFavorite)} searchvalue="b" className={classes.icon}>
+            <IconButton className="icon" color="secondary" onClick={() => handleFavorite(row, row.isFavorite)} searchvalue="b" className={classes.icon}>
               <NotFavoriteIcon />
           </IconButton>
           ),
@@ -137,13 +133,14 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
         columns: [
           {
             label: '#',
-            field: 'market_cap_rank',
+            field: 'marketCapRank',
             sort: 'asc',
             width: 20
           },
           {
             label: 'Icon',
             field: 'image',
+            sort: 'disabled',
             width: 150
           },
           {
@@ -182,7 +179,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
             width: 100
           },
           {
-            label: <Box height="10" width="10"><IconButton color="primary" onClick={() => handleFavorite(row, isFavorite)} searchvalue="a" height="10" className={classes.icon}>
+            label: <Box height="10" width="10"><IconButton color="primary" searchvalue="a" height="10" className={classes.icon}>
             <FavoriteIcon />
         </IconButton>
         </Box>,
@@ -198,7 +195,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
       };
       setDataTable(dataTable);
     }
-  }, [userFavorites]);
+  }, [userFavorites, cryptoData]);
 
   useEffect(() => {
     setFavorites(userFavorites);
@@ -219,8 +216,10 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
             entriesOptions={[5, 10, 50, 100]}
             entries={5}
             materialSearch
+            disableRetreatAfterSorting={true}
             small
             sortRows={['ownedPrice', 'priceChangePercentage24H', 'currentPrice', 'priceChange24H', "isFavorites"]}
+            order={['marketCapRank', 'asc']}
             data={dataTable}
           />
         )}

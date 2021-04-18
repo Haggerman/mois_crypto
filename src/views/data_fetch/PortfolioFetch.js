@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import TokenRefresher from 'src/views/auth/TokenRefresher';
 
 const portfolioFetch = () => {
     const [userCryptos, setUserCryptos] = useState(null);
@@ -55,7 +54,14 @@ const portfolioFetch = () => {
 
     useEffect(() => {
       if(isAuth){
-      fetch("https://cryptfolio.azurewebsites.net/api/Crypto")
+      let accessToken  = Cookies.get("access");
+      fetch("https://cryptfolio.azurewebsites.net/api/Crypto/withFavorites",
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json',
+                   'authorization' : 'Bearer ' + accessToken },
+      }
+      )
       .then((res) => {
         setIsError(false)
         if (!res.ok) {
