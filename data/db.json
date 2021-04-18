@@ -98,6 +98,15 @@
       "date": "2021-04-02T00:00",
       "priceAtDatePerCoin": 3,
       "id": 14
+    },
+    {
+      "cryptoId": "ankr",
+      "cryptoName": "Ankr",
+      "action": "Buy",
+      "amount": 1,
+      "date": "2021-04-01T10:10",
+      "priceAtDatePerCoin": 4,
+      "id": 15
     }
   ],
   "favorites": [

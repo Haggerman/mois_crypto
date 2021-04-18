@@ -7,6 +7,7 @@ import Modal from '@material-ui/core/Modal';
 import { MenuItem, Box, Grid, Card, CardContent, Typography } from '@material-ui/core';
 import Graph from './Graph';
 import { makeStyles } from '@material-ui/core/styles';
+import Cookies from 'js-cookie';
 import { Helmet } from 'react-helmet';
 import { Navigate } from 'react-router';
 
@@ -49,16 +50,23 @@ export default function CryptoModalWindow({
     clear();
     e.preventDefault();
     let cryptoId = selectedCrypto.id;
-    let cryptoName = selectedCrypto.name;
     setAmount(parseFloat(amount));
     setPrice(parseFloat(priceAtDatePerCoin));
 
-    fetch('http://localhost:8000/cryptoTransactions', {
+    fetch('https://cryptfolio.azurewebsites.net/api/Transaction/add', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({cryptoId: cryptoId, cryptoName: cryptoName, action: action, amount: parseFloat(amount), date: date, priceAtDatePerCoin: parseFloat(priceAtDatePerCoin)})
+      headers: { 'Content-Type': 'application/json',
+                 'authorization' : 'Bearer ' + Cookies.get("access") },
+      body: JSON.stringify({CryptoId: cryptoId, Action: action, Amount: parseFloat(amount), date: date, priceAtDatePerCoin: parseFloat(priceAtDatePerCoin)})
+    }).then((res) => {
+      if (!res.ok) {
+        throw Error('could not fetch the data from that resource');
+      }
+      return res.json();
     }).then(() => {
       handleTransaction();
+    }).catch((err) => {
+      console.log("Právě jsi byl vykryptoměnován");
     });
   };
 
