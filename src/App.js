@@ -15,8 +15,6 @@ import NotFoundView from 'src/views/errors/NotFoundView';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 import portfolioFetch from './views/data_fetch/PortfolioFetch';
-import authAndGraphDataFetch from './views/data_fetch/AuthFetch';
-import TokenRefresher from './views/auth/TokenRefresher';
 import { makeStyles } from '@material-ui/core';
 import NavBar from 'src/layouts/DashboardLayout/NavBar';
 import TopBar from 'src/layouts/DashboardLayout/TopBar';
@@ -84,18 +82,16 @@ const App = () => {
                'authorization' : 'Bearer ' + accessToken },
 }).then(res => { 
   console.log("Proběhlo")
-  if(res.ok){
-  setCookies(true);
-  handleLogin();
-  setIsAuthenticated(true);
-  handleUpdate();
-  }
-   else if (!res.ok) { 
+  if (!res.ok) { 
       console.log("Něproběhlo");
       setIsAuthenticated(false);    
       setCookies(false);
         throw Error('could not fetch the data from that resource');    
     }    
+    setCookies(true);
+    handleLogin();
+    setIsAuthenticated(true);
+    handleUpdate();
 }).catch((err) => {
     if (err.name === 'AbortError') {
       console.log('fetch aborted');
@@ -113,10 +109,14 @@ useEffect(() => {
       headers: { 'Content-Type': 'application/json',
                  'authorization' : 'Bearer ' + accessToken },
       body: JSON.stringify({accessToken, refreshToken})
-        }).then(res => res.json())
-        .then(data => {
-          Cookies.remove("access");    
-          Cookies.remove("refresh");   
+        }).then((res) => {
+          if (!res.ok) {
+            Cookies.remove("access");    
+            Cookies.remove("refresh");   
+          }
+          return res.json();
+        })
+        .then(data => { 
           Cookies.set("access", data.accessToken);
           Cookies.set("refresh", data.refreshToken);      
         });
@@ -126,7 +126,7 @@ useEffect(() => {
 }, [isAuthenticated])
 
 if(isCookiesOn===undefined){
- return <>Still loading...</>;
+ return  <div></div>;
 }
 
     return (
@@ -134,8 +134,8 @@ if(isCookiesOn===undefined){
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <div className={classes.root}>
-          {isAuthenticated && authTokens ? <TopBar  onMobileNavOpen={() => setMobileNavOpen(true)} handleLog={handleLogout} /> : null }
-            {isAuthenticated && authTokens ? <NavBar
+          {isAuthenticated && authTokens && !isError ? <TopBar  onMobileNavOpen={() => setMobileNavOpen(true)} handleLog={handleLogout} /> : null }
+            {isAuthenticated && authTokens && !isError ? <NavBar
               onMobileClose={() => setMobileNavOpen(false)}
               openMobile={isMobileNavOpen}
             /> : null }
