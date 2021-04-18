@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const [ isCookiesOn, setCookies ] = useState();
   const [ isAuthenticated, setIsAuthenticated ] = useState(true);
-  const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, handleUpdate, handleTransaction, handleLogin, handleLogout } = portfolioFetch();
+  const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, userDetails, isError, handleUpdate, handleTransaction, handleLogin, handleLogout } = portfolioFetch();
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const existingAccessToken = Cookies.get("access");
@@ -135,7 +135,7 @@ if(isCookiesOn===undefined){
           <GlobalStyles />
           <div className={classes.root}>
           {isAuthenticated && authTokens && !isError ? <TopBar  onMobileNavOpen={() => setMobileNavOpen(true)} handleLog={handleLogout} /> : null }
-            {isAuthenticated && authTokens && !isError ? <NavBar
+            {isAuthenticated && authTokens && !isError ? <NavBar userDetails={userDetails}
               onMobileClose={() => setMobileNavOpen(false)}
               openMobile={isMobileNavOpen}
             /> : null }
@@ -162,7 +162,7 @@ if(isCookiesOn===undefined){
                    <SettingsView />
                    }/>
                 <PrivateRoute path="/account" element={
-                <AccountView />
+                <AccountView userDetails={userDetails} />
                 }/>
                 <Route path="/login">
                       <LoginView handleLogin={handleLogin} />

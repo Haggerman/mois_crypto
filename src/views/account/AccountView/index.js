@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import {
   Container,
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Account = () => {
+const Account = ({userDetails}) => {
   const classes = useStyles();
 
   return (
@@ -25,7 +26,7 @@ const Account = () => {
       title="Account"
     >
       <Container maxWidth="lg">
-        <Profile />
+        <Profile userDetails={userDetails} />
         <ProfileDetails />
       </Container>
     </Page>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -7,15 +8,12 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-const user = {
-  name: 'Ivan Novák'
-};
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const Profile = ({ className, ...rest }) => {
+const Profile = ({ className, userDetails, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -31,7 +29,7 @@ const Profile = ({ className, ...rest }) => {
         gutterBottom
         variant="h3"
       >
-        {user.name}
+        {userDetails ? userDetails.username : "Unknown"}
       </Typography>
     </Box>
   );

@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import TokenRefresher from 'src/views/auth/TokenRefresher';
 
 const portfolioFetch = () => {
     const [userCryptos, setUserCryptos] = useState(null);
@@ -13,6 +12,7 @@ const portfolioFetch = () => {
     const [isError, setIsError] = useState(false);
     const [transaction, setTransaction] = useState(0);
     const [isAuth, setIsAuth] = useState(false);
+    const [userDetails, setUserDetails] = useState(null);
     
     const handleLogin = () => { 
         setIsAuth(true);
@@ -28,6 +28,7 @@ const portfolioFetch = () => {
     const handleTransaction = () => {
       setTransaction(transaction + 1);
     }
+
     useEffect(() => {
       if(isAuth){
       let accessToken  = Cookies.get("access");
@@ -55,7 +56,39 @@ const portfolioFetch = () => {
 
     useEffect(() => {
       if(isAuth){
-      fetch("https://cryptfolio.azurewebsites.net/api/Crypto")
+      let accessToken  = Cookies.get("access");
+      fetch('https://cryptfolio.azurewebsites.net/api/User/detail', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json',
+                   'authorization' : 'Bearer ' + accessToken },
+      }).then((res) => {
+        setIsError(false)
+        if (!res.ok) {
+          setIsError(true)
+          throw Error('could not fetch the data from that resource');
+        }
+        return res.json();
+      })
+    .then(userDetail => {   
+      setUserDetails( userDetail );
+    }).catch((err) => {
+      console.log("Právě jsi byl vykryproměnován");
+    });
+  }else{
+    setUserDetails(null)
+  }
+    }, [change, isAuth])
+
+    useEffect(() => {
+      if(isAuth){
+      let accessToken  = Cookies.get("access");
+      fetch("https://cryptfolio.azurewebsites.net/api/Crypto/withFavorites",
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json',
+                   'authorization' : 'Bearer ' + accessToken },
+      }
+      )
       .then((res) => {
         setIsError(false)
         if (!res.ok) {
@@ -146,7 +179,7 @@ const portfolioFetch = () => {
     }
 }, [change, isAuth])
 
-  return {userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, handleUpdate, handleTransaction, handleLogin, handleLogout}
+  return {userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, userDetails, handleUpdate, handleTransaction, handleLogin, handleLogout}
 }
 
 export default portfolioFetch;
