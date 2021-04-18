@@ -20,10 +20,6 @@ import {
 } from 'react-feather';
 import NavItem from './NavItem';
 
-const user = {
-  name: 'Ivan Novák'
-};
-
 const items = [
   {
     href: '/',
@@ -63,7 +59,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const NavBar = ({ onMobileClose, openMobile }) => {
+const NavBar = ({ onMobileClose, openMobile, userDetails }) => {
   const classes = useStyles();
   const location = useLocation();
 
@@ -91,7 +87,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           color="textPrimary"
           variant="h5"
         >
-          {user.name}
+           {userDetails ? userDetails.username : "Loading..."}
         </Typography>        
       </Box>
       <Divider />
