@@ -100,10 +100,6 @@ const Favorites = ({
   };
 
   useEffect(() => {
-    setFavorites(userFavorites);
-  }, [userFavorites]);
-
-  useEffect(() => {
     if (favorites.length > 3) {
       setLength(3);
       setIsVisible(true);
@@ -132,7 +128,7 @@ const Favorites = ({
       let userCryptoIndex = cryptoIDs.indexOf(item.cryptoId);
       let ownedPrice = itemData.currentPrice * (amounts[userCryptoIndex] ?? 0);
       content.push(
-        <ListItem key={item.id}>
+        <ListItem key={item.cryptoId}>
           <Card className={clsx(classes.fit, className)} {...rest}>
             <CardContent style={{ padding: '10px' }}>
               <Grid container justify="space-between" spacing={1}>
