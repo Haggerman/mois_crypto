@@ -32,6 +32,7 @@ const LoginView = ({handleLogin, authenticated}) => {
   const [Username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const { isAuthenticated ,setAuthTokens } = useAuth();
+  const [validate, setValidate] = useState(false);
 
   const handleSubmit = (e) => {
     //Aby se stranka nerefreshla pri kliknuti na Add
@@ -45,6 +46,7 @@ const LoginView = ({handleLogin, authenticated}) => {
       if (!res.ok) {
         throw Error('could not fetch the data from that resource');
       }
+      setValidate(false);
       return res.json();
     })
     .then(data => {
@@ -54,6 +56,7 @@ const LoginView = ({handleLogin, authenticated}) => {
     })
     .catch((err) => {
       console.log("Právě jsi byl vykryptoměnován");
+      setValidate(true);
     });
    
 }
@@ -139,6 +142,7 @@ const LoginView = ({handleLogin, authenticated}) => {
                     Sign in now
                   </Button>
                 </Box>
+                {validate? <Typography variant="body1" style={{ padding: 20, color:'red', textAlign: 'center' }} variant="h6">{"Uživatel se zadanými údaji neexistuje"}</Typography>:null }
                 <Typography
                   color="textSecondary"
                   variant="body1"
