@@ -34,25 +34,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Budget = ({userCryptos, cryptoData}) => {
-  const result = userCryptos.reduce((c, v) => {
-    if (v.action == 'Sold') {
-      c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
-    } else {
-      c[v.cryptoId] = (c[v.cryptoId] || 0) + v.amount;
-    }
-    return c;
-  }, {});
-
-  let amounts = Object.values(result);
-  let cryptoIDs = Object.keys(result);
-  const classes = useStyles();
-  let portfolioAmount=0;
   
-    if (cryptoData) {
-      cryptoIDs.forEach((element, index) => {
-        let obj = cryptoData.find(o => o.id === cryptoIDs[index]);
-        portfolioAmount += obj.currentPrice * amounts[index];
-      });
+  let portfolioAmount=0;
+  const classes = useStyles();
+  if(userCryptos && cryptoData){
+    const result = userCryptos.reduce((c, v) => {
+      if (v.action == 'Sold') {
+        c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
+      } else {
+        c[v.cryptoId] = (c[v.cryptoId] || 0) + v.amount;
+      }
+      return c;
+    }, {});
+
+    let amounts = Object.values(result);
+    let cryptoIDs = Object.keys(result);
+    
+      if (cryptoData) {
+        cryptoIDs.forEach((element, index) => {
+          let obj = cryptoData.find(o => o.id === cryptoIDs[index]);
+          portfolioAmount += obj.currentPrice * amounts[index];
+        });
+    }
   }
   return (
     <Card

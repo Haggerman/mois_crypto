@@ -46,7 +46,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={4}
             xs={12}
           >
-            {userCryptos && portfolioAmount && cryptoData &&<Budget userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />}
+            <Budget userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />
           </Grid>
           <Grid
             item
@@ -55,7 +55,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={4}
             xs={12}
           >
-            {userCryptos && cryptoData && <TasksProgress userCryptos={userCryptos} cryptoData={cryptoData} />}
+            <TasksProgress userCryptos={userCryptos} cryptoData={cryptoData} />
           </Grid>
           <Grid
             item
@@ -64,7 +64,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={4}
             xs={12}
           >
-            { userCryptos && portfolioAmount && cryptoData && <TotalProfit userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />}
+            <TotalProfit userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />
           </Grid>
           <Grid
             item
@@ -73,7 +73,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={9}
             xs={12}
           >
-            {userCryptoGraphData && <PortfolioGraph userCryptoGraphData={userCryptoGraphData} />}
+            { portfolioAmount > 0 ? <PortfolioGraph userCryptoGraphData={userCryptoGraphData} /> : null}
           </Grid>
           <Grid
             item
@@ -82,7 +82,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={3}
             xs={12}
           >
-            {cryptoData && userCryptos && portfolioAmount &&<DoghnutGraph userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />}
+            {portfolioAmount > 0 ?<DoghnutGraph userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} /> : null }
           </Grid>
           <Grid
             item

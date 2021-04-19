@@ -8,8 +8,7 @@ import {
   Box,
   Card,
   CardContent,
-  CardHeader,
-  Divider,
+  Grid,
   Typography,
   colors,
   makeStyles,
@@ -131,9 +130,22 @@ const DoghnutGraph = ({
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <CardHeader title="My portfolio" />
-      <Divider />
       <CardContent>
+      <Grid
+            container
+            justify="space-between"
+            spacing={3}
+          >
+            <Grid item>
+              <Typography
+                color="textSecondary"
+                gutterBottom
+                variant="h6"
+              >
+                PORTFOLIO DIVERSITY
+              </Typography>
+            </Grid>
+          </Grid>
         <Box height={300} position="relative">
           <Doughnut data={data} options={options} />
         </Box>

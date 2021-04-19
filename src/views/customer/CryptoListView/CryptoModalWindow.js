@@ -18,9 +18,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { Helmet } from 'react-helmet';
-import { Navigate } from 'react-router';
 
 const style = {
   minWidth: 90,
@@ -285,12 +282,6 @@ export default function CryptoModalWindow({
                   </Card>
                 </Grid>
               </Grid>
-              {/*         
-       <Helmet>
-          <script src="https://widgets.coingecko.com/coingecko-coin-compare-chart-widget.js"></script>
-       </Helmet>
-       <div dangerouslySetInnerHTML={{__html: '<coingecko-coin-compare-chart-widget  coin-ids="'+selectedCrypto.id+'" currency="usd" locale="en"></coingecko-coin-compare-chart-widget>'}}></div>
-   */}
               <Grid container spacing={1} justify="space-evenly">
                 <Button
                   hidden={isHidden ? false : true}
