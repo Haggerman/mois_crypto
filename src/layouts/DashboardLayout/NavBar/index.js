@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useEffect } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -12,10 +12,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import {
-  AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
-  Settings as SettingsIcon,
-  User as UserIcon,
   DollarSign as DollarSignIcon
 } from 'react-feather';
 import NavItem from './NavItem';
@@ -30,16 +27,6 @@ const items = [
     href: 'list',
     icon: DollarSignIcon,
     title: 'Crypto List'
-  },
-  {
-    href: '/account',
-    icon: UserIcon,
-    title: 'Account'
-  },
-  {
-    href: '/settings',
-    icon: SettingsIcon,
-    title: 'Settings'
   }
 ];
 

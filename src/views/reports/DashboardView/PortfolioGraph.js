@@ -11,14 +11,20 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
-import { Card } from '@material-ui/core';
+import { 
+  Card,
+  Box,
+  CardContent,
+  Grid,
+  Typography
+} from '@material-ui/core';
 const PortfolioGraph = ({ userCryptoGraphData }) => {
   const [data, setData] = useState(userCryptoGraphData);
   const [dataTable, setDataTable] = useState(null);
   const [width, setWidth] = useState(500);
   const [height, setHeight] = useState(300);
   const CustomTooltip = ({ active, payload, label }) => {
-    if (active) {
+    if (active && payload) {
       return (
         <Card>
           <div>
@@ -49,6 +55,22 @@ const PortfolioGraph = ({ userCryptoGraphData }) => {
   return (
     <div width={width} height={height}>
       <Card>
+        <CardContent>
+          <Grid
+            container
+            justify="space-between"
+            spacing={3}
+          >
+            <Grid item>
+              <Typography
+                color="textSecondary"
+                gutterBottom
+                variant="h6"
+              >
+                PORTFOLIO GRAPH
+              </Typography>
+            </Grid>
+          </Grid>
         <ResponsiveContainer width="95%" height={500}>
           <LineChart
             width={width}
@@ -77,6 +99,7 @@ const PortfolioGraph = ({ userCryptoGraphData }) => {
             />
           </LineChart>
         </ResponsiveContainer>
+        </CardContent>
       </Card>
     </div>
   );

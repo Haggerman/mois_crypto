@@ -35,8 +35,11 @@ const useStyles = makeStyles((theme) => ({
 
 const TasksProgress = ({ className, userCryptos, cryptoData, ...rest }) => {
   const classes = useStyles();
-  const bitcoin = cryptoData.find(o => o.id === "bitcoin");
-  const bitcoinPrice = bitcoin.currentPrice;
+  let bitcoinPrice = "Loading...";
+  if(userCryptos && cryptoData){
+  const bitcoin = cryptoData.find(o => o.id === "bitcoin");  
+  bitcoinPrice = bitcoin.currentPrice;
+  }
   return (
     <Card
     className={clsx(classes.root, className)}

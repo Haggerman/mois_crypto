@@ -52,7 +52,7 @@ const portfolioFetch = () => {
   }else{
     setUserCryptoGraphData(null)
   }
-    }, [change, isAuth])
+    }, [ isAuth, transaction ])
 
     useEffect(() => {
       if(isAuth){

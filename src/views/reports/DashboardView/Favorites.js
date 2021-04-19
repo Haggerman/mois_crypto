@@ -24,6 +24,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ClearIcon from '@material-ui/icons/Clear';
 import CryptoModalWindow from 'src/views/customer/CryptoListView/CryptoModalWindow';
 import Tooltip from '@material-ui/core/Tooltip';
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles({
   root: {},
@@ -60,14 +61,18 @@ const Favorites = ({
     setSelectedCrypto(row);
     setOpen(true);
   };
-  const handleDeleFavorit = id => {
-    fetch('http://localhost:8000/favorites/' + id, { method: 'DELETE' }).then(
-      () => {
-        console.log('Deleted');
+  const handleDeleFavorit = cryptoId => {
+    let accessToken  = Cookies.get("access");
+    fetch('https://cryptfolio.azurewebsites.net/api/FavoriteCrypto/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 
+          'authorization' : 'Bearer ' + accessToken  
+        },
+        body: JSON.stringify({CryptoId: cryptoId})
+      }).then(() => {
         handleUpdate();
-      }
-    );
-    const newFavorites = favorites.filter(favorite => favorite.id !== id);
+      });
+    const newFavorites = favorites.filter(favorite => favorite.cryptoId !== cryptoId);
     setFavorites(newFavorites);
     if (newFavorites.length > 3) {
       if (viewAll) {
@@ -79,6 +84,7 @@ const Favorites = ({
       setLength(newFavorites.length);
       setIsVisible(false);
     }
+
   };
 
   const handleClick = () => {
@@ -92,6 +98,11 @@ const Favorites = ({
       setViewAll(false);
     }
   };
+
+  useEffect(() => {
+    setFavorites(userFavorites);
+  }, [userFavorites]);
+
   useEffect(() => {
     if (favorites.length > 3) {
       setLength(3);
@@ -111,6 +122,7 @@ const Favorites = ({
       }
       return c;
     }, {});
+
     let amounts = Object.values(result);
     let cryptoIDs = Object.keys(result);
     let content = [];
@@ -195,7 +207,7 @@ const Favorites = ({
                   <Typography gutterBottom variant="button">
                     <Tooltip title="Remove from favorites">
                       <IconButton
-                        onClick={() => handleDeleFavorit(item.id)}
+                        onClick={() => handleDeleFavorit(item.cryptoId)}
                         edge="end"
                         size="small"
                       >

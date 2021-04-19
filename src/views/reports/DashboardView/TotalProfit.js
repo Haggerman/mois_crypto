@@ -23,7 +23,9 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
   
   const [profit, setProfit] = useState(0);
   const [percentChange, setPercentChange] = useState(0);
-
+  let amounts;
+  let cryptoIDs;
+  if(userCryptos && portfolioAmount && cryptoData){
   const result = userCryptos.reduce((c, v) => {
     if (v.action == 'Sold') {
       c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
@@ -33,10 +35,11 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
     return c;
   }, {});
 
-  let amounts = Object.values(result);
-  let cryptoIDs = Object.keys(result);
+  amounts = Object.values(result);
+  cryptoIDs = Object.keys(result);
+  }
   useEffect(() => {
-    if (cryptoData) {
+    if (userCryptos && portfolioAmount && cryptoData) {
       let currentGain = 0;
       cryptoIDs.forEach((element, index) => {
         let obj = userCryptos.find(o => o.cryptoId === cryptoIDs[index]);
@@ -75,7 +78,7 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
             <Typography color="textSecondary" gutterBottom variant="h6">
               TOTAL PROFIT
             </Typography>
-            {profit > 0 ? (
+            {profit >= 0 ? (
               <Typography style={{color:"#4eaf0a"}} variant="h3">
                 {'$' + Math.abs(profit).toLocaleString()}
               </Typography>
@@ -96,7 +99,7 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
           display="flex"
           alignItems="center"
         >
-          {percentChange > 0 ? <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon} /> }
+          {percentChange >= 0 ? <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon} /> }
           <Typography
             className={classes.differenceValue}
             variant="body2"

@@ -7,13 +7,11 @@ import GlobalStyles from 'src/components/GlobalStyles';
 import 'src/mixins/chartjs';
 import theme from 'src/theme';
 import './customCSS.css';
-import AccountView from 'src/views/account/AccountView';
 import CryptoListView from 'src/views/customer/CryptoListView';
 import DashboardView from 'src/views/reports/DashboardView';
 import LoginView from 'src/views/auth/LoginView';
 import NotFoundView from 'src/views/errors/NotFoundView';
 import RegisterView from 'src/views/auth/RegisterView';
-import SettingsView from 'src/views/settings/SettingsView';
 import portfolioFetch from './views/data_fetch/PortfolioFetch';
 import { makeStyles } from '@material-ui/core';
 import NavBar from 'src/layouts/DashboardLayout/NavBar';
@@ -157,12 +155,6 @@ if(isCookiesOn===undefined){
                    }/>
                 <PrivateRoute path="*" element={
                 <NotFoundView />
-                }/>
-                <PrivateRoute path="/settings" element={
-                   <SettingsView />
-                   }/>
-                <PrivateRoute path="/account" element={
-                <AccountView userDetails={userDetails} />
                 }/>
                 <Route path="/login">
                       <LoginView handleLogin={handleLogin} />

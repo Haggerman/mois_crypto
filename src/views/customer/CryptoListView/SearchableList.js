@@ -39,8 +39,8 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
   };
 
   const handleFavorite = (row, isFavorite) => {
+    let accessToken  = Cookies.get("access");
     if(!isFavorite){
-      let accessToken  = Cookies.get("access");
       fetch('https://cryptfolio.azurewebsites.net/api/FavoriteCrypto/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 
@@ -51,15 +51,15 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
         handleUpdate();
       });
     } else{
-      /*
-      let newFavourites = userFavorites.filter(favourite => favourite.id !== id);
-      setFavorites(newFavourites);
-      fetch('http://localhost:8000/favorites/' + id, {
-        method: 'DELETE'
-    }).then(() => {
-      handleUpdate();
-    })
-    */
+      fetch('https://cryptfolio.azurewebsites.net/api/FavoriteCrypto/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 
+          'authorization' : 'Bearer ' + accessToken  
+        },
+        body: JSON.stringify({CryptoId: row.id})
+      }).then(() => {
+        handleUpdate();
+      });
     }
   };
   
@@ -214,7 +214,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
         {dataTable && (
           <MDBDataTable
             entriesOptions={[5, 10, 50, 100]}
-            entries={5}
+            entries={10}
             materialSearch
             disableRetreatAfterSorting={true}
             small

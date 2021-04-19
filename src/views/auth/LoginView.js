@@ -13,7 +13,6 @@ import {
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Cookies from "js-cookie";
 import { useAuth } from "src/context/auth";
 
 
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LoginView = ({handleLogin, authenticated}) => {
+const LoginView = ({handleLogin }) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [Username, setUserName] = useState('');
@@ -60,11 +59,6 @@ const LoginView = ({handleLogin, authenticated}) => {
     });
    
 }
-/* Tohle je potřeba, aby se lognutý uživatel nemohl dostat na login, ale občas se to cyklí
-  if(isAuthenticated){
-    navigate('/', { replace: true });
-  }
-  */
   return (
     <Page
       className={classes.root}
