@@ -60,43 +60,42 @@ export default function CryptoModalWindow({
     e.preventDefault();
     const current = new Date();
     const prior = new Date().setDate(current.getDate() - 30);
-    let dateForm = new Date(date).getTime()
+    let dateForm = new Date(date).getTime();
 
-    if(dateForm<= current.getTime() && dateForm >= prior){
+    if (dateForm <= current.getTime() && dateForm >= prior) {
       let cryptoId = selectedCrypto.id;
       setAmount(parseFloat(amount));
       setPrice(parseFloat(priceAtDatePerCoin));
       setPending(true);
 
-    fetch('https://cryptfolio.azurewebsites.net/api/Transaction/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: 'Bearer ' + Cookies.get('access')
-      },
-      body: JSON.stringify({
-        CryptoId: cryptoId,
-        Action: action,
-        Amount: parseFloat(amount),
-        date: date,
-        priceAtDatePerCoin: parseFloat(priceAtDatePerCoin)
+      fetch('https://cryptfolio.azurewebsites.net/api/Transaction/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: 'Bearer ' + Cookies.get('access')
+        },
+        body: JSON.stringify({
+          CryptoId: cryptoId,
+          Action: action,
+          Amount: parseFloat(amount),
+          date: date,
+          priceAtDatePerCoin: parseFloat(priceAtDatePerCoin)
+        })
       })
-    })
-      .then(res => {
-        if (!res.ok) {
-          throw Error('could not fetch the data from that resource');
-        }
-        return res.json();
-      })
-      .then(() => {
-        handleTransaction();
-        clear();
-      })
-      .catch(err => {
-        console.log('Právě jsi byl vykryptoměnován');
-      });
-    }
-    else{
+        .then(res => {
+          if (!res.ok) {
+            throw Error('could not fetch the data from that resource');
+          }
+          return res.json();
+        })
+        .then(() => {
+          handleTransaction();
+          clear();
+        })
+        .catch(err => {
+          console.log('Právě jsi byl vykryptoměnován');
+        });
+    } else {
       setValidate(true);
     }
   };
@@ -228,50 +227,43 @@ export default function CryptoModalWindow({
                       className={classes.root}
                       style={{ padding: '10px' }}
                     >
-                      <Typography
-                        color="textSecondary"
-                        variant="h6"
-                      >
+                      <Typography color="textSecondary" variant="h6">
                         Market cap rank
                       </Typography>
-                      <Typography                         gutterBottom>
+                      <Typography gutterBottom>
                         {'#' + selectedCrypto.marketCapRank}
                       </Typography>
-                      <Typography
-                        color="textSecondary"
-                        variant="h6"
-                      >
+                      <Typography color="textSecondary" variant="h6">
                         Market cap
-                      </Typography >
-                      <Typography                         gutterBottom>{'$' + selectedCrypto.marketCap.toLocaleString()}</Typography>
-                      <Typography
-                        color="textSecondary"
-                        variant="h6"
-                      >
+                      </Typography>
+                      <Typography gutterBottom>
+                        {'$' + selectedCrypto.marketCap.toLocaleString()}
+                      </Typography>
+                      <Typography color="textSecondary" variant="h6">
                         Price change 24h
                       </Typography>
-                      <Typography                         gutterBottom>
-                        {"$" + (Math.round(selectedCrypto.priceChange24H * 100) / 100).toFixed(3).toLocaleString()}
+                      <Typography gutterBottom>
+                        {'$' +
+                          (
+                            Math.round(selectedCrypto.priceChange24H * 100) /
+                            100
+                          )
+                            .toFixed(3)
+                            .toLocaleString()}
                       </Typography>
 
-                      <Typography
-                        color="textSecondary"
-                        variant="h6"
-                      >
+                      <Typography color="textSecondary" variant="h6">
                         All time high
                       </Typography>
                       {
-                        <Typography noWrap                         gutterBottom>
+                        <Typography noWrap gutterBottom>
                           {'$' + selectedCrypto.ath.toLocaleString()}
                         </Typography>
                       }
-                      <Typography
-                        color="textSecondary"
-                        variant="h6"
-                      >
+                      <Typography color="textSecondary" variant="h6">
                         Supply
                       </Typography>
-                      <Typography                         gutterBottom>
+                      <Typography gutterBottom>
                         {selectedCrypto.circulatingSupply.toFixed(2) +
                           ' / ' +
                           (selectedCrypto.totalSupply != null
@@ -306,7 +298,7 @@ export default function CryptoModalWindow({
                     label="Amount"
                     type="number"
                     value={amount}
-                    InputProps={{ inputProps: { min: 0} }}
+                    InputProps={{ inputProps: { min: 0, step:0.00001} }}
                     onChange={e => setAmount(e.target.value)}
                     InputLabelProps={{
                       shrink: true
@@ -317,7 +309,7 @@ export default function CryptoModalWindow({
                     className="outlined-basic"
                     label="Price per unit"
                     value={priceAtDatePerCoin}
-                    InputProps={{ inputProps: { min: 0} }}
+                    InputProps={{ inputProps: { min: 0, step:0.00001} }}
                     type="number"
                     onChange={e => setPrice(e.target.value)}
                     InputLabelProps={{
@@ -332,7 +324,9 @@ export default function CryptoModalWindow({
                     type="datetime-local"
                     className={classes.textField}
                     value={date}
-                    InputProps={{inputProps: { min: '12/31/2020', max: new Date()} }}
+                    InputProps={{
+                      inputProps: { min: '12/31/2020', max: new Date() }
+                    }}
                     onChange={e => setDate(e.target.value)}
                     InputLabelProps={{
                       shrink: true
@@ -353,15 +347,19 @@ export default function CryptoModalWindow({
                   </TextField>
                 </div>
                 <div style={{ padding: 20 }}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                  >
-                   {isPending? "Přidávám...": "Odeslat" } 
+                  <Button type="submit" variant="contained" color="primary">
+                    {isPending ? 'Přidávám...' : 'Odeslat'}
                   </Button>
-                  {validate? <Typography style={{ padding: 20, color:'red' }} variant="h6">{"Datum může být maximálně 30 dní staré a ne z budoucnosti!"}</Typography>:null }
-               
+                  {validate ? (
+                    <Typography
+                      style={{ padding: 20, color: 'red' }}
+                      variant="h6"
+                    >
+                      {
+                        'Datum může být maximálně 30 dní staré a ne z budoucnosti!'
+                      }
+                    </Typography>
+                  ) : null}
                 </div>
               </form>
             </Box>
