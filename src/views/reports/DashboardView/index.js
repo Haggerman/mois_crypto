@@ -10,7 +10,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Budget from './Budget';
+import MyPortfolio from './MyPortfolio';
 import Favorites from './Favorites';
 import PortfolioGraph from './PortfolioGraph';
 import TasksProgress from './TasksProgress';
@@ -46,7 +46,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={4}
             xs={12}
           >
-            <Budget userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />
+            <MyPortfolio userCryptos={userCryptos} portfolioAmount={portfolioAmount} cryptoData={cryptoData} />
           </Grid>
           <Grid
             item

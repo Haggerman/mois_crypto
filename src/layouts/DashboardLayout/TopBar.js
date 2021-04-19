@@ -9,7 +9,7 @@ import {
   Hidden,
   IconButton,
   Toolbar,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import InputIcon from '@material-ui/icons/Input';
@@ -21,6 +21,11 @@ const useStyles = makeStyles(() => ({
   avatar: {
     width: 60,
     height: 60
+  },
+  nav: {
+    color: 'white',
+    fontSize: '1.2em',
+    paddingLeft: '2em'
   }
 }));
 
@@ -50,6 +55,12 @@ const TopBar = ({
         <RouterLink to="/">
           <Logo />
         </RouterLink>
+          <RouterLink to="/" className={classes.nav}>
+                Dashboard      
+          </RouterLink>
+          <RouterLink to="/list" className={classes.nav}>
+                Crypto List       
+          </RouterLink>
         <Box flexGrow={1} />      
           <IconButton color="inherit" onClick={() => handleLogout()}>
             <InputIcon />
