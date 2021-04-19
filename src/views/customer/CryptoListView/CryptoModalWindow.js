@@ -347,16 +347,17 @@ export default function CryptoModalWindow({
                   </TextField>
                 </div>
                 <div style={{ padding: 20 }}>
-                  <Button type="submit" variant="contained" color="primary">
-                    {isPending ? 'Přidávám...' : 'Odeslat'}
-                  </Button>
+                  {!isPending && <Button type="submit" variant="contained" color="primary">
+                    {isPending ? 'Adding...' : 'Submit'}
+                  </Button>}
+                  {isPending && <p>Adding...</p>}
                   {validate ? (
                     <Typography
                       style={{ padding: 20, color: 'red' }}
                       variant="h6"
                     >
                       {
-                        'Datum může být maximálně 30 dní staré a ne z budoucnosti!'
+                        'Date can be maximally 30 days old and not from the future'
                       }
                     </Typography>
                   ) : null}

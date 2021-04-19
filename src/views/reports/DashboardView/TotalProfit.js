@@ -16,6 +16,7 @@ import {
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import MoneyIcon from '@material-ui/icons/Money';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import NumericLabel from 'react-pretty-numbers';
 
 
 
@@ -68,7 +69,16 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
       marginRight: theme.spacing(1)
     }
   }));
-
+  let params = {
+    locales : 'en-US',
+    currency: true,
+    precision: 2,
+    commafy: true, 
+    shortFormat: true,
+    shortFormatMinValue: 1000000,
+    title: false,
+    cssClass: ['class1', 'class2']
+  };
   const classes = useStyles();
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
@@ -80,11 +90,16 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
             </Typography>
             {profit >= 0 ? (
               <Typography style={{color:"#4eaf0a"}} variant="h3">
-                {'$' + Math.abs(profit).toLocaleString()}
+                {/*'$' + Math.abs(profit).toLocaleString()*/
+                  <NumericLabel params={params}>{profit}</NumericLabel>
+                }
+               
               </Typography>
             ) : (
               <Typography style={{color:"red"}} variant="h3">
-                {'-$' + Math.abs(profit).toLocaleString()}
+                -{/*'-$' + Math.abs(profit).toLocaleString()*/
+                  <NumericLabel params={params}>{Math.abs(profit)}</NumericLabel>
+                }
               </Typography>
             )}
           </Grid>

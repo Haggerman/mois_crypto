@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Budget = ({userCryptos, cryptoData}) => {
+const MyPortfolio = ({userCryptos, cryptoData}) => {
   
   let portfolioAmount=0;
   const classes = useStyles();
@@ -112,8 +112,8 @@ const Budget = ({userCryptos, cryptoData}) => {
   );
 };
 
-Budget.propTypes = {
+MyPortfolio.propTypes = {
   className: PropTypes.string
 };
 
-export default Budget;
+export default MyPortfolio;

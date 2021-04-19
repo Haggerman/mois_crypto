@@ -14,7 +14,6 @@ import NotFoundView from 'src/views/errors/NotFoundView';
 import RegisterView from 'src/views/auth/RegisterView';
 import portfolioFetch from './views/data_fetch/PortfolioFetch';
 import { makeStyles } from '@material-ui/core';
-import NavBar from 'src/layouts/DashboardLayout/NavBar';
 import TopBar from 'src/layouts/DashboardLayout/TopBar';
 import { AuthContext } from "./context/auth";
 import PrivateRoute from './route/PrivateRoute';
@@ -32,10 +31,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flex: '1 1 auto',
     overflow: 'hidden',
-    paddingTop: 64,
-    [theme.breakpoints.up('lg')]: {
-      paddingLeft: 256
-    }
+    paddingTop: 64
   },
   contentContainer: {
     display: 'flex',
@@ -133,10 +129,6 @@ if(isCookiesOn===undefined){
           <GlobalStyles />
           <div className={classes.root}>
           {isAuthenticated && authTokens && !isError ? <TopBar  onMobileNavOpen={() => setMobileNavOpen(true)} handleLog={handleLogout} /> : null }
-            {isAuthenticated && authTokens && !isError ? <NavBar userDetails={userDetails}
-              onMobileClose={() => setMobileNavOpen(false)}
-              openMobile={isMobileNavOpen}
-            /> : null }
               <div className={classes.wrapper}>
               <div className={classes.contentContainer}>
                 <div className={classes.content}>
