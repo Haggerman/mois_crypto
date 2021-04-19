@@ -11,10 +11,12 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
       let rows = userCryptos.map((row, i) => {
         let date = new Date(row.date);
         let currentPrice = 0;
+        let cryptoName = '';
         let profit = 0;
         let obj = cryptoData.find(o => o.id === row.cryptoId);
         if(obj){
-        currentPrice = obj.currentPrice
+        currentPrice = obj.currentPrice;
+        cryptoName = obj.name;
         }
         if(row.action === 'Buy'){
           profit = (currentPrice - row.priceAtDatePerCoin)*row.amount
@@ -23,7 +25,7 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
           profit = - (currentPrice - row.priceAtDatePerCoin)*row.amount 
         }
         return {
-          cryptoName: row.cryptoName,
+          cryptoName: cryptoName,
           amount: row.amount,
           action: row.action,
           priceAtDatePerCoin:

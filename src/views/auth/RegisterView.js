@@ -1,11 +1,11 @@
-import React from 'react';
+/* eslint-disable */
+import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {
   Box,
   Button,
-  Checkbox,
   Container,
   FormHelperText,
   Link,
@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 const RegisterView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [validate, setValidate] = useState(false);
 
   return (
     <Page
@@ -43,22 +44,40 @@ const RegisterView = () => {
           <Formik
             initialValues={{
               email: '',
-              firstName: '',
-              lastName: '',
+              userName: '',
               password: '',
-              policy: false
+              confirmPassword: ''
             }}
             validationSchema={
               Yup.object().shape({
                 email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                firstName: Yup.string().max(255).required('First name is required'),
-                lastName: Yup.string().max(255).required('Last name is required'),
+                userName: Yup.string().max(255).required('User name is required'),
                 password: Yup.string().max(255).required('password is required'),
-                policy: Yup.boolean().oneOf([true], 'This field must be checked')
+                confirmPassword: Yup.string()
+                .oneOf([Yup.ref('password'), null], 'Passwords must match')
               })
             }
-            onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+            onSubmit={(values, actions) => {
+              setValidate(false);
+              fetch('https://cryptfolio.azurewebsites.net/api/Auth/register', {
+                method:'POST',
+                headers: {"Content-type": "application/json"},
+                body: JSON.stringify(values)
+            }).then((res) => {
+              if (!res.ok) {
+                throw Error('could not fetch the data from that resource');
+              }
+              return res.json();
+            })
+            .then(data => {
+                navigate('/login', { replace: true });
+            })
+            .catch((err) => {
+              console.log("Právě jsi byl vykryptoměnován");
+              actions.setSubmitting(false);
+              setValidate(true);
+            });
+
             }}
           >
             {({
@@ -87,27 +106,15 @@ const RegisterView = () => {
                   </Typography>
                 </Box>
                 <TextField
-                  error={Boolean(touched.firstName && errors.firstName)}
+                  error={Boolean(touched.userName && errors.userName)}
                   fullWidth
-                  helperText={touched.firstName && errors.firstName}
-                  label="First name"
+                  helperText={touched.userName && errors.userName}
+                  label="User name"
                   margin="normal"
-                  name="firstName"
+                  name="userName"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.firstName}
-                  variant="outlined"
-                />
-                <TextField
-                  error={Boolean(touched.lastName && errors.lastName)}
-                  fullWidth
-                  helperText={touched.lastName && errors.lastName}
-                  label="Last name"
-                  margin="normal"
-                  name="lastName"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.lastName}
+                  value={values.userName}
                   variant="outlined"
                 />
                 <TextField
@@ -136,33 +143,19 @@ const RegisterView = () => {
                   value={values.password}
                   variant="outlined"
                 />
-                <Box
-                  alignItems="center"
-                  display="flex"
-                  ml={-1}
-                >
-                  <Checkbox
-                    checked={values.policy}
-                    name="policy"
-                    onChange={handleChange}
-                  />
-                  <Typography
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    I have read the
-                    {' '}
-                    <Link
-                      color="primary"
-                      component={RouterLink}
-                      to="#"
-                      underline="always"
-                      variant="h6"
-                    >
-                      Terms and Conditions
-                    </Link>
-                  </Typography>
-                </Box>
+                <TextField
+                  error={Boolean(touched.confirmPassword && errors.confirmPassword)}
+                  fullWidth
+                  helperText={touched.confirmPassword && errors.confirmPassword}
+                  label="Confirm Password"
+                  margin="normal"
+                  name="confirmPassword"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="password"
+                  value={values.confirmPassword}
+                  variant="outlined"
+                />
                 {Boolean(touched.policy && errors.policy) && (
                   <FormHelperText error>
                     {errors.policy}
@@ -179,6 +172,7 @@ const RegisterView = () => {
                   >
                     Sign up now
                   </Button>
+                  {validate? <Typography variant="body1" style={{ padding: 20, color:'red', textAlign: 'center' }} variant="h6">{"Uživatel se zadanými údaji již existuje"}</Typography>:null }
                 </Box>
                 <Typography
                   color="textSecondary"
