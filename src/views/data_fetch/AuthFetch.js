@@ -10,7 +10,7 @@ const authAndGraphDataFetch = () => {
 
     useEffect(() => {
         let accessToken  = Cookies.get("access");
-        fetch('https://cryptfolio.azurewebsites.net/api/Portfolio/Graph/user', {
+        fetch('https://cryptfolio.azurewebsites.net/api/Portfolio/User/detail', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json',
                    'authorization' : 'Bearer ' + accessToken },

@@ -25,7 +25,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import CryptoModalWindow from 'src/views/customer/CryptoListView/CryptoModalWindow';
 import Tooltip from '@material-ui/core/Tooltip';
 import Cookies from 'js-cookie';
-import removeTrailingZeros from 'remove-trailing-zeros'
+import removeTrailingZeros from 'remove-trailing-zeros';
+import refreshToken from 'src/views/auth/refreshToken';
 
 const useStyles = makeStyles({
   root: {},
@@ -46,7 +47,7 @@ const Favorites = ({
   handleUpdate,
   handleTransaction,
   userCryptos,
-  cryptoData,
+  cryptoData, 
   ...rest
 }) => {
   const classes = useStyles();
@@ -57,23 +58,26 @@ const Favorites = ({
   const [viewAll, setViewAll] = useState(true);
   const [selectedCrypto, setSelectedCrypto] = useState('');
   const [open, setOpen] = useState(false);
+  const [cryptoId, setDeleteFavoriteId] = useState(null);
+  const [isClicked, setClicked] = useState(false);
 
-  const handleClickModal = row => {
-    setSelectedCrypto(row);
-    setOpen(true);
-  };
-  const handleDeleFavorit = cryptoId => {
-    let accessToken  = Cookies.get("access");
+
+  const handleRefresh = () => {
+    setClicked(false);
+    let accessToken = Cookies.get('access');
     fetch('https://cryptfolio.azurewebsites.net/api/FavoriteCrypto/delete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 
-          'authorization' : 'Bearer ' + accessToken  
-        },
-        body: JSON.stringify({CryptoId: cryptoId})
-      }).then(() => {
-        handleUpdate();
-      });
-    const newFavorites = favorites.filter(favorite => favorite.cryptoId !== cryptoId);
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: 'Bearer ' + accessToken
+      },
+      body: JSON.stringify({ CryptoId: cryptoId })
+    }).then(() => {
+      handleUpdate();
+    });
+    const newFavorites = favorites.filter(
+      favorite => favorite.cryptoId !== cryptoId
+    );
     setFavorites(newFavorites);
     if (newFavorites.length > 3) {
       if (viewAll) {
@@ -85,7 +89,19 @@ const Favorites = ({
       setLength(newFavorites.length);
       setIsVisible(false);
     }
+  }
 
+
+
+  const {} = refreshToken(isClicked, handleRefresh)
+
+  const handleClickModal = row => {
+    setSelectedCrypto(row);
+    setOpen(true);
+  };
+  const handleDeleFavorit = cryptoId => {
+    setClicked(true);
+    setDeleteFavoriteId(cryptoId);
   };
 
   const handleClick = () => {
@@ -125,6 +141,7 @@ const Favorites = ({
     let content = [];
     for (let i = 0; i < listLength; i++) {
       const item = favoriteItem[i];
+      if(item){
       let itemData = cryptoData.find(o => o.id === item.cryptoId);
       let userCryptoIndex = cryptoIDs.indexOf(item.cryptoId);
       let ownedPrice = itemData.currentPrice * (amounts[userCryptoIndex] ?? 0);
@@ -148,8 +165,9 @@ const Favorites = ({
                     Amount
                   </Typography>
                   <Typography color="textSecondary">
-                    {amounts[userCryptoIndex] > 0 ?
-                      removeTrailingZeros(amounts[userCryptoIndex].toFixed(6)): 0}
+                    {amounts[userCryptoIndex] > 0
+                      ? removeTrailingZeros(amounts[userCryptoIndex].toFixed(6))
+                      : 0}
                   </Typography>
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Holdings
@@ -227,7 +245,7 @@ const Favorites = ({
             </CardContent>
           </Card>
         </ListItem>
-      );
+      );}
     }
     return content;
   };
@@ -242,9 +260,10 @@ const Favorites = ({
         hideFavoritesButton={true}
         handleTransaction={handleTransaction}
       />
-      <CardHeader title="Favorites" />
-      <Divider />
-      <List>
+      <Typography color="textSecondary" style={{ padding: '12px' }} variant="h6">
+        FAVORITES
+      </Typography>
+      <List style={{ paddingTop: '0px' }}>
         {listLength > 0 ? (
           getFavorites(favorites)
         ) : (

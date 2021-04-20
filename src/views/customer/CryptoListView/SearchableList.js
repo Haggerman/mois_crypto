@@ -9,6 +9,7 @@ import CryptoModalWindow from './CryptoModalWindow';
 import NotFavoriteIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import FavoriteIcon  from '@material-ui/icons/Favorite';
 import Cookies from 'js-cookie';
+import refreshToken from 'src/views/auth/refreshToken';
 import {
   Box,
   Card,
@@ -32,13 +33,15 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
   const [selectedCrypto, setSelectedCrypto] = useState('');
   const [open, setOpen] = useState(false);
   const [favorites, setFavorites] = useState(userFavorites);
+  const [isFavorite, setFavorite] = useState(null);
+  const [row, setRow] = useState(null);
+  const [isClicked, setClicked] = useState(false);
 
   const handleClick = (row) => {
       setSelectedCrypto(row);
       setOpen(true);
   };
-
-  const handleFavorite = (row, isFavorite) => {
+  const handleRefresh = () => {
     let accessToken  = Cookies.get("access");
     if(!isFavorite){
       fetch('https://cryptfolio.azurewebsites.net/api/FavoriteCrypto/add', {
@@ -48,7 +51,8 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
         },
         body: JSON.stringify({CryptoId: row.id})
       }).then(() => {
-        handleUpdate();
+        handleUpdate(); 
+        setClicked(false);
       });
     } else{
       fetch('https://cryptfolio.azurewebsites.net/api/FavoriteCrypto/delete', {
@@ -59,11 +63,19 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
         body: JSON.stringify({CryptoId: row.id})
       }).then(() => {
         handleUpdate();
+        setClicked(false);
       });
     }
+  }
+
+  const handleFavorite = (row, isFavorite) => {
+    setRow(row);
+    setFavorite(isFavorite);
+    setClicked(true);
   };
   
 
+  const {} = refreshToken(isClicked, handleRefresh)
   useEffect(() => {    
     if (cryptoData && userCryptos && favorites) {
       const result = userCryptos.reduce((c, v) => {
