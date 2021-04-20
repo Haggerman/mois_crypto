@@ -18,6 +18,7 @@ import TopBar from 'src/layouts/DashboardLayout/TopBar';
 import { AuthContext } from "./context/auth";
 import PrivateRoute from './route/PrivateRoute';
 import Cookies from 'js-cookie';
+import refreshToken from 'src/views/auth/refreshToken';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,11 +49,12 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const [ isCookiesOn, setCookies ] = useState();
   const [ isAuthenticated, setIsAuthenticated ] = useState(true);
-  const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, userDetails, isError, handleUpdate, handleTransaction, handleLogin, handleLogout } = portfolioFetch();
+  const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, handleUpdate, handleTransaction, handleLogin, handleLogout } = portfolioFetch();
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const existingAccessToken = Cookies.get("access");
   const [authTokens, setAuthTokens] = useState(existingAccessToken);
+  const [userDetails, setUserDetails] = useState(null);
   const setTokens = (data) => {    
     if(data){
       Cookies.set("access", data.accessToken);
@@ -69,55 +71,63 @@ const App = () => {
     }
   } 
   useEffect(() => {
-    let accessToken  = Cookies.get("access");
-    fetch('https://cryptfolio.azurewebsites.net/api/Portfolio/Graph/user', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json',
-               'authorization' : 'Bearer ' + accessToken },
-}).then(res => { 
-  console.log("Proběhlo")
-  if (!res.ok) { 
-      console.log("Něproběhlo");
-      setIsAuthenticated(false);    
-      setCookies(false);
-        throw Error('could not fetch the data from that resource');    
-    }    
-    setCookies(true);
-    handleLogin();
-    setIsAuthenticated(true);
-    handleUpdate();
-}).catch((err) => {
-    if (err.name === 'AbortError') {
-      console.log('fetch aborted');
-    } 
-  })
-},[])
+    if(isCookiesOn){
+      let accessToken = Cookies.get('access');
+      fetch('https://cryptfolio.azurewebsites.net/api/User/detail', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: 'Bearer ' + accessToken
+        }
+      })
+        .then(res => {
+          setIsError(false);
+          if (!res.ok) {
+            setIsError(true);
+            throw Error('could not fetch the data from that resource');
+          }
+          return res.json();
+        })
+        .then(userDetail => {
+          setUserDetails(userDetail);
+        })
+        .catch(err => {
+          console.log('Právě jsi byl vykryproměnován');
+        });
+}
+else {
+  setUserDetails(null);
+}
+},[isAuthenticated, isCookiesOn])
 
 useEffect(() => {
-  if(isAuthenticated){
-  const intervalId = setInterval(() => {
     let accessToken  =  Cookies.get("access");
     let refreshToken = Cookies.get("refresh"); 
     fetch('https://cryptfolio.azurewebsites.net/api/Token/refresh', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json',
-                 'authorization' : 'Bearer ' + accessToken },
+      headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify({accessToken, refreshToken})
         }).then((res) => {
           if (!res.ok) {
+            setIsAuthenticated(false);    
+            setCookies(false);
             Cookies.remove("access");    
             Cookies.remove("refresh");   
+            throw Error('could not fetch the data from that resource');
           }
           return res.json();
         })
         .then(data => { 
           Cookies.set("access", data.accessToken);
-          Cookies.set("refresh", data.refreshToken);      
-        });
-  }, 280000)
-  return () => clearInterval(intervalId);
-}
-}, [isAuthenticated])
+          Cookies.set("refresh", data.refreshToken);   
+          setCookies(true);
+          setIsAuthenticated(true);   
+          handleLogin();
+        }).catch((err) => {
+          console.log(err);
+        }); ;
+}, [])
+
 
 if(isCookiesOn===undefined){
  return  <div></div>;

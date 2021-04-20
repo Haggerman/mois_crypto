@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Modal from '@material-ui/core/Modal';
+import moment from 'moment';
 import {
   MenuItem,
   Box,
@@ -18,11 +19,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import refreshToken from 'src/views/auth/refreshToken';
 
 const style = {
   minWidth: 90,
   textAlign: 'left'
-};
+}; 
 
 export default function CryptoModalWindow({
   open,
@@ -40,7 +42,6 @@ export default function CryptoModalWindow({
       transform: `translate(-${top}%, -${left}%)`
     };
   }
-
   const handleClose = () => {
     clear();
     onClose();
@@ -48,13 +49,52 @@ export default function CryptoModalWindow({
 
   const clear = () => {
     setIsHidden(true);
-    setAmount();
+    setAmount(0);
     setDate('');
-    setPrice();
+    setPrice(0);
     setAction('Buy');
     setValidate(false);
     setPending(false);
+    setClicked(false);
   };
+  const handleHidden = () => {
+    setPrice(selectedCrypto.currentPrice);
+    setIsHidden(false);
+    setDate(moment(new Date()).format('YYYY-MM-DDT00:00'));
+  }
+  const handleRefresh = () => {
+    setAmount(parseFloat(amount));
+    setPrice(parseFloat(priceAtDatePerCoin));
+    setPending(true);
+    fetch('https://cryptfolio.azurewebsites.net/api/Transaction/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: 'Bearer ' + Cookies.get('access')
+      },
+      body: JSON.stringify({
+        CryptoId: selectedCrypto.id,
+        Action: action,
+        Amount: parseFloat(amount),
+        date: date,
+        priceAtDatePerCoin: parseFloat(priceAtDatePerCoin)
+      })
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw Error('could not fetch the data from that resource');
+        }
+        return res.json();
+      })
+      .then(() => {
+        handleTransaction();
+        clear();
+      })
+      .catch(err => {
+        console.log('Právě jsi byl vykryptoměnován');
+      });
+  
+  }
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -63,38 +103,8 @@ export default function CryptoModalWindow({
     let dateForm = new Date(date).getTime();
 
     if (dateForm <= current.getTime() && dateForm >= prior) {
-      let cryptoId = selectedCrypto.id;
-      setAmount(parseFloat(amount));
-      setPrice(parseFloat(priceAtDatePerCoin));
-      setPending(true);
+      setClicked(true);
 
-      fetch('https://cryptfolio.azurewebsites.net/api/Transaction/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: 'Bearer ' + Cookies.get('access')
-        },
-        body: JSON.stringify({
-          CryptoId: cryptoId,
-          Action: action,
-          Amount: parseFloat(amount),
-          date: date,
-          priceAtDatePerCoin: parseFloat(priceAtDatePerCoin)
-        })
-      })
-        .then(res => {
-          if (!res.ok) {
-            throw Error('could not fetch the data from that resource');
-          }
-          return res.json();
-        })
-        .then(() => {
-          handleTransaction();
-          clear();
-        })
-        .catch(err => {
-          console.log('Právě jsi byl vykryptoměnován');
-        });
     } else {
       setValidate(true);
     }
@@ -138,6 +148,8 @@ export default function CryptoModalWindow({
   const [action, setAction] = useState('Buy');
   const [validate, setValidate] = useState(false);
   const [isPending, setPending] = useState(false);
+  const [isClicked, setClicked] = useState(false);
+  const {} = refreshToken(isClicked, handleRefresh)
 
   return (
     <div>
@@ -279,7 +291,7 @@ export default function CryptoModalWindow({
                   hidden={isHidden ? false : true}
                   variant="contained"
                   color="primary"
-                  onClick={() => setIsHidden(false)}
+                  onClick={handleHidden}
                 >
                   Add transaction
                 </Button>
@@ -316,7 +328,6 @@ export default function CryptoModalWindow({
                       shrink: true
                     }}
                   />
-
                   <TextField
                     required
                     id="datetime-local"
@@ -325,7 +336,7 @@ export default function CryptoModalWindow({
                     className={classes.textField}
                     value={date}
                     InputProps={{
-                      inputProps: { min: '12/31/2020', max: new Date() }
+                      inputProps: { min: new Date().setDate(new Date().getDate()- 30), max: new Date() }
                     }}
                     onChange={e => setDate(e.target.value)}
                     InputLabelProps={{

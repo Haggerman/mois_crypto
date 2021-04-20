@@ -23,8 +23,7 @@ const Graph = ({ cryptoId }) => {
   const [height, setHeight] = useState(300);
 
   const CustomTooltip = ({ active, payload, label }) => {
-    if(payload){
-      if (active) {
+    if(payload && payload.length>0){
         return (
           <Card>
             <div>
@@ -35,9 +34,17 @@ const Graph = ({ cryptoId }) => {
             </div>
           </Card>
         );
-      }
-      return null;
-    };
+    }
+    return (
+      <Card>
+        <div>
+          <p>
+            Date: 
+          </p>
+          <p>Price: </p>
+        </div>
+      </Card>
+    );
   }
 
   useEffect(() => {

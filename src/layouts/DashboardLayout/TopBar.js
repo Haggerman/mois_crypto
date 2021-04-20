@@ -45,8 +45,8 @@ const TopBar = ({
   const { setAuthTokens } = useAuth();
 
   const handleLogout = () => {    
-    setAuthTokens();
     handleLog();
+    setAuthTokens();
     navigate('/login', { replace: true });
   };
 

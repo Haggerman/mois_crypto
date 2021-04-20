@@ -32,9 +32,11 @@ const LoginView = ({handleLogin }) => {
   const [password, setPassword] = useState('');
   const { isAuthenticated ,setAuthTokens } = useAuth();
   const [validate, setValidate] = useState(false);
+  const [login, setLogin] = useState(false);
 
   const handleSubmit = (e) => {
     //Aby se stranka nerefreshla pri kliknuti na Add
+    setLogin(true);
     e.preventDefault();
     const user = {Username, password};
     fetch('https://cryptfolio.azurewebsites.net/api/Auth/login', {
@@ -42,13 +44,16 @@ const LoginView = ({handleLogin }) => {
         headers: {"Content-type": "application/json"},
         body: JSON.stringify(user)
     }).then((res) => {
+      setLogin(false);
       if (!res.ok) {
         throw Error('could not fetch the data from that resource');
       }
+   
       setValidate(false);
       return res.json();
     })
     .then(data => {
+       
         setAuthTokens(data);
         handleLogin();
         navigate('/', { replace: true });
@@ -132,8 +137,8 @@ const LoginView = ({handleLogin }) => {
                     size="large"
                     type="submit"
                     variant="contained"
-                  >
-                    Sign in now
+                    disabled={login} >
+                    { !login ? "Sign in now" : "Signing..." }
                   </Button>
                 </Box>
                 {validate? <Typography variant="body1" style={{ padding: 20, color:'red', textAlign: 'center' }} variant="h6">{"Uživatel se zadanými údaji neexistuje"}</Typography>:null }
