@@ -347,10 +347,10 @@ export default function CryptoModalWindow({
                   </TextField>
                 </div>
                 <div style={{ padding: 20 }}>
-                  {!isPending && <Button type="submit" variant="contained" color="primary">
-                    {isPending ? 'Adding...' : 'Submit'}
-                  </Button>}
-                  {isPending && <p>Adding...</p>}
+                 <Button type="submit" variant="contained" color="primary" 
+                    disabled={isPending} >
+                    { !isPending ? "Submit" : "Adding..." }
+                  </Button>
                   {validate ? (
                     <Typography
                       style={{ padding: 20, color: 'red' }}

@@ -32,7 +32,7 @@ const DoghnutGraph = ({
   const classes = useStyles();
   const theme = useTheme();
   let result = userCryptos.reduce((c, v) => {
-    if (v.action == 'Sell') {
+    if (v.action == 'Sold') {
       c[v.cryptoId] =
         (c[v.cryptoId] || 0) - v.amount;
     } else {

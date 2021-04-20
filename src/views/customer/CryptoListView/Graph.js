@@ -23,20 +23,22 @@ const Graph = ({ cryptoId }) => {
   const [height, setHeight] = useState(300);
 
   const CustomTooltip = ({ active, payload, label }) => {
-    if (active) {
-      return (
-        <Card>
-          <div>
-            <p>
-              Date: {isPending? 0: moment(payload[0].payload.time).format('DD-MM-YY  HH:mm')}
-            </p>
-            <p>Price: ${isPending? 0: payload[0].value}</p>
-          </div>
-        </Card>
-      );
-    }
-    return null;
-  };
+    if(payload){
+      if (active) {
+        return (
+          <Card>
+            <div>
+              <p>
+                Date: {isPending? 0: moment(payload[0].payload.time).format('DD-MM-YY  HH:mm')}
+              </p>
+              <p>Price: ${isPending? 0: payload[0].value}</p>
+            </div>
+          </Card>
+        );
+      }
+      return null;
+    };
+  }
 
   useEffect(() => {
     if (data) {

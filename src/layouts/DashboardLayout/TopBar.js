@@ -11,8 +11,9 @@ import {
   Toolbar,
   makeStyles,
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 import InputIcon from '@material-ui/icons/Input';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import Logo from 'src/components/Logo';
 import { useAuth } from "src/context/auth";
 
@@ -25,7 +26,11 @@ const useStyles = makeStyles(() => ({
   nav: {
     color: 'white',
     fontSize: '1.2em',
-    paddingLeft: '2em'
+    paddingRight: '1em',
+    paddingLeft: '1em',
+    '&:hover': {
+      color: "black",
+   },
   }
 }));
 
@@ -56,23 +61,15 @@ const TopBar = ({
           <Logo />
         </RouterLink>
           <RouterLink to="/" className={classes.nav}>
-                Dashboard      
+          <AssessmentIcon /> Dashboard 
           </RouterLink>
           <RouterLink to="/list" className={classes.nav}>
-                Crypto List       
+          <ListAltIcon  /> Crypto list
           </RouterLink>
         <Box flexGrow={1} />      
-          <IconButton color="inherit" onClick={() => handleLogout()}>
+          <IconButton color="inherit" onClick={() => handleLogout()} className={classes.nav}>
             <InputIcon />
           </IconButton>
-        <Hidden lgUp>
-          <IconButton
-            color="inherit"
-            onClick={onMobileNavOpen}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Hidden>
       </Toolbar>
     </AppBar>
   );

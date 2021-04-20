@@ -60,6 +60,7 @@
     "react-scripts": "^4.0.0",
     "react-token-auth": "^1.1.8",
     "recharts": "^2.0.8",
+    "remove-trailing-zeros": "^1.0.3",
     "uuid": "^8.3.0",
     "yup": "^0.29.3"
   },
