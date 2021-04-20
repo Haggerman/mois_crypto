@@ -24,33 +24,28 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
   
   const [profit, setProfit] = useState(0);
   const [percentChange, setPercentChange] = useState(0);
-  let amounts;
-  let cryptoIDs;
-  if(userCryptos && portfolioAmount && cryptoData){
-  const result = userCryptos.reduce((c, v) => {
-    if (v.action == 'Sold') {
-      c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
-    } else {
-      c[v.cryptoId] = (c[v.cryptoId] || 0) + v.amount;
-    }
-    return c;
-  }, {});
 
-  amounts = Object.values(result);
-  cryptoIDs = Object.keys(result);
-  }
   useEffect(() => {
-    if (userCryptos && portfolioAmount && cryptoData) {
-      let currentGain = 0;
-      cryptoIDs.forEach((element, index) => {
-        let obj = userCryptos.find(o => o.cryptoId === cryptoIDs[index]);
-        currentGain += obj.priceAtDatePerCoin * amounts[index];
+    if(userCryptos && portfolioAmount != null && cryptoData){
+      let totalProfit = 0;
+      let initialInvestment = 0;
+      userCryptos.map((row, i) => { 
+        let obj = cryptoData.find(o => o.id === row.cryptoId);
+        if(obj){
+        let currentPrice = obj.currentPrice;
+        if(row.action === 'Buy'){
+          initialInvestment = initialInvestment + row.amount*row.priceAtDatePerCoin;
+          totalProfit = totalProfit + (currentPrice - row.priceAtDatePerCoin)*row.amount
+        }
+        else{
+          totalProfit = totalProfit - (currentPrice - row.priceAtDatePerCoin)*row.amount 
+        }
+      }
       });
-      const profit = portfolioAmount - currentGain;
-      setProfit(profit);
-      setPercentChange(profit / portfolioAmount * 100);
+      setProfit(totalProfit);
+      setPercentChange( totalProfit*100 / initialInvestment );
     }
-  }, [portfolioAmount]);
+  }, [portfolioAmount, userCryptos, cryptoData]);
   
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -97,9 +92,7 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
               </Typography>
             ) : (
               <Typography style={{color:"red"}} variant="h3">
-                -{/*'-$' + Math.abs(profit).toLocaleString()*/
-                  <NumericLabel params={params}>{Math.abs(profit)}</NumericLabel>
-                }
+                <NumericLabel params={params}>{profit}</NumericLabel>
               </Typography>
             )}
           </Grid>

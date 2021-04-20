@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TasksProgress = ({ className, userCryptos, cryptoData, ...rest }) => {
+const BitcoinPriceCard = ({ className, userCryptos, cryptoData, ...rest }) => {
   const classes = useStyles();
   let bitcoinPrice = "Loading...";
   if(userCryptos && cryptoData){
@@ -96,8 +96,8 @@ const TasksProgress = ({ className, userCryptos, cryptoData, ...rest }) => {
   );
 };
 
-TasksProgress.propTypes = {
+BitcoinPriceCard.propTypes = {
   className: PropTypes.string
 };
 
-export default TasksProgress;
+export default BitcoinPriceCard;

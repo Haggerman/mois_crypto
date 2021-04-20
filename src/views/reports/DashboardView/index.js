@@ -13,7 +13,7 @@ import Page from 'src/components/Page';
 import MyPortfolio from './MyPortfolio';
 import Favorites from './Favorites';
 import PortfolioGraph from './PortfolioGraph';
-import TasksProgress from './TasksProgress';
+import BitcoinPriceCard from './BitcoinPriceCard';
 import TotalProfit from './TotalProfit';
 import DoghnutGraph from './DoghnutGraph';
 import UserCryptosList from 'src/views/data_fetch/userCryptosList';
@@ -55,7 +55,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={4}
             xs={12}
           >
-            <TasksProgress userCryptos={userCryptos} cryptoData={cryptoData} />
+            <BitcoinPriceCard userCryptos={userCryptos} cryptoData={cryptoData} />
           </Grid>
           <Grid
             item
@@ -73,7 +73,7 @@ const Dashboard = ({userCryptos, portfolioAmount, cryptoData, userFavorites, han
             xl={9}
             xs={12}
           >
-            { portfolioAmount > 0 ? <PortfolioGraph userCryptoGraphData={userCryptoGraphData} /> : null}
+            { userCryptos && userCryptos.length > 0 ? <PortfolioGraph userCryptoGraphData={userCryptoGraphData} /> : null}
           </Grid>
           <Grid
             item

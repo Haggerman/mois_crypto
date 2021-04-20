@@ -105,7 +105,7 @@ const portfolioFetch = () => {
       }else{
         setCryptoData( null );
       }
-    }, [change, isAuth])
+    }, [change, isAuth, transaction])
 
     useEffect(() => {
       if(isAuth){
@@ -177,7 +177,7 @@ const portfolioFetch = () => {
     else{
       setUserFavorites(null);
     }
-}, [change, isAuth])
+}, [change, isAuth, transaction])
 
   return {userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, userDetails, handleUpdate, handleTransaction, handleLogin, handleLogout}
 }

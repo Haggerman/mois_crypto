@@ -25,6 +25,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import CryptoModalWindow from 'src/views/customer/CryptoListView/CryptoModalWindow';
 import Tooltip from '@material-ui/core/Tooltip';
 import Cookies from 'js-cookie';
+import removeTrailingZeros from 'remove-trailing-zeros'
 
 const useStyles = makeStyles({
   root: {},
@@ -111,7 +112,7 @@ const Favorites = ({
 
   const getFavorites = favoriteItem => {
     const result = userCryptos.reduce((c, v) => {
-      if (v.action == 'Sell') {
+      if (v.action == 'Sold') {
         c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
       } else {
         c[v.cryptoId] = (c[v.cryptoId] || 0) + v.amount;
@@ -147,8 +148,8 @@ const Favorites = ({
                     Amount
                   </Typography>
                   <Typography color="textSecondary">
-                    {amounts[userCryptoIndex] > 0?
-                      amounts[userCryptoIndex].toFixed(7): 0}
+                    {amounts[userCryptoIndex] > 0 ?
+                      removeTrailingZeros(amounts[userCryptoIndex].toFixed(6)): 0}
                   </Typography>
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Holdings
