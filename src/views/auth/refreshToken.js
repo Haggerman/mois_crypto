@@ -24,11 +24,9 @@ const refreshToken = (isClicked, handleRefresh) => {
                 console.log('error:' + error)
               throw Error('could not fetch the data from that resource');
             }
-            setError(false);
+            handleRefresh();
             console.log('nemusim  refreshovat')
             console.log('error:' + error)
-            handleRefresh();
-            return res.json();
           }).catch((err) => {
         }); 
         return () => abortCont.abort();
@@ -54,6 +52,7 @@ const refreshToken = (isClicked, handleRefresh) => {
                   .then(data => { 
                     Cookies.set("access", data.accessToken);
                     Cookies.set("refresh", data.refreshToken);  
+                    setError(false);
                     handleRefresh();    
                   }).catch((err) => {
                 }); ;
