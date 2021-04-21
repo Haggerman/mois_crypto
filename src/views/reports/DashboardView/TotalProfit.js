@@ -111,7 +111,7 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
             className={classes.differenceValue}
             variant="body2"
           >
-            {percentChange ? percentChange >= 0 ? <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon }  /> : null } {percentChange >= 0 ? percentChange.toFixed(2).toLocaleString() : 0 }%
+            {percentChange ? percentChange >= 0 ? <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon }  /> : null } {percentChange ? percentChange.toFixed(2).toLocaleString() : 0 }%
           </Typography>
           <Typography
             color="textSecondary"
