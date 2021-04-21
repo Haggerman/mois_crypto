@@ -16,7 +16,7 @@ import {
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import MoneyIcon from '@material-ui/icons/Money';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import NumericLabel from 'react-pretty-numbers';
+import NumberConverter from 'src/utils/NumberConverter';
 
 
 
@@ -85,14 +85,12 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
             </Typography>
             {profit >= 0 ? (
               <Typography style={{color:"#4eaf0a"}} variant="h3">
-                {/*'$' + Math.abs(profit).toLocaleString()*/
-                  <NumericLabel params={params}>{profit}</NumericLabel>
-                }
+                <NumberConverter number={profit}/>
                
               </Typography>
             ) : (
               <Typography style={{color:"red"}} variant="h3">
-                <NumericLabel params={params}>{profit}</NumericLabel>
+                <NumberConverter number={profit}/>
               </Typography>
             )}
           </Grid>
@@ -111,7 +109,7 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
             className={classes.differenceValue}
             variant="body2"
           >
-            {percentChange ? percentChange >= 0 ? <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon }  /> : null } {percentChange >= 0 ? percentChange.toFixed(2).toLocaleString() : 0 }%
+            {percentChange ? percentChange >= 0 ? <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon }  /> : null } {percentChange ? percentChange.toFixed(2).toLocaleString() : 0 }%
           </Typography>
           <Typography
             color="textSecondary"

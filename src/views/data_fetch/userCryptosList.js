@@ -2,6 +2,7 @@
 import React from 'react';
 import { MDBDataTable } from 'mdbreact';
 import { useState, useEffect } from 'react';
+import NumberConverter from 'src/utils/NumberConverter';
 
 const UserCryptosList = ({ userCryptos, cryptoData}) => {
   const [dataTable, setDataTable] = useState({});
@@ -29,7 +30,7 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
           amount: row.amount,
           action: row.action,
           priceAtDatePerCoin:
-            '$ ' + row.priceAtDatePerCoin.toLocaleString(),
+            <p searchvalue={row.priceAtDatePerCoin}><NumberConverter number={row.priceAtDatePerCoin} /></p>,
           profit: (
             <p
               searchvalue={profit}
@@ -39,7 +40,7 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
                   : { color: 'red' }
               }
             >
-              {'$'+(Math.round((profit) * 100) / 100).toFixed(2).toLocaleString()}
+              <NumberConverter number={profit} />
             </p>
           ),
           date: (
@@ -103,7 +104,7 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
           entriesOptions={[5, 10, 20, 50]}
           entries={5}
           materialSearch
-          sortRows={['date','profit']}
+          sortRows={['priceAtDatePerCoin','date','profit']}
           small
           data={dataTable}
         />

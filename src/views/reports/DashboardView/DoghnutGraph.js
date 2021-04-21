@@ -56,7 +56,7 @@ const DoghnutGraph = ({
     let obj = cryptoData.find(o => o.id === cryptoNames[index]); 
     if (obj){
     clearedNames.push(obj.name);
-    myPortfolio = obj.currentPrice*amount[index];
+    myPortfolio += obj.currentPrice*amount[index];
     }
     }
   });

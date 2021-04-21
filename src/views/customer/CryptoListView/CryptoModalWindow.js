@@ -20,6 +20,7 @@ import Cookies from 'js-cookie';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import refreshToken from 'src/views/auth/refreshToken';
+import NumberConverter from 'src/utils/NumberConverter';
 
 
 const style = {
@@ -194,7 +195,7 @@ export default function CryptoModalWindow({
                   className={classes.text}
                   variant="h3"
                 >
-                  {'$' + selectedCrypto.currentPrice.toLocaleString()}
+                  <NumberConverter number={selectedCrypto.currentPrice} />
                 </Typography>
                 <Typography
                   style={{
@@ -256,13 +257,7 @@ export default function CryptoModalWindow({
                         Price change 24h
                       </Typography>
                       <Typography gutterBottom>
-                        {'$' +
-                          (
-                            Math.round(selectedCrypto.priceChange24H * 100) /
-                            100
-                          )
-                            .toFixed(3)
-                            .toLocaleString()}
+                      <NumberConverter number={selectedCrypto.priceChange24H} />
                       </Typography>
 
                       <Typography color="textSecondary" variant="h6">
@@ -270,7 +265,7 @@ export default function CryptoModalWindow({
                       </Typography>
                       {
                         <Typography noWrap gutterBottom>
-                          {'$' + selectedCrypto.ath.toLocaleString()}
+                          <NumberConverter number={selectedCrypto.ath} />
                         </Typography>
                       }
                       <Typography color="textSecondary" variant="h6">
