@@ -68,7 +68,7 @@ const Dashboard = ({
             ) : null}
           </Grid>
           <Grid item lg={4} md={6} xl={3} xs={12}>
-            {portfolioAmount > 0 ? (
+            {portfolioAmount ? (
               <DoghnutGraph
                 userCryptos={userCryptos}
                 portfolioAmount={portfolioAmount}
