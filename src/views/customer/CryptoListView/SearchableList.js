@@ -2,7 +2,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import { MDBDataTable } from 'mdbreact';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CryptoModalWindow from './CryptoModalWindow';
@@ -10,6 +9,7 @@ import NotFavoriteIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import FavoriteIcon  from '@material-ui/icons/Favorite';
 import Cookies from 'js-cookie';
 import refreshToken from 'src/views/auth/refreshToken';
+import NumberConverter from 'src/utils/NumberConverter';
 import Link from '@material-ui/core/Link';
 import {
   Box,
@@ -96,12 +96,12 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
         return {
           marketCapRank: row.marketCapRank,
           image: <img src={row.image} width="30" />,
-         ath: '$ ' + row.ath.toLocaleString(),
-          currentPrice: <p searchvalue={row.currentPrice}>{'$ ' + row.currentPrice.toLocaleString()}</p> ,
+         ath: <NumberConverter number={row.ath} />,
+          currentPrice: <p searchvalue={row.currentPrice}><NumberConverter number={row.currentPrice} /></p> ,
           name:   <Link searchvalue= {row.name} href="#"onClick={() => handleClick(row)} color="inherit">
           {row.name}
         </Link>,
-          ownedPrice: <p searchvalue={ownedPrice}>{'$ ' + ownedPrice.toLocaleString()}</p>,
+          ownedPrice: <p searchvalue={ownedPrice}><NumberConverter number={ownedPrice} /></p>,
           priceChange24H: (
             <p
               searchvalue={row.priceChange24H}
@@ -111,7 +111,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
                   : { color: 'red' }
               }
             >
-              {'$ '+(Math.round(row.priceChange24H * 100) / 100).toFixed(2).toLocaleString()}
+              <NumberConverter number={row.priceChange24H} />
             </p>
           ),
           priceChangePercentage24H: (

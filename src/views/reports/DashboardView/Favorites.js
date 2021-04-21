@@ -27,6 +27,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Cookies from 'js-cookie';
 import removeTrailingZeros from 'remove-trailing-zeros';
 import refreshToken from 'src/views/auth/refreshToken';
+import NumberConverter from 'src/utils/NumberConverter';
 
 const useStyles = makeStyles({
   root: {},
@@ -182,7 +183,7 @@ const Favorites = ({
                             : 'red'
                       }}
                     >
-                      {'$' + ownedPrice.toFixed(2)}
+                      <NumberConverter number={ownedPrice} />
                     </Typography>
                   }
                 </Grid>
@@ -199,7 +200,7 @@ const Favorites = ({
                             : 'red'
                       }}
                     >
-                      {'$' + itemData.currentPrice.toFixed(2)}{' '}
+                      {<NumberConverter number={itemData.currentPrice} />}{' '}
                     </Typography>
                   }
                   <Typography color="textSecondary" gutterBottom variant="h6">

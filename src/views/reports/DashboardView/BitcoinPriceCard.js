@@ -14,6 +14,7 @@ import {
   makeStyles,
   colors
 } from '@material-ui/core';
+import NumberConverter from 'src/utils/NumberConverter';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,7 +64,7 @@ const BitcoinPriceCard = ({ className, userCryptos, cryptoData, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              ${bitcoinPrice != null ? bitcoinPrice.toLocaleString() : "NaN"}
+              {bitcoinPrice != null ? <NumberConverter number={bitcoinPrice} /> : "NaN"}
             </Typography>
           </Grid>
           <Grid item>

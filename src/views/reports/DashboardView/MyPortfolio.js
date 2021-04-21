@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import NumberConverter from 'src/utils/NumberConverter';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,7 +80,7 @@ const MyPortfolio = ({userCryptos, cryptoData}) => {
               color="textPrimary"
               variant="h3"
             >
-            ${portfolioAmount.toLocaleString()}
+            <NumberConverter number={portfolioAmount} />
             </Typography>
           </Grid>
           <Grid item>
