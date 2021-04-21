@@ -151,13 +151,11 @@ export default function CryptoModalWindow({
   const [isPending, setPending] = useState(false);
   const [isClicked, setClicked] = useState(false);
   const {} = refreshToken(isClicked, handleRefresh)
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <div>
       {selectedCrypto && (
         <Modal
-          fullscreen
           open={open}
           onClose={handleClose}
           aria-labelledby="simple-modal-title"

@@ -38,7 +38,7 @@ const refreshToken = (isClicked, handleRefresh) => {
                 body: JSON.stringify({accessToken, refreshToken})
                   }).then((res) => {
                     if (!res.ok) {
-                      Cookies.remove("access");    
+                      Cookies.remove("access");     
                       Cookies.remove("refresh");   
                        throw Error('could not fetch the data from that resource');
                     }
