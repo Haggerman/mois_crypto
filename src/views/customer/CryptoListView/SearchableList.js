@@ -10,6 +10,7 @@ import NotFavoriteIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import FavoriteIcon  from '@material-ui/icons/Favorite';
 import Cookies from 'js-cookie';
 import refreshToken from 'src/views/auth/refreshToken';
+import Link from '@material-ui/core/Link';
 import {
   Box,
   Card,
@@ -95,9 +96,11 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
         return {
           marketCapRank: row.marketCapRank,
           image: <img src={row.image} width="30" />,
-          symbol: row.symbol,
+          ath: '$ ' + row.ath.toLocaleString(),
           currentPrice: <p searchvalue={row.currentPrice}>{'$ ' + row.currentPrice.toLocaleString()}</p> ,
-          name: row.name,
+          name:   <Link searchvalue= {row.name} href="#"onClick={() => handleClick(row)} color="inherit">
+          {row.name}
+        </Link>,
           ownedPrice: <p searchvalue={ownedPrice}>{'$ ' + ownedPrice.toLocaleString()}</p>,
           priceChange24H: (
             <p
@@ -125,7 +128,6 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
               ).toFixed(2).toLocaleString() + '%'}
             </p>
           ),
-          ath: '$ ' + row.ath.toLocaleString(),
           isFavorites: row.isFavorite ? (
             <IconButton className="icon" color="primary" onClick={() => handleFavorite(row, row.isFavorite)} searchvalue="a" className={classes.icon}>
               <FavoriteIcon />
@@ -134,11 +136,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
             <IconButton className="icon" color="secondary" onClick={() => handleFavorite(row, row.isFavorite)} searchvalue="b" className={classes.icon}>
               <NotFavoriteIcon />
           </IconButton>
-          ),
-          detail: 
-            <IconButton className="icon" color="primary" onClick={() => handleClick(row)} className={classes.icon}>
-              <MoreVertIcon />
-          </IconButton>
+          )
         };
       });
       const dataTable = {
@@ -166,29 +164,24 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
             width: 150
           },
           {
-            label: 'Symbol',
-            field: 'symbol',
-            width: 270
-          },
-          {
             label: 'Price',
             field: 'currentPrice',
-            width: 150
+            width: 200
           },
           {
             label: 'Price change 24h',
             field: 'priceChange24H',
-            width: 200
+            width: 150
           },
           {
             label: 'Percent change 24h',
             field: 'priceChangePercentage24H',
-            width: 200
+            width: 80
           },
           {
-            label: 'ATH',
+            label: 'All time high',
             field: 'ath',
-            width: 100
+            width: 80
           },
           {
             label: <Box height="10" width="10"><IconButton color="primary" searchvalue="a" height="10" className={classes.icon}>
@@ -197,11 +190,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
         </Box>,
             field: 'isFavorites',
             width: 20
-          },
-          {
-            field: 'detail',
-            sort: 'disabled'
-          },
+          }
         ],
         rows: rows
       };
@@ -230,7 +219,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
             materialSearch
             disableRetreatAfterSorting={true}
             small
-            sortRows={['ownedPrice', 'priceChangePercentage24H', 'currentPrice', 'priceChange24H', "isFavorites"]}
+            sortRows={['name', 'ownedPrice', 'priceChangePercentage24H', 'currentPrice', 'priceChange24H', "isFavorites"]}
             order={['marketCapRank', 'asc']}
             data={dataTable}
           />

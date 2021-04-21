@@ -21,6 +21,7 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import refreshToken from 'src/views/auth/refreshToken';
 
+
 const style = {
   minWidth: 90,
   textAlign: 'left'
@@ -150,11 +151,13 @@ export default function CryptoModalWindow({
   const [isPending, setPending] = useState(false);
   const [isClicked, setClicked] = useState(false);
   const {} = refreshToken(isClicked, handleRefresh)
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <div>
       {selectedCrypto && (
         <Modal
+          fullscreen
           open={open}
           onClose={handleClose}
           aria-labelledby="simple-modal-title"
