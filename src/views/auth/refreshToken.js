@@ -21,10 +21,12 @@ const refreshToken = (isClicked, handleRefresh) => {
             if (!res.ok) {
                 setError(true);
                 console.log('mel bych refreshovat')
+                console.log('error:' + error)
               throw Error('could not fetch the data from that resource');
             }
             setError(false);
             console.log('nemusim  refreshovat')
+            console.log('error:' + error)
             handleRefresh();
             return res.json();
           }).catch((err) => {
@@ -36,6 +38,7 @@ const refreshToken = (isClicked, handleRefresh) => {
       console.log('jsem v useEffect refresh')
         if(error){
           console.log('spoustim refresh')
+          console.log('error:' + error)
             fetch('https://cryptfolio.azurewebsites.net/api/Token/refresh', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json'},
