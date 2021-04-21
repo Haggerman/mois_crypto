@@ -96,7 +96,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
         return {
           marketCapRank: row.marketCapRank,
           image: <img src={row.image} width="30" />,
-          ath: '$ ' + row.ath.toLocaleString(),
+         ath: '$ ' + row.ath.toLocaleString(),
           currentPrice: <p searchvalue={row.currentPrice}>{'$ ' + row.currentPrice.toLocaleString()}</p> ,
           name:   <Link searchvalue= {row.name} href="#"onClick={() => handleClick(row)} color="inherit">
           {row.name}

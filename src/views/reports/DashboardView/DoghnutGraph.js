@@ -45,10 +45,19 @@ const DoghnutGraph = ({
   let amount = Object.values(result);
   let prices = [];
   let cryptoNames = Object.keys(result);
+  let myPortfolio = 0;
+  let clearedNames = [];
+  let clearedAmount = [];
   cryptoNames.forEach((element, index) => {
-    if (amount[index] == 0) {
-      cryptoNames.splice([index], 1);
-      amount.splice([index], 1);
+    if (amount[index] <= 0 ) {
+    }
+    else{
+      clearedAmount.push(amount[index]);
+    let obj = cryptoData.find(o => o.id === cryptoNames[index]); 
+    if (obj){
+    clearedNames.push(obj.name);
+    myPortfolio = obj.currentPrice*amount[index];
+    }
     }
   });
 
@@ -62,8 +71,8 @@ const DoghnutGraph = ({
     'rgb(153,51,102)'
   ];
   let generateColorsLength = generatedColors.length;
-  if (cryptoNames.length > generateColorsLength) {
-    for (let i = 7; i < cryptoNames.length; i++) {
+  if (clearedNames.length > generateColorsLength) {
+    for (let i = 7; i < clearedNames.length; i++) {
       var r = Math.floor(Math.random() * 255);
       var g = Math.floor(Math.random() * 255);
       var b = Math.floor(Math.random() * 255);
@@ -71,15 +80,17 @@ const DoghnutGraph = ({
     }
   }
 
-  amount.forEach((element, index) => {
-    let obj = cryptoData.find(o => o.id === cryptoNames[index]);
-    prices.push(obj.currentPrice*amount[index]);
+  clearedAmount.forEach((element, index) => {
+    let obj = cryptoData.find(o => o.name === clearedNames[index]);
+    if(obj){
+    prices.push(obj.currentPrice*clearedAmount[index]);
     cryptos.push({
-      title: cryptoNames[index],
-      value: ((obj.currentPrice*amount[index] / portfolioAmount) * 100).toFixed(2) + '%',
+      title: clearedNames[index],
+      value: ((obj.currentPrice*clearedAmount[index] / myPortfolio) * 100).toFixed(2) + '%',
       color: generatedColors[index],
       icon: CryptoIcons.Btc
     });
+  }
   });
 
   const data = {
@@ -92,7 +103,7 @@ const DoghnutGraph = ({
         hoverBorderColor: colors.common.white
       }
     ],
-    labels: cryptoNames
+    labels: clearedNames
   };
 
   const options = {
