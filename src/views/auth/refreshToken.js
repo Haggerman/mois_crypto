@@ -1,13 +1,15 @@
 /* eslint-disable */
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { useAuth } from "src/context/auth";
 const refreshToken = (isClicked, handleRefresh) => {
 
         const [isPending, setIsPending] = useState(true);
         const [error, setError] = useState(false);
         const [data, setData] = useState(null);
         let accessToken  =  Cookies.get("access");
-        let refreshToken = Cookies.get("refresh"); 
+        let refreshToken = Cookies.get("refresh");         
+        const { setAuthTokens } = useAuth();
 
 
     useEffect(()=> {
@@ -45,6 +47,7 @@ const refreshToken = (isClicked, handleRefresh) => {
                     if (!res.ok) {
                       Cookies.remove("access");     
                       Cookies.remove("refresh");   
+                      setAuthTokens();
                        throw Error('could not fetch the data from that resource');
                     }
                     return res.json();
