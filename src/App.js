@@ -151,13 +151,13 @@ if(isCookiesOn===undefined){
                   handleUpdate={handleUpdate}
                   handleTransaction={handleTransaction}
                   userCryptoGraphData={userCryptoGraphData}
-                />}/>
+                />} handleLogout={handleLogout} />
                 <PrivateRoute path="/list" element={
-                   <CryptoListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction}  userFavorites={userFavorites} userCryptos={userCryptos} />
-                   }/>
+                   <CryptoListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction} handleLogout={handleLogout} userFavorites={userFavorites} userCryptos={userCryptos} />
+                   } handleLogout={handleLogout}/>
                 <PrivateRoute path="*" element={
                 <NotFoundView />
-                }/>
+                } handleLogout={handleLogout} />
                 <Route path="/login">
                       <LoginView handleLogin={handleLogin} />
                 </Route>
