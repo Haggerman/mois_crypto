@@ -13,6 +13,7 @@ const portfolioFetch = () => {
   const [transaction, setTransaction] = useState(0);
   const [historyCrypto, setHistoryCrypto] = useState(0);
   const [userPorfolioMonthPrior, setuserPorfolioMonthPrior] = useState(0);
+  const [numOfCoins, setnNumOfCoins] = useState(0);
   const [isAuth, setIsAuth] = useState(false);
 
   const handleLogin = () => {
@@ -155,14 +156,18 @@ const portfolioFetch = () => {
         .then(userCryptosData => {
           setUserCryptos(userCryptosData);
           if (cryptoData) {
+            let coins = 0;
             const result = userCryptosData.reduce((c, v) => {
               if (v.action == 'Sold') {
+                coins+= -v.amount;
                 c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
               } else {
                 c[v.cryptoId] = (c[v.cryptoId] || 0) + v.amount;
+                coins+= v.amount;
               }
               return c;
             }, {});
+            setnNumOfCoins(coins);
             let amounts = Object.values(result);
             let cryptoIDs = Object.keys(result);
             let portfolio = 0;
@@ -220,6 +225,7 @@ const portfolioFetch = () => {
     isError,
     historyCrypto,
     userPorfolioMonthPrior,
+    numOfCoins,
     handleUpdate,
     handleTransaction,
     handleLogin,
