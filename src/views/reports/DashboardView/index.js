@@ -37,7 +37,8 @@ const Dashboard = ({
   handleTransaction,
   userCryptoGraphData,
   historyCrypto,
-  userPorfolioMonthPrior
+  userPorfolioMonthPrior,
+  numOfCoins
 }) => {
   const classes = useStyles();
   return (
@@ -71,7 +72,7 @@ const Dashboard = ({
             ) : null}
           </Grid>
           
-            {portfolioAmount ? (
+            {portfolioAmount && numOfCoins > 0 ? (
               <Grid item lg={4} md={6} xl={3} xs={12}>
               <DoghnutGraph
                 userCryptos={userCryptos}

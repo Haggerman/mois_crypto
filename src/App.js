@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const [ isCookiesOn, setCookies ] = useState();
   const [ isAuthenticated, setIsAuthenticated ] = useState(true);
-  const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, historyCrypto, userPorfolioMonthPrior, handleUpdate, handleTransaction, handleLogin, handleLogout } = portfolioFetch();
+  const { userCryptos, portfolioAmount, userFavorites, cryptoData, userCryptoGraphData, isError, historyCrypto, userPorfolioMonthPrior, numOfCoins, handleUpdate, handleTransaction, handleLogin, handleLogout } = portfolioFetch();
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const existingAccessToken = Cookies.get("access");
@@ -152,6 +152,7 @@ if(isCookiesOn===undefined){
                   userCryptoGraphData={userCryptoGraphData}
                   historyCrypto={historyCrypto}
                   userPorfolioMonthPrior={userPorfolioMonthPrior}
+                  numOfCoins={numOfCoins}
                 />} handleLogout={handleLogout} />
                 <PrivateRoute path="/list" element={
                    <CryptoListView cryptoData={cryptoData} handleUpdate={handleUpdate} handleTransaction={handleTransaction} handleLogout={handleLogout} userFavorites={userFavorites} userCryptos={userCryptos} />
