@@ -43,7 +43,9 @@ const TotalProfit = ({ className, userCryptos, portfolioAmount, cryptoData, ...r
       }
       });
       setProfit(totalProfit);
+      if (initialInvestment != 0){
       setPercentChange( totalProfit*100 / initialInvestment );
+      }
     }
   }, [portfolioAmount, userCryptos, cryptoData]);
   

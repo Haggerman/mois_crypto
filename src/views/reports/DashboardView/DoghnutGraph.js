@@ -42,6 +42,7 @@ const DoghnutGraph = ({
     return c;
   }, {});
 
+  
   let amount = Object.values(result);
   let prices = [];
   let cryptoNames = Object.keys(result);
@@ -138,8 +139,8 @@ const DoghnutGraph = ({
       }
     }
   };
-
   return (
+
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardContent>
       <Grid

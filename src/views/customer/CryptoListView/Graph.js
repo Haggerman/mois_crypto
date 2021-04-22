@@ -30,7 +30,7 @@ const Graph = ({ cryptoId }) => {
               <p>
                 Date: {isPending? 0: moment(payload[0].payload.time).format('DD-MM-YY  HH:mm')}
               </p>
-              <p>Price: ${isPending? 0: payload[0].value}</p>
+              <p>Price: ${isPending? 0: (payload[0].value).toLocaleString()}</p>
             </div>
           </Card>
         );
