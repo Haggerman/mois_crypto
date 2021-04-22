@@ -16,8 +16,7 @@ const authAndGraphDataFetch = () => {
                    'authorization' : 'Bearer ' + accessToken },
     }).then(res => { 
       setAuth(true);
-        if (!res.ok) {     
-          console.log("ssdsd");
+        if (!res.ok) {   
           setAuth(false);
             throw Error('could not fetch the data from that resource');    
         }    
@@ -25,7 +24,6 @@ const authAndGraphDataFetch = () => {
         setIsPending(false);
     }).catch((err) => {
         if (err.name === 'AbortError') {
-          console.log('fetch aborted');
         } else {
           setIsPending(false);
           setError(err.message);

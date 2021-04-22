@@ -51,7 +51,7 @@ export default function CryptoModalWindow({
 
   const clear = () => {
     setIsHidden(true);
-    setAmount(0);
+    setAmount(1);
     setDate('');
     setPrice(0);
     setAction('Buy');
@@ -95,7 +95,6 @@ export default function CryptoModalWindow({
       .catch(err => {
         console.log('Právě jsi byl vykryptoměnován');
       });
-  
   }
 
   const handleSubmit = e => {
@@ -144,7 +143,7 @@ export default function CryptoModalWindow({
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const [isHidden, setIsHidden] = useState(true);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(1);
   const [priceAtDatePerCoin, setPrice] = useState(0);
   const [date, setDate] = useState('');
   const [action, setAction] = useState('Buy');
@@ -251,7 +250,7 @@ export default function CryptoModalWindow({
                         Market cap
                       </Typography>
                       <Typography gutterBottom>
-                        {'$' + selectedCrypto.marketCap.toLocaleString()}
+                      <NumberConverter number={selectedCrypto.marketCap} />
                       </Typography>
                       <Typography color="textSecondary" variant="h6">
                         Price change 24h

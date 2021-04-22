@@ -11,6 +11,8 @@ const portfolioFetch = () => {
   const [change, setChange] = useState(0);
   const [isError, setIsError] = useState(false);
   const [transaction, setTransaction] = useState(0);
+  const [historyCrypto, setHistoryCrypto] = useState(0);
+  const [userPorfolioMonthPrior, setuserPorfolioMonthPrior] = useState(0);
   const [isAuth, setIsAuth] = useState(false);
 
   const handleLogin = () => {
@@ -26,7 +28,6 @@ const portfolioFetch = () => {
       body: JSON.stringify({accessToken, refreshToken})
     })
       .then(res => {
-        console.log('revoke');
         if (!res.ok) {
           throw Error('could not fetch the data from that resource');
         }
@@ -52,6 +53,28 @@ const portfolioFetch = () => {
 
   useEffect(() => {
     if (isAuth) {
+    fetch('https://cryptfolio.azurewebsites.net/api/HistoryPrice/bitcoin')
+      .then((res) => {
+        if (!res.ok) {
+          throw Error('could not fetch the data from that resource');
+        }
+        return res.json();
+      })
+      .then((result) => {
+        setHistoryCrypto(result.prices[0][0]);
+      })
+      .catch((err) => {
+        if (err.name === 'AbortError') {
+        } else {
+        }
+      });
+    }
+  },[isAuth])
+
+
+
+  useEffect(() => {
+    if (isAuth) {
       let accessToken = Cookies.get('access');
       fetch('https://cryptfolio.azurewebsites.net/api/Portfolio/Graph/user', {
         method: 'GET',
@@ -69,6 +92,9 @@ const portfolioFetch = () => {
           return res.json();
         })
         .then(userCryptoGraphData => {
+          if(userCryptoGraphData && userCryptoGraphData.portfolioStatuses.length >=180){
+          setuserPorfolioMonthPrior(userCryptoGraphData.portfolioStatuses[userCryptoGraphData.portfolioStatuses.length-180][0])
+          }
           setUserCryptoGraphData(userCryptoGraphData);
         })
         .catch(err => {
@@ -192,6 +218,8 @@ const portfolioFetch = () => {
     cryptoData,
     userCryptoGraphData,
     isError,
+    historyCrypto,
+    userPorfolioMonthPrior,
     handleUpdate,
     handleTransaction,
     handleLogin,

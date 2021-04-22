@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from 'react';
+import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -14,50 +14,37 @@ import {
 } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import NumberConverter from 'src/utils/NumberConverter';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100%'
-  },
-  avatar: {
-    backgroundColor: colors.red[600],
-    height: 56,
-    width: 56
-  },
-  differenceIcon: {
-    color: colors.green[600]
-  },
-  differenceValue: {
-    color: colors.green[600],
-    marginRight: theme.spacing(1)
-  }
-}));
 
-const MyPortfolio = ({userCryptos, cryptoData}) => {
-  
-  let portfolioAmount=0;
-  const classes = useStyles();
-  if(userCryptos && cryptoData){
-    const result = userCryptos.reduce((c, v) => {
-      if (v.action == 'Sold') {
-        c[v.cryptoId] = (c[v.cryptoId] || 0) - v.amount;
-      } else {
-        c[v.cryptoId] = (c[v.cryptoId] || 0) + v.amount;
-      }
-      return c;
-    }, {});
 
-    let amounts = Object.values(result);
-    let cryptoIDs = Object.keys(result);
-    
-      if (cryptoData) {
-        cryptoIDs.forEach((element, index) => {
-          let obj = cryptoData.find(o => o.id === cryptoIDs[index]);
-          portfolioAmount += obj.currentPrice * amounts[index];
-        });
+const MyPortfolio = ({portfolioAmount, userPorfolioMonthPrior}) => {
+  const [percentChange, setPercentChange] = useState(0);
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      height: '100%'
+    },
+    avatar: {
+      backgroundColor: colors.red[600],
+      height: 56,
+      width: 56
+    },
+    differenceIcon: {
+      color: percentChange < 0 ? colors.red[600] : colors.green[600]
+    },
+    differenceValue: {
+      color: percentChange < 0 ? colors.red[600] : colors.green[600],
+      marginRight: theme.spacing(1)
     }
-  }
+  }));
+  const classes = useStyles();
+  
+  useEffect(() => {
+      if (portfolioAmount && userPorfolioMonthPrior && userPorfolioMonthPrior != 0){
+      setPercentChange(((portfolioAmount-userPorfolioMonthPrior) / userPorfolioMonthPrior)*100)
+      }
+    }, [portfolioAmount, userPorfolioMonthPrior]);
   return (
     <Card
       className={clsx(classes.root, 'dashboard')}
@@ -94,12 +81,11 @@ const MyPortfolio = ({userCryptos, cryptoData}) => {
           display="flex"
           alignItems="center"
         >
-          <ArrowUpwardIcon className={classes.differenceIcon} />
           <Typography
             className={classes.differenceValue}
             variant="body2"
           >
-            33.6%
+           {percentChange ? percentChange >= 0 ? <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon }  /> : null } {percentChange ? percentChange.toFixed(2).toLocaleString() : 0 }%
           </Typography>
           <Typography
             color="textSecondary"

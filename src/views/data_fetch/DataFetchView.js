@@ -20,7 +20,6 @@ const DataFetchView = ({ cryptoData }) => {
   const [selectedCrypto, setselectedCrypto] = useState();
   const fetchFromApi = (url, crypto) => {
     setUrl(url);
-    console.log('updating');
     fetch(url)
       .then(res => res.json())
       .then(

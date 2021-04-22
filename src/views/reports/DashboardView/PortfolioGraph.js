@@ -31,7 +31,7 @@ const PortfolioGraph = ({ userCryptoGraphData }) => {
             <p>
               Date: {moment(payload[0].payload.time).format('DD-MM-YY  HH:mm')}
             </p>
-            <p>Price: ${payload[0].value}</p>
+            <p>Price: ${(payload[0].value).toLocaleString()}</p>
           </div>
         </Card>
       );

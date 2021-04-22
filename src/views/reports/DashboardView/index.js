@@ -35,7 +35,9 @@ const Dashboard = ({
   userFavorites,
   handleUpdate,
   handleTransaction,
-  userCryptoGraphData
+  userCryptoGraphData,
+  historyCrypto,
+  userPorfolioMonthPrior
 }) => {
   const classes = useStyles();
   return (
@@ -44,15 +46,16 @@ const Dashboard = ({
         <Grid container spacing={3}>
           <Grid item lg={4} sm={4} xl={4} xs={12}>
             <MyPortfolio
-              userCryptos={userCryptos}
               portfolioAmount={portfolioAmount}
               cryptoData={cryptoData}
+              userPorfolioMonthPrior={userPorfolioMonthPrior}
             />
           </Grid>
           <Grid item lg={4} sm={4} xl={4} xs={12}>
             <BitcoinPriceCard
               userCryptos={userCryptos}
               cryptoData={cryptoData}
+              historyCrypto={historyCrypto}
             />
           </Grid>
           <Grid item lg={4} sm={4} xl={4} xs={12}>
@@ -67,15 +70,17 @@ const Dashboard = ({
               <PortfolioGraph userCryptoGraphData={userCryptoGraphData} />
             ) : null}
           </Grid>
-          <Grid item lg={4} md={6} xl={3} xs={12}>
+          
             {portfolioAmount ? (
+              <Grid item lg={4} md={6} xl={3} xs={12}>
               <DoghnutGraph
                 userCryptos={userCryptos}
                 portfolioAmount={portfolioAmount}
                 cryptoData={cryptoData}
               />
+              </Grid>
             ) : null}
-          </Grid>
+          
           <Grid item lg={4} md={6} xl={3} xs={12}>
             {userFavorites && handleUpdate && userCryptos && cryptoData && (
               <Favorites
