@@ -66,7 +66,7 @@ const Dashboard = ({
               cryptoData={cryptoData}
             />
           </Grid>
-          <Grid item lg={8} md={12} xl={9} xs={12}>
+          <Grid item lg={numOfCoins > 0 ? 8 : 12 } md={12} xl={9} xs={12}>
             {userCryptos && userCryptos.length > 0 ? (
               <PortfolioGraph userCryptoGraphData={userCryptoGraphData} />
             ) : null}
