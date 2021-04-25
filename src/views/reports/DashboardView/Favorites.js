@@ -168,7 +168,7 @@ const Favorites = ({
                   <Typography color="textSecondary">
                     {amounts[userCryptoIndex] > 0
                       ? removeTrailingZeros(amounts[userCryptoIndex].toFixed(6))
-                      : 0}
+                      : amounts[userCryptoIndex] != 0 && amounts[userCryptoIndex] ? removeTrailingZeros(amounts[userCryptoIndex].toFixed(6)) : 0}
                   </Typography>
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Holdings
