@@ -85,7 +85,7 @@ const MyPortfolio = ({portfolioAmount, userPorfolioMonthPrior}) => {
             className={classes.differenceValue}
             variant="body2"
           >
-           {userPorfolioMonthPrior != 0 ? percentChange ? percentChange >= 0 ? <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon }  /> : null : null} { userPorfolioMonthPrior !=0 ? percentChange ? percentChange.toFixed(2).toLocaleString() : 0 + '%' : null }
+           {userPorfolioMonthPrior != 0 ? percentChange ? percentChange >= 0 ? <ArrowUpwardIcon className={classes.differenceIcon} /> : <ArrowDownwardIcon className={classes.differenceIcon }  /> : null : null} { userPorfolioMonthPrior !=0 ? percentChange ? percentChange.toFixed(2).toLocaleString() + '%' : 0 + '%' : null }
           </Typography>
           <Typography
             color="textSecondary"
