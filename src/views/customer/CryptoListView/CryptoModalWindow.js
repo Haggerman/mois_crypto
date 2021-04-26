@@ -28,6 +28,10 @@ const style = {
   textAlign: 'left'
 }; 
 
+const stylePadding = {
+  paddingTop: "16px"
+}; 
+
 export default function CryptoModalWindow({
   open,
   selectedCrypto,
@@ -118,7 +122,7 @@ export default function CryptoModalWindow({
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       outline: 'none',
-      [theme.breakpoints.only('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         overflow:"scroll",
         width: "100%",
         height: "80%"
@@ -130,7 +134,7 @@ export default function CryptoModalWindow({
       paddingBottom: 0
     },
     modal: {
-      [theme.breakpoints.only('xs')]: {
+      [theme.breakpoints.only('sm')]: {
         overflow:"scroll",
         width: "100%",
       }
@@ -309,7 +313,7 @@ export default function CryptoModalWindow({
                 autoComplete="off"
                 onSubmit={handleSubmit}
               >
-                <div>
+                <div style={stylePadding}>
                   <TextField
                     style={style}
                     required
