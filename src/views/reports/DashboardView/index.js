@@ -3,9 +3,7 @@ import React from 'react';
 import {
   Box,
   Card,
-  CardHeader,
   Container,
-  Divider,
   Grid,
   makeStyles,
   Typography

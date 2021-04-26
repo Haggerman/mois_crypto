@@ -20,6 +20,11 @@ import {
 
 const useStyles = makeStyles(theme => ({
   root: {},
+  table: {
+    [theme.breakpoints.down("sm")]: {
+     overflowY:"auto"
+    }
+  },
   avatar: {
     marginRight: theme.spacing(2)
   },
@@ -213,7 +218,8 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
           handleTransaction={handleTransaction}
         />
         {dataTable && (
-          <MDBDataTable scrollX
+          <MDBDataTable
+            className={classes.table}
             entriesOptions={[5, 10, 50, 100]}
             entries={10}
             materialSearch
