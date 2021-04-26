@@ -18,7 +18,6 @@ import TopBar from 'src/layouts/DashboardLayout/TopBar';
 import { AuthContext } from "./context/auth";
 import PrivateRoute from './route/PrivateRoute';
 import Cookies from 'js-cookie';
-import refreshToken from 'src/views/auth/refreshToken';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,13 +58,15 @@ const App = () => {
     if(data){
       Cookies.set("access", data.accessToken);
       Cookies.set("refresh", data.refreshToken);
+      setCookies(true);
       setIsAuthenticated(true);
       setAuthTokens(data.accessToken);
     }
     else{
       setIsAuthenticated(false);            
       Cookies.remove("access");    
-      Cookies.remove("refresh");       
+      Cookies.remove("refresh");      
+      setCookies(false); 
       setAuthTokens();
     }
   } 
@@ -79,10 +80,8 @@ const App = () => {
           authorization: 'Bearer ' + accessToken
         }
       })
-        .then(res => {
-          setIsError(false);
+        .then(res => {   
           if (!res.ok) {
-            setIsError(true);
             throw Error('could not fetch the data from that resource');
           }
           return res.json();
@@ -91,7 +90,6 @@ const App = () => {
           setUserDetails(userDetail);
         })
         .catch(err => {
-          console.log('Právě jsi byl vykryproměnován');
         });
 }
 else {
@@ -112,7 +110,8 @@ useEffect(() => {
             setCookies(false);
             Cookies.remove("access");    
             Cookies.remove("refresh");   
-            throw Error('could not fetch the data from that resource');
+            console.clear();
+            throw Error('Your refresh token has expired');
           }
           return res.json();
         })
@@ -124,7 +123,7 @@ useEffect(() => {
           handleLogin();
         }).catch((err) => {
           console.log(err);
-        }); ;
+        });
 }, [])
 
 
@@ -137,7 +136,7 @@ if(isCookiesOn===undefined){
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <div className={classes.root}>
-          {isAuthenticated && authTokens && !isError ? <TopBar  onMobileNavOpen={() => setMobileNavOpen(true)} handleLog={handleLogout} /> : null }
+          {isAuthenticated && authTokens && !isError ? <TopBar  onMobileNavOpen={() => setMobileNavOpen(true)} handleLog={handleLogout} userDetail={userDetails}/> : null }
               <div className={classes.wrapper}>
               <div className={classes.contentContainer}>
                 <div className={classes.content}>

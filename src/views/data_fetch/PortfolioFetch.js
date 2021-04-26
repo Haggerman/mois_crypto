@@ -31,11 +31,11 @@ const portfolioFetch = () => {
       .then(res => {
         if (!res.ok) {
           throw Error('could not fetch the data from that resource');
-        }
+        }        
+        console.clear();
         return res.json();
       })
       .catch(err => {
-        console.log('Právě jsi byl vykryproměnován');
       },[]);
     setIsAuth(false);
   };
@@ -99,7 +99,6 @@ const portfolioFetch = () => {
           setUserCryptoGraphData(userCryptoGraphData);
         })
         .catch(err => {
-          console.log('Právě jsi byl vykryproměnován');
         });
     } else {
       setUserCryptoGraphData(null);
@@ -128,7 +127,6 @@ const portfolioFetch = () => {
           setCryptoData(cryptoData);
         })
         .catch(err => {
-          console.log('Právě jsi byl vykryproměnován');
         });
     } else {
       setCryptoData(null);
@@ -179,7 +177,6 @@ const portfolioFetch = () => {
           }
         })
         .catch(err => {
-          console.log('Právě jsi byl vykryproměnován');
         });
     } else {
       setUserCryptos(null);
@@ -209,7 +206,6 @@ const portfolioFetch = () => {
           setUserFavorites(userFavorites);
         })
         .catch(err => {
-          console.log('Právě jsi byl vykryproměnován');
         });
     } else {
       setUserFavorites(null);

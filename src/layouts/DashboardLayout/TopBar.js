@@ -42,6 +42,7 @@ const TopBar = ({
   className,
   onMobileNavOpen,
   handleLog,
+  userDetail,
   ...rest
 }) => {
   const classes = useStyles();
@@ -76,7 +77,11 @@ const TopBar = ({
              <span> Crypto List </span>
            </Hidden>
           </RouterLink>
-        <Box flexGrow={1} />      
+          
+        <Box flexGrow={1} /> 
+        <Hidden only={['xs'] }>
+             <span> {userDetail && userDetail.username} </span>
+           </Hidden>     
           <IconButton color="inherit" onClick={() => handleLogout()} className={classes.nav}>
             <InputIcon />        
           <Hidden only={['xs']}>

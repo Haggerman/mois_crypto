@@ -96,7 +96,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
         return {
           marketCapRank: row.marketCapRank,
           image: <img src={row.image} width="30" />,
-         ath: <NumberConverter number={row.ath} />,
+         ath: <NumberConverter number={row.ath} searchvalue={row.ath} />,
           currentPrice: <p searchvalue={row.currentPrice}><NumberConverter number={row.currentPrice} /></p> ,
           name:   <Link searchvalue= {row.name} href="#"onClick={() => handleClick(row)} color="inherit">
           {row.name}
@@ -219,7 +219,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
             materialSearch
             disableRetreatAfterSorting={true}
             small
-            sortRows={['name', 'ownedPrice', 'priceChangePercentage24H', 'currentPrice', 'priceChange24H', "isFavorites"]}
+            sortRows={['name', 'ownedPrice', 'priceChangePercentage24H', 'currentPrice', 'priceChange24H', "isFavorites", "ath"]}
             order={['marketCapRank', 'asc']}
             data={dataTable}
           />

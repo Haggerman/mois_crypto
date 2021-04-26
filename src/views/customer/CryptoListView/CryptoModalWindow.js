@@ -93,7 +93,6 @@ export default function CryptoModalWindow({
         clear();
       })
       .catch(err => {
-        console.log('Právě jsi byl vykryptoměnován');
       });
   }
 

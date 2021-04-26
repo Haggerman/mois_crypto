@@ -48,7 +48,6 @@ const LoginView = ({handleLogin }) => {
       if (!res.ok) {
         throw Error('could not fetch the data from that resource');
       }
-   
       setValidate(false);
       return res.json();
     })
@@ -56,10 +55,10 @@ const LoginView = ({handleLogin }) => {
        
         setAuthTokens(data);
         handleLogin();
+        console.clear();
         navigate('/', { replace: true });
     })
     .catch((err) => {
-      console.log("Právě jsi byl vykryptoměnován");
       setValidate(true);
     });
    

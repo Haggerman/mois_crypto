@@ -230,7 +230,8 @@ const Favorites = ({
                     </Tooltip>
                   </Typography>
                   <Box height={1 / 4}></Box>
-                  <Typography>
+                  <Typography>                    
+                  <Tooltip title="More informations">
                     <IconButton
                       onClick={() => handleClickModal(itemData)}
                       edge="end"
@@ -238,6 +239,7 @@ const Favorites = ({
                     >
                       <MoreVertIcon />
                     </IconButton>
+                    </Tooltip>
                   </Typography>
                 </Grid>
               </Grid>
