@@ -21,7 +21,7 @@ const refreshToken = (isClicked, handleRefresh) => {
         .then(res => {
           if (!res.ok) {
             setError(true);
-
+            console.clear();
             throw Error('could not fetch the data from that resource');
           }
           handleRefresh();
