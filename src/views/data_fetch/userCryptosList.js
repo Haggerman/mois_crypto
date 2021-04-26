@@ -3,9 +3,18 @@ import React from 'react';
 import { MDBDataTable } from 'mdbreact';
 import { useState, useEffect } from 'react';
 import NumberConverter from 'src/utils/NumberConverter';
+import { makeStyles } from '@material-ui/core';
 
 const UserCryptosList = ({ userCryptos, cryptoData}) => {
   const [dataTable, setDataTable] = useState({});
+
+  const useStyles = makeStyles(theme => ({
+    table: {
+      [theme.breakpoints.down("sm")]: {
+       overflowY:"auto"
+      }
+    }
+  }));
 
   useEffect(() => {
     if (cryptoData) {
@@ -97,10 +106,13 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
       setDataTable(dataTable);
     }
   }, [userCryptos]);
+  
+  const classes = useStyles();
   return (
     <div>
       {dataTable && (
-        <MDBDataTable  scrollX
+        <MDBDataTable
+          className={classes.table}
           entriesOptions={[5, 10, 20, 50]}
           entries={5}
           materialSearch
