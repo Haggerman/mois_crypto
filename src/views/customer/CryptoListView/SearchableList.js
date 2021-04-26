@@ -213,7 +213,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
           handleTransaction={handleTransaction}
         />
         {dataTable && (
-          <MDBDataTable
+          <MDBDataTable scrollX
             entriesOptions={[5, 10, 50, 100]}
             entries={10}
             materialSearch

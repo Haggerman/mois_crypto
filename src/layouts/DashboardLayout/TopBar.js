@@ -23,6 +23,10 @@ const useStyles = makeStyles(() => ({
     width: 60,
     height: 60
   },
+  desktopOnly: {
+    width: 60,
+    height: 60
+  },
   nav: {
     color: 'white',
     fontSize: '1.2em',
@@ -61,14 +65,23 @@ const TopBar = ({
           <Logo />
         </RouterLink>
           <RouterLink to="/" className={classes.nav}>
-          <AssessmentIcon /> Dashboard 
+          <AssessmentIcon />
+          <Hidden only={['xs']}>
+             <span> Dashboard </span>
+           </Hidden>
           </RouterLink>
           <RouterLink to="/list" className={classes.nav}>
-          <ListAltIcon  /> Crypto list
+          <ListAltIcon  />          
+          <Hidden only={['xs']}>
+             <span> Crypto List </span>
+           </Hidden>
           </RouterLink>
         <Box flexGrow={1} />      
           <IconButton color="inherit" onClick={() => handleLogout()} className={classes.nav}>
-            <InputIcon />
+            <InputIcon />        
+          <Hidden only={['xs']}>
+             <span> Logout </span>
+           </Hidden>
           </IconButton>
       </Toolbar>
     </AppBar>
