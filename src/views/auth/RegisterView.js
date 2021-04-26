@@ -73,7 +73,6 @@ const RegisterView = () => {
                 navigate('/login', { replace: true });
             })
             .catch((err) => {
-              console.log("Právě jsi byl vykryptoměnován");
               actions.setSubmitting(false);
               setValidate(true);
             });

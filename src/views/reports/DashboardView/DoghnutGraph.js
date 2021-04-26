@@ -49,6 +49,7 @@ const DoghnutGraph = ({
   let myPortfolio = 0;
   let clearedNames = [];
   let clearedAmount = [];
+  if(cryptoData && cryptoNames){
   cryptoNames.forEach((element, index) => {
     if (amount[index] <= 0 ) {
     }
@@ -58,9 +59,10 @@ const DoghnutGraph = ({
     if (obj){
     clearedNames.push(obj.name);
     myPortfolio += obj.currentPrice*amount[index];
-    }
-    }
-  });
+      }
+      }
+    });
+  }
 
   let generatedColors = [
     'rgb(0,104,132)',

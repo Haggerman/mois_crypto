@@ -53,7 +53,8 @@ const refreshToken = (isClicked, handleRefresh) => {
           setError(false);
           handleRefresh();
         })
-        .catch(err => {});
+        .catch(err => {
+          console.clear();});
     }
   }, [error]);
 

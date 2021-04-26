@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 
 const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction, userFavorites, userCryptos, ...rest }) => {
   const classes = useStyles();
-  const [dataTable, setDataTable] = useState({});
+  const [dataTable, setDataTable] = useState(null);
   const [selectedCrypto, setSelectedCrypto] = useState('');
   const [open, setOpen] = useState(false);
   const [favorites, setFavorites] = useState(userFavorites);
@@ -96,7 +96,7 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
         return {
           marketCapRank: row.marketCapRank,
           image: <img src={row.image} width="30" />,
-         ath: <NumberConverter number={row.ath} />,
+         ath: <NumberConverter number={row.ath} searchvalue={row.ath} />,
           currentPrice: <p searchvalue={row.currentPrice}><NumberConverter number={row.currentPrice} /></p> ,
           name:   <Link searchvalue= {row.name} href="#"onClick={() => handleClick(row)} color="inherit">
           {row.name}
@@ -213,13 +213,13 @@ const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction
           handleTransaction={handleTransaction}
         />
         {dataTable && (
-          <MDBDataTable
+          <MDBDataTable scrollX
             entriesOptions={[5, 10, 50, 100]}
             entries={10}
             materialSearch
             disableRetreatAfterSorting={true}
             small
-            sortRows={['name', 'ownedPrice', 'priceChangePercentage24H', 'currentPrice', 'priceChange24H', "isFavorites"]}
+            sortRows={['name', 'ownedPrice', 'priceChangePercentage24H', 'currentPrice', 'priceChange24H', "isFavorites", "ath"]}
             order={['marketCapRank', 'asc']}
             data={dataTable}
           />

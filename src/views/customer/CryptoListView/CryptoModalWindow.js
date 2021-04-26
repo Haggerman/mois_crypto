@@ -24,7 +24,7 @@ import NumberConverter from 'src/utils/NumberConverter';
 
 
 const style = {
-  minWidth: 90,
+  width: 200,
   textAlign: 'left'
 }; 
 
@@ -93,7 +93,6 @@ export default function CryptoModalWindow({
         clear();
       })
       .catch(err => {
-        console.log('Právě jsi byl vykryptoměnován');
       });
   }
 
@@ -118,12 +117,23 @@ export default function CryptoModalWindow({
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      outline: 'none'
+      outline: 'none',
+      [theme.breakpoints.only('xs')]: {
+        overflow:"scroll",
+        width: "100%",
+        height: "80%"
+      }
     },
     root: {
       minWidth: 200,
       padding: 0,
       paddingBottom: 0
+    },
+    modal: {
+      [theme.breakpoints.only('xs')]: {
+        overflow:"scroll",
+        width: "100%",
+      }
     },
     graph: {
       width: '100%'
@@ -160,6 +170,7 @@ export default function CryptoModalWindow({
           onClose={handleClose}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
+          className={classes.modal}
         >
           <div style={modalStyle} className={classes.paper}>
             <Grid
@@ -300,6 +311,7 @@ export default function CryptoModalWindow({
               >
                 <div>
                   <TextField
+                    style={style}
                     required
                     className="outlined-basic"
                     label="Amount"
@@ -312,6 +324,7 @@ export default function CryptoModalWindow({
                     }}
                   />
                   <TextField
+                    style={style}
                     required
                     className="outlined-basic"
                     label="Price per unit"
@@ -324,11 +337,12 @@ export default function CryptoModalWindow({
                     }}
                   />
                   <TextField
+                    style={style}
                     required
                     id="datetime-local"
                     label="Transaction time"
                     type="datetime-local"
-                    className={classes.textField}
+                    className="outlined-basic"
                     value={date}
                     InputProps={{
                       inputProps: { min: new Date().setDate(new Date().getDate()- 30), max: new Date() }
@@ -338,12 +352,12 @@ export default function CryptoModalWindow({
                       shrink: true
                     }}
                   />
-
                   <TextField
                     style={style}
                     required
                     id="standard-select-currency"
                     select
+                    className="outlined-basic"
                     label="Type"
                     value={action}
                     onChange={e => setAction(e.target.value)}

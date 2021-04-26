@@ -100,7 +100,7 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
   return (
     <div>
       {dataTable && (
-        <MDBDataTable
+        <MDBDataTable  scrollX
           entriesOptions={[5, 10, 20, 50]}
           entries={5}
           materialSearch

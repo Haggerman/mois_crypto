@@ -23,6 +23,10 @@ const useStyles = makeStyles(() => ({
     width: 60,
     height: 60
   },
+  desktopOnly: {
+    width: 60,
+    height: 60
+  },
   nav: {
     color: 'white',
     fontSize: '1.2em',
@@ -38,6 +42,7 @@ const TopBar = ({
   className,
   onMobileNavOpen,
   handleLog,
+  userDetail,
   ...rest
 }) => {
   const classes = useStyles();
@@ -60,15 +65,34 @@ const TopBar = ({
         <RouterLink to="/">
           <Logo />
         </RouterLink>
+          <Hidden smUp>
+            <Box flexGrow={1} /> 
+           </Hidden>
           <RouterLink to="/" className={classes.nav}>
-          <AssessmentIcon /> Dashboard 
+          <AssessmentIcon />
+          <Hidden only={['xs']}>
+             <span> Dashboard </span>
+           </Hidden>
           </RouterLink>
+          <Hidden smUp>
+            <Box flexGrow={1} /> 
+           </Hidden>
+          
           <RouterLink to="/list" className={classes.nav}>
-          <ListAltIcon  /> Crypto list
+          <ListAltIcon  />          
+          <Hidden only={['xs']}>
+             <span> Crypto List </span>
+           </Hidden>
           </RouterLink>
-        <Box flexGrow={1} />      
+            <Box flexGrow={1} /> 
+        <Hidden only={['xs'] }>
+             <span> {userDetail && userDetail.username} </span>
+           </Hidden>     
           <IconButton color="inherit" onClick={() => handleLogout()} className={classes.nav}>
-            <InputIcon />
+            <InputIcon />        
+          <Hidden only={['xs']}>
+             <span style={{paddingLeft: "8px"}}> Logout </span>
+           </Hidden>
           </IconButton>
       </Toolbar>
     </AppBar>
