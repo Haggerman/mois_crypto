@@ -65,27 +65,33 @@ const TopBar = ({
         <RouterLink to="/">
           <Logo />
         </RouterLink>
+          <Hidden smUp>
+            <Box flexGrow={1} /> 
+           </Hidden>
           <RouterLink to="/" className={classes.nav}>
           <AssessmentIcon />
           <Hidden only={['xs']}>
              <span> Dashboard </span>
            </Hidden>
           </RouterLink>
+          <Hidden smUp>
+            <Box flexGrow={1} /> 
+           </Hidden>
+          
           <RouterLink to="/list" className={classes.nav}>
           <ListAltIcon  />          
           <Hidden only={['xs']}>
              <span> Crypto List </span>
            </Hidden>
           </RouterLink>
-          
-        <Box flexGrow={1} /> 
+            <Box flexGrow={1} /> 
         <Hidden only={['xs'] }>
              <span> {userDetail && userDetail.username} </span>
            </Hidden>     
           <IconButton color="inherit" onClick={() => handleLogout()} className={classes.nav}>
             <InputIcon />        
           <Hidden only={['xs']}>
-             <span> Logout </span>
+             <span style={{paddingLeft: "8px"}}> Logout </span>
            </Hidden>
           </IconButton>
       </Toolbar>

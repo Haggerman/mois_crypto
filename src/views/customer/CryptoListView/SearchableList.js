@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 
 const SearchableList = ({ className, cryptoData, handleUpdate, handleTransaction, userFavorites, userCryptos, ...rest }) => {
   const classes = useStyles();
-  const [dataTable, setDataTable] = useState({});
+  const [dataTable, setDataTable] = useState(null);
   const [selectedCrypto, setSelectedCrypto] = useState('');
   const [open, setOpen] = useState(false);
   const [favorites, setFavorites] = useState(userFavorites);

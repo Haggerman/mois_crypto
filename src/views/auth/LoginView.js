@@ -45,7 +45,8 @@ const LoginView = ({handleLogin }) => {
         body: JSON.stringify(user)
     }).then((res) => {
       setLogin(false);
-      if (!res.ok) {
+      if (!res.ok) {        
+        console.clear();
         throw Error('could not fetch the data from that resource');
       }
       setValidate(false);
