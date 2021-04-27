@@ -3,10 +3,15 @@ import React from 'react';
 import { MDBDataTable } from 'mdbreact';
 import { useState, useEffect } from 'react';
 import NumberConverter from 'src/utils/NumberConverter';
-import { makeStyles } from '@material-ui/core';
+import { IconButton, makeStyles } from '@material-ui/core';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import refreshToken from 'src/views/auth/refreshToken';
 
-const UserCryptosList = ({ userCryptos, cryptoData}) => {
-  const [dataTable, setDataTable] = useState({});
+const UserCryptosList = ({ userCryptos, cryptoData, handleTransaction}) => {
+  const [dataTable, setDataTable] = useState(null);  
+  const [isClicked, setClicked] = useState(false);
+  const [row, setRow] = useState(null);
+  const [userTransactions, setUserTransactions] = useState(userCryptos);
 
   const useStyles = makeStyles(theme => ({
     table: {
@@ -16,9 +21,35 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
     }
   }));
 
+const handleRefresh = () => {
+  let accessToken  = Cookies.get("access");
+    fetch('TODO', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 
+        'authorization' : 'Bearer ' + accessToken  
+      },
+      body: JSON.stringify({CryptoId: row.id})
+    }).then(() => {
+      handleTransaction(); 
+      setClicked(false);
+    });
+}
+
+  const handleDelete = (row) => {
+    let filtered = userTransactions.filter(t=>t.id != row.id);
+    setUserTransactions(filtered);
+    setRow(row);
+    setClicked(true);
+  };
+  const {} = refreshToken(isClicked, handleRefresh)
+
+  useEffect(() => {    
+    setUserTransactions(userCryptos);
+  }, [userCryptos]);
+  
   useEffect(() => {
     if (cryptoData) {
-      let rows = userCryptos.map((row, i) => {
+      let rows = userTransactions.map((row, i) => {
         let date = new Date(row.date);
         let currentPrice = 0;
         let cryptoName = '';
@@ -64,6 +95,10 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
                   }).format(date)
                 : 'Unknown'}
             </p>
+          ),delete:(
+            <IconButton className="icon" color="secondary" onClick={() => handleDelete(row)} className={classes.icon}>
+              <DeleteForeverIcon />
+          </IconButton>
           )
         };
       });
@@ -99,13 +134,17 @@ const UserCryptosList = ({ userCryptos, cryptoData}) => {
             field: 'date',
             sort: 'asc',
             width: 150
+          },
+          {
+            field: 'delete',
+            width: 20
           }
         ],
         rows: rows
       };
       setDataTable(dataTable);
     }
-  }, [userCryptos]);
+  }, [userTransactions, userCryptos]);
   
   const classes = useStyles();
   return (
