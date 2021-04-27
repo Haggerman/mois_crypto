@@ -30,6 +30,7 @@ const portfolioFetch = () => {
     })
       .then(res => {
         if (!res.ok) {
+          console.clear();
           throw Error('could not fetch the data from that resource');
         }        
         console.clear();

@@ -176,9 +176,10 @@ const Favorites = ({
                       noWrap
                       style={{
                         color:
-                          itemData.priceChangePercentage24H > 0
+                          ownedPrice > 0 ? itemData.priceChangePercentage24H > 0
                             ? '#4eaf0a'
                             : 'red'
+                            : '#546e7a'
                       }}
                     >
                       <NumberConverter number={ownedPrice} />
@@ -231,7 +232,7 @@ const Favorites = ({
                   </Typography>
                   <Box height={1 / 4}></Box>
                   <Typography>                    
-                  <Tooltip title="More informations">
+                  <Tooltip title="More information">
                     <IconButton
                       onClick={() => handleClickModal(itemData)}
                       edge="end"

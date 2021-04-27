@@ -105,6 +105,7 @@ const Dashboard = ({
                   <UserCryptosList
                     userCryptos={userCryptos}
                     cryptoData={cryptoData}
+                    handleTransaction={handleTransaction}
                   />
                 )}
               </Box>
