@@ -51,6 +51,7 @@ const handleRefresh = () => {
     if (cryptoData) {
       let rows = userTransactions.map((row, i) => {
         let date = new Date(row.date);
+        let prior = new Date().setDate(new Date().getDate() - 30);
         let currentPrice = 0;
         let cryptoName = '';
         let profit = 0;
@@ -95,11 +96,11 @@ const handleRefresh = () => {
                   }).format(date)
                 : 'Unknown'}
             </p>
-          ),delete:(
-            <IconButton className="icon" color="secondary" onClick={() => handleDelete(row)} className={classes.icon}>
-              <DeleteForeverIcon />
+          ),delete: date.getTime() >= prior ? (
+            <IconButton className="icon" color="secondary" style={{ padding: '0px' }} onClick={() => handleDelete(row)} className={classes.icon}>
+              <DeleteForeverIcon /> 
           </IconButton>
-          )
+          ) : null
         };
       });
       const dataTable = {
