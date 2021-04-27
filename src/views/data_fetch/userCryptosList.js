@@ -137,7 +137,8 @@ const handleRefresh = () => {
           },
           {
             field: 'delete',
-            width: 20
+            width: 20,
+            sort: 'disabled',
           }
         ],
         rows: rows
