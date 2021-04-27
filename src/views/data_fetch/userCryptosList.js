@@ -6,6 +6,7 @@ import NumberConverter from 'src/utils/NumberConverter';
 import { IconButton, makeStyles } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import refreshToken from 'src/views/auth/refreshToken';
+import Cookies from 'js-cookie';
 
 const UserCryptosList = ({ userCryptos, cryptoData, handleTransaction}) => {
   const [dataTable, setDataTable] = useState(null);  
@@ -22,16 +23,15 @@ const UserCryptosList = ({ userCryptos, cryptoData, handleTransaction}) => {
   }));
 
 const handleRefresh = () => {
+  setClicked(false);
   let accessToken  = Cookies.get("access");
-    fetch('TODO', {
-      method: 'POST',
+    fetch('https://cryptfolio.azurewebsites.net/api/Transaction/delete/'+row.id, {
+      method: 'GET',
       headers: { 'Content-Type': 'application/json', 
         'authorization' : 'Bearer ' + accessToken  
-      },
-      body: JSON.stringify({CryptoId: row.id})
+      }
     }).then(() => {
       handleTransaction(); 
-      setClicked(false);
     });
 }
 
